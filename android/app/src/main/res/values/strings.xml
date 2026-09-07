@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">728060529048378</string>
+    <string name="facebook_client_token">a10e2eedb00d17d9d2faadd56fd3c097</string>
+    <string name="geo_api_key">AIzaSyDbMgAfj0CBFCQWrOr4L57i_bXztoGiyPU</string>
+</resources>
+
+
+
+
+
+
+
+
+
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <string name="app_name">OrderWale</string>
+
+        &lt;!&ndash; Replace "000000000000" with your Facebook App ID here. &ndash;&gt;
+        <string name="facebook_app_id">728060529048378</string>
+
+        &lt;!&ndash;
+          Replace "000000000000" with your Facebook App ID here.
+          **NOTE**: The scheme needs to start with `fb` and then your ID.
+        &ndash;&gt;
+        <string name="fb_login_protocol_scheme">fb728060529048378</string>
+    </resources>-->

@@ -1,0 +1,150 @@
+{
+  "project_info": {
+    "project_number": "1016377131090",
+    "project_id": "orderwale-db1ce",
+    "storage_bucket": "orderwale-db1ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016377131090:android:4750202b09bddb391b9f8b",
+        "android_client_info": {
+          "package_name": "com.orderwale.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016377131090-ddmk534358g2ulr8r0i1qrhtjb7co5vn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orderwale.customer",
+            "certificate_hash": "16d42539ad2f759c584f186e6ff476d6ba8e7d41"
+          }
+        },
+        {
+          "client_id": "1016377131090-fb1k20c3v65f7jdbg6cl3emrm0a87jmg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orderwale.customer",
+            "certificate_hash": "c321b7d08194d0fdbcf55ef080a4e39a04abe099"
+          }
+        },
+        {
+          "client_id": "1016377131090-j6u0nl7vm4sddclvu72lcf7ohl411sf9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orderwale.customer",
+            "certificate_hash": "133f35d67349b206d420c4c1284fb2a4b64ccddf"
+          }
+        },
+        {
+          "client_id": "1016377131090-ukam7bj495verr5iatsfqh0hhs4gqrjl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo6CTdnD9YA0fwihbFV6H2vm4h9dIpVjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016377131090-48kaa66em5deaf0068kc2ejpni9h82l4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1016377131090-h2ncflut94tv4vv30j298thv4s4mam83.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.orderwale.customer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016377131090:android:370843753597e09f1b9f8b",
+        "android_client_info": {
+          "package_name": "com.orderwale.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016377131090-ukam7bj495verr5iatsfqh0hhs4gqrjl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo6CTdnD9YA0fwihbFV6H2vm4h9dIpVjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016377131090-48kaa66em5deaf0068kc2ejpni9h82l4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1016377131090-h2ncflut94tv4vv30j298thv4s4mam83.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.orderwale.customer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016377131090:android:3981a7d50e1530a41b9f8b",
+        "android_client_info": {
+          "package_name": "com.orderwale.merchant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016377131090-9h2luspkj1e0f5qhdgbk9pjjjrgmn8kl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orderwale.merchant",
+            "certificate_hash": "16d42539ad2f759c584f186e6ff476d6ba8e7d41"
+          }
+        },
+        {
+          "client_id": "1016377131090-ukam7bj495verr5iatsfqh0hhs4gqrjl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo6CTdnD9YA0fwihbFV6H2vm4h9dIpVjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016377131090-48kaa66em5deaf0068kc2ejpni9h82l4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1016377131090-h2ncflut94tv4vv30j298thv4s4mam83.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.orderwale.customer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
