@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_merchant/component/ColorLoader.dart';
-import 'package:food_merchant/component/TextWidget.dart';
-import 'package:food_merchant/constant/app_color.dart';
-import 'package:food_merchant/constant/app_constant.dart';
+import 'package:food_merchant/component/custom_text_widget.dart';
+import 'package:food_merchant/constant/app_colors.dart';
+import 'package:food_merchant/constant/font_family.dart';
 import 'package:food_merchant/constant/app_images.dart';
-import 'package:food_merchant/constant/string_constants.dart';
-import 'package:food_merchant/utils/SizeConfig.dart';
+import 'package:food_merchant/constant/app_strings.dart';
+import 'package:food_merchant/utils/size_config.dart';
 import 'package:get/get.dart';
 
 import 'coupons_controller.dart';
@@ -18,23 +18,14 @@ class NewCouponScreen extends GetView<CouponsController> {
   Widget build(BuildContext context) {
     List<Widget> widgetList = [];
     var child =  Scaffold(
-   backgroundColor: Colors.white,
-     appBar: AppBar(
-         elevation: 0.0,
-         centerTitle: true,
-         title: TextWidget(text: couponsListTitle,
-           color: Colors.black,
-           fontSize: SizeConfig.appbarTitleSize,
-           fontFamily: fontSemiBold,
-           weight: FontWeight.w600,),
-     ),
-
+   backgroundColor: AppColors.white,
+     appBar: buildAppBar(title: AppStrings.couponsListTitle),
    body: SafeArea(
      child: RefreshIndicator(
-       color: colorPrimary,
+       color: AppColors.colorPrimary,
        onRefresh: controller.pullToRefresh,
        child: Container(
-           color: Colors.white,
+           color: AppColors.white,
            padding: EdgeInsets.symmetric(horizontal: 8,
                vertical: SizeConfig.blockSizeHorizontal*3),
          child: ListView(
@@ -54,13 +45,13 @@ class NewCouponScreen extends GetView<CouponsController> {
          //final index = entry.key;
          final coupon = entry.value;
          return InkWell(
-           highlightColor: Colors.transparent,
-           splashColor: Colors.transparent,
+           highlightColor: AppColors.transparent,
+           splashColor: AppColors.transparent,
            onTap: (){
              controller.goToUpdateCoupon(coupon);
            },
            child: Container(
-             color: Colors.white,
+             color: AppColors.white,
              margin: EdgeInsets.only(bottom: 24),
              constraints: BoxConstraints(
                  maxWidth: 274,
@@ -77,7 +68,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                        flex: 1,
                        child: ColorFiltered(
                          colorFilter: ColorFilter.mode(
-                           Colors.grey,
+                           AppColors.grey,
                            BlendMode.saturation,
                          ),
                          child: Container(
@@ -87,9 +78,9 @@ class NewCouponScreen extends GetView<CouponsController> {
                              child: CachedNetworkImage(
                                height: 100, width: 100,
                                fit: BoxFit.cover,
-                               imageUrl: coupon.image ?? '',
-                               placeholder: (context, url) => Image.asset(loadingGif, fit: BoxFit.cover),
-                               errorWidget: (context, url, error) => Image.asset(appLogoTransparent,fit: BoxFit.cover),
+                               imageUrl: coupon.thumbnailUrl ?? '',
+                               placeholder: (context, url) => Image.asset(AppImages.loadingGif, fit: BoxFit.cover),
+                               errorWidget: (context, url, error) => Image.asset(AppImages.appLogoTransparent,fit: BoxFit.cover),
                              )
                            ),
                          ),
@@ -105,7 +96,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                              vertical: 12
                          ),
                          decoration: BoxDecoration(
-                             color: disabledBorderColor
+                             color: AppColors.disabledBorderColor
                          ),
                          child: Column(
                            crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,21 +108,21 @@ class NewCouponScreen extends GetView<CouponsController> {
                                      text: " ",
                                      style: TextStyle(fontSize: 12,
                                          fontWeight: FontWeight.bold,
-                                         color: blackShades,
+                                         color: AppColors.blackShades,
                                      ),
                                      children: [
                                        TextSpan(
                                          text: coupon.discountType == 1 ?
-                                         "${coupon.discount ?? 0}%" : "$currSymbolIn${coupon.discount ?? 0}",
+                                         "${coupon.discount ?? 0}%" : "${AppStrings.currSymbolIn}${coupon.discount ?? 0}",
                                          style: TextStyle(fontSize: 18,
-                                           color: blackShades,
+                                           color: AppColors.blackShades,
                                              fontWeight: FontWeight.bold,
                                             ),
                                        ),
                                        TextSpan(
                                            text: "  OFF",
                                            style: TextStyle(fontSize: 12,
-                                               color: blackShades,
+                                               color: AppColors.blackShades,
                                            )
                                        )
                                      ]
@@ -139,14 +130,14 @@ class NewCouponScreen extends GetView<CouponsController> {
                              TextWidget(text: coupon.couponCode ?? '-',
                                maxLines: 1,
                                fontSize: 14,
-                               weight: FontWeight.bold,
-                               color: blackShades),
+                               fontWeight: FontWeight.bold,
+                               color: AppColors.blackShades),
 
                              TextWidget(text: "Valid Till ${coupon.endDate ?? '-'}",
                                maxLines: 1,
-                               weight: FontWeight.w600,
+                               fontWeight: FontWeight.w600,
                                fontSize: 12,
-                               color: blackShades,
+                               color: AppColors.blackShades,
                              ),
                            ],
                          ),
@@ -166,9 +157,9 @@ class NewCouponScreen extends GetView<CouponsController> {
                            child: CachedNetworkImage(
                              height: 100, width: 100,
                              fit: BoxFit.cover,
-                             imageUrl: coupon.image ?? '',
-                             placeholder: (context, url) => Image.asset(loadingGif, fit: BoxFit.cover),
-                             errorWidget: (context, url, error) => Image.asset(appLogoTransparent,fit: BoxFit.cover),
+                             imageUrl: coupon.thumbnailUrl ?? '',
+                             placeholder: (context, url) => Image.asset(AppImages.loadingGif, fit: BoxFit.cover),
+                             errorWidget: (context, url, error) => Image.asset(AppImages.appLogoTransparent,fit: BoxFit.cover),
                            )
                          ),
                        ),
@@ -183,7 +174,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                              vertical: 12
                          ),
                          decoration: BoxDecoration(
-                             color: warmToneGrey
+                             color: AppColors.warmToneGrey
                          ),
                          child: Column(
                            crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,22 +186,22 @@ class NewCouponScreen extends GetView<CouponsController> {
                                      text: " ",
                                      style: TextStyle(fontSize: 12,
                                          fontWeight: FontWeight.bold,
-                                         color: colorBlack,
+                                         color: AppColors.blackText,
                                      ),
                                      children: [
                                        TextSpan(
                                          text: coupon.discountType == 1 ?
-                                         "${coupon.discount ?? 0}%" : "$currSymbolIn${coupon.discount ?? 0}",
+                                         "${coupon.discount ?? 0}%" : "${AppStrings.currSymbolIn}${coupon.discount ?? 0}",
                                          style: TextStyle(
                                              fontSize: 18,
-                                             color: colorBlack,
+                                             color: AppColors.blackText,
                                              fontWeight: FontWeight.bold),
                                        ),
                                        TextSpan(
                                            text: "  OFF",
                                            style: TextStyle(
                                                fontSize: 12,
-                                               color: colorBlack
+                                               color: AppColors.blackText
                                            )
                                        )
                                      ]
@@ -218,12 +209,12 @@ class NewCouponScreen extends GetView<CouponsController> {
                              TextWidget(text: coupon.couponCode ?? '-',
                                maxLines: 1,
                                fontSize: 14,
-                               weight: FontWeight.bold,
+                               fontWeight: FontWeight.bold,
                                ),
 
                              TextWidget(text: "Valid Till ${coupon.endDate ?? '-'}",
                                maxLines: 1,
-                               weight: FontWeight.w600,
+                               fontWeight: FontWeight.w600,
                                fontSize: 12,
                              ),
 
@@ -239,7 +230,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                    top: 2,
                    left: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
+                     backgroundColor: AppColors.white,
                      radius: 6,
                    ),
                  ),
@@ -247,7 +238,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                    top: 16,
                    left: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
+                     backgroundColor: AppColors.white,
                      radius: 6,
                    ),
                  ),
@@ -256,7 +247,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                    top: 30,
                    left: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
+                     backgroundColor: AppColors.white,
                      radius: 6,
                    ),
                  ),
@@ -265,7 +256,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                    top: 44,
                    left: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
+                     backgroundColor: AppColors.white,
                      radius: 6,
                    ),
                  ),
@@ -274,7 +265,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                    top: 58,
                    left: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
+                     backgroundColor: AppColors.white,
                      radius: 6,
                    ),
                  ),
@@ -283,7 +274,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                    top: 72,
                    left: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
+                     backgroundColor: AppColors.white,
                      radius: 6,
                    ),
                  ),
@@ -292,7 +283,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                    top: 86,
                    left: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
+                     backgroundColor: AppColors.white,
                      radius: 6,
                    ),
                  ),
@@ -303,56 +294,56 @@ class NewCouponScreen extends GetView<CouponsController> {
                    top: 2,
                    right: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
-                     radius: 6,
+                     backgroundColor: AppColors.white,
+                     radius: 6.5,
                    ),
                  ),
                  Positioned(
                    top: 16,
                    right: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
-                     radius: 6,
+                     backgroundColor: AppColors.white,
+                     radius: 6.5,
                    ),
                  ),
                  Positioned(
                    top: 30,
                    right: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
-                     radius: 6,
+                     backgroundColor: AppColors.white,
+                     radius: 6.5,
                    ),
                  ),
                  Positioned(
                    top: 44,
                    right: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
-                     radius: 6,
+                     backgroundColor: AppColors.white,
+                     radius: 6.5,
                    ),
                  ),
                  Positioned(
                    top: 58,
                    right: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
-                     radius: 6,
+                     backgroundColor: AppColors.white,
+                     radius: 6.5,
                    ),
                  ),
                  Positioned(
                    top: 72,
                    right: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
-                     radius: 6,
+                     backgroundColor: AppColors.white,
+                     radius: 6.5,
                    ),
                  ),
                  Positioned(
                    top: 86,
                    right: -8,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
-                     radius: 6,
+                     backgroundColor: AppColors.white,
+                     radius: 6.5,
                    ),
                  ),
 
@@ -362,7 +353,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                    top: -10,
                    left: 84,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
+                     backgroundColor: AppColors.white,
                      radius: 7,
                    ),
                  ),
@@ -371,7 +362,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                    bottom: -10,
                    left: 84,
                    child: CircleAvatar(
-                     backgroundColor: Colors.white,
+                     backgroundColor: AppColors.white,
                      radius: 7,
                    ),
                  ),
@@ -383,19 +374,19 @@ class NewCouponScreen extends GetView<CouponsController> {
        }).toList(),
      )
            : Center(
-      child: TextWidget( text:  noCoupon, color: colorPrimary,
-        fontFamily: fontMedium,fontSize: SizeConfig.mediumFontSize,)
+      child: TextWidget( text:  AppStrings.couponsListEmptyMsg, color: AppColors.colorPrimary,
+        fontFamily: FontFamily.fontMedium,fontSize: SizeConfig.mediumFontSize,)
     )
          ))]
        )),
      )),
 
       floatingActionButton: FloatingActionButton(
-        backgroundColor: colorPrimary,
+        backgroundColor: AppColors.colorPrimary,
         onPressed: () {
           controller.goToAddCoupon();
         },
-        child: const Icon(Icons.add,color: colorWhite,),
+        child: const Icon(Icons.add,color: AppColors.white,),
 
       ),
 
@@ -409,7 +400,7 @@ class NewCouponScreen extends GetView<CouponsController> {
         children: [
           const Opacity(
             opacity: 0.6,
-            child: ModalBarrier(dismissible: false, color: Colors.white),
+            child: ModalBarrier(dismissible: false, color: AppColors.white),
           ),
           ColorLoader()
 
@@ -427,10 +418,10 @@ class NewCouponScreen extends GetView<CouponsController> {
 
 /*Obx(()=> controller.couponsList.isNotEmpty ?
      RefreshIndicator(
-       color: colorPrimary,
+       color: AppColors.colorPrimary,
        onRefresh: controller.pullToRefresh,
        child: Container(
-         color: Colors.white,
+         color: AppColors.white,
          padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*5,
              vertical: SizeConfig.blockSizeHorizontal*3),
          child: ListView.builder(
@@ -451,7 +442,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                              15.0),
                          boxShadow: [
                            BoxShadow(
-                               color: Colors.black.withAlpha((0.2 * 255).round()),
+                               color: AppColors.black.withAlpha((0.2 * 255).round()),
                                offset: const Offset(0.2, 0.3),
                              blurRadius: 0.3,
                              spreadRadius: 0.3,
@@ -459,7 +450,7 @@ class NewCouponScreen extends GetView<CouponsController> {
 
                            ),
                          ],
-                         color: Colors.white
+                         color: AppColors.white
                      ),
                      margin: EdgeInsets.only(bottom: SizeConfig.blockSizeHorizontal*4),
                      child: Row(
@@ -471,7 +462,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                                Container(
                                  decoration: const BoxDecoration(
                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), bottomLeft: Radius.circular(15.0),),
-                                   color : colorPrimary,
+                                   color : AppColors.colorPrimary,
                                  ),
                                  width: SizeConfig.blockSizeHorizontal*12,
                                ),
@@ -481,7 +472,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                                  child: TextWidget(  text:
                                     "${controller.couponsList.elementAt(index).discount}% OFF",
                                      fontSize: SizeConfig.blockSizeHorizontal*5,
-                                     color: Colors.white,
+                                     color: AppColors.white,
                                      maxLines: 1,
                                      overflow: TextOverflow.ellipsis,
                                      weight: FontWeight.w600),
@@ -489,7 +480,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                               : RotatedBox(
                                  quarterTurns: 3,
                                  child: TextWidget(  text:"FLAT OFF",
-                                     fontSize: SizeConfig.blockSizeHorizontal*5,color: Colors.white,
+                                     fontSize: SizeConfig.blockSizeHorizontal*5,color: AppColors.white,
                                      maxLines: 1,
                                      overflow: TextOverflow.ellipsis,
                                      weight: FontWeight.w600),
@@ -502,7 +493,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                                  top: SizeConfig.blockSizeHorizontal*10,
                                  left: -SizeConfig.blockSizeHorizontal*1.75,
                                  child:  CircleAvatar(
-                                   backgroundColor: Colors.white,
+                                   backgroundColor: AppColors.white,
                                    radius: SizeConfig.blockSizeHorizontal*1.75,
                                  ),
                                ),
@@ -510,7 +501,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                                  top: SizeConfig.blockSizeHorizontal*16,
                                  left: -SizeConfig.blockSizeHorizontal*1.75,
                                  child:   CircleAvatar(
-                                   backgroundColor: Colors.white,
+                                   backgroundColor: AppColors.white,
                                    radius: SizeConfig.blockSizeHorizontal*1.75,
                                  ),
                                ),
@@ -518,7 +509,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                                  top: SizeConfig.blockSizeHorizontal*22,
                                  left: -SizeConfig.blockSizeHorizontal*1.75,
                                  child:  CircleAvatar(
-                                   backgroundColor: Colors.white,
+                                   backgroundColor: AppColors.white,
                                    radius: SizeConfig.blockSizeHorizontal*1.75,
                                  ),
                                ),
@@ -526,7 +517,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                                  top: SizeConfig.blockSizeHorizontal*28,
                                  left: -SizeConfig.blockSizeHorizontal*1.75,
                                  child:  CircleAvatar(
-                                   backgroundColor: Colors.white,
+                                   backgroundColor: AppColors.white,
                                    radius: SizeConfig.blockSizeHorizontal*1.75,
                                  ),
                                )
@@ -536,7 +527,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                          Container(width:SizeConfig.blockSizeHorizontal*78,
                            decoration: const BoxDecoration(
                              borderRadius: BorderRadius.only(topRight: Radius.circular(15.0),bottomRight: Radius.circular(15.0) ),
-                             color: Colors.white,
+                             color: AppColors.white,
                            ),
                            padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*2.75),
                            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -546,7 +537,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                                    Container(
                                     decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(3),
-                                    border: Border.all(width: 0.5, color: Colors.black)),
+                                    border: Border.all(width: 0.5, color: AppColors.black)),
                                      child: ClipRRect(
                                          borderRadius: BorderRadius.circular(3),
                                          child: CachedNetworkImage(
@@ -554,8 +545,8 @@ class NewCouponScreen extends GetView<CouponsController> {
                                            width: SizeConfig.blockSizeHorizontal*7,
                                            fit: BoxFit.cover,
                                            imageUrl:  controller.couponsList.elementAt(index).image!,
-                                           placeholder: (context, url) => Image.asset(loadingGif, fit: BoxFit.cover),
-                                           errorWidget: (context, url, error) => Image.asset(appLogoTransparent),
+                                           placeholder: (context, url) => Image.asset(AppImages.loadingGif, fit: BoxFit.cover),
+                                           errorWidget: (context, url, error) => Image.asset(AppImages.appLogoTransparent),
                                          )),
                                    ),
                                     SizedBox(width: SizeConfig.blockSizeHorizontal*2.5),
@@ -564,7 +555,7 @@ class NewCouponScreen extends GetView<CouponsController> {
                                          text:
                                          "${controller.couponsList.elementAt(index).couponCode}",
                                          fontSize: SizeConfig.mediumFontSize,color:
-                                         Colors.black,
+                                         AppColors.black,
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          weight: FontWeight.w600),
@@ -574,14 +565,14 @@ class NewCouponScreen extends GetView<CouponsController> {
                                 SizedBox(height: SizeConfig.blockSizeHorizontal*2.25),
                                TextWidget( text : "${controller.calculateDiscount(index)} savings with this coupon",
                                    fontSize: SizeConfig.regularFontSize,
-                                   color: Colors.green, overflow: TextOverflow.ellipsis,
+                                   color: AppColors.green, overflow: TextOverflow.ellipsis,
                                    weight: FontWeight.w500, maxLines: 1),
                                 SizedBox(height: SizeConfig.blockSizeHorizontal*0.50),
                                const  Divider(),
                                  SizedBox(height: SizeConfig.blockSizeHorizontal*0.50),
                                TextWidget( text: "${controller.couponsList.elementAt(index).description}",
                                    fontSize: SizeConfig.regularFontSize,
-                                   color: blackShades, overflow: TextOverflow.ellipsis,
+                                   color: AppColors.blackShades, overflow: TextOverflow.ellipsis,
                                    maxLines: 2),
                              ],
                            ),
@@ -597,6 +588,6 @@ class NewCouponScreen extends GetView<CouponsController> {
 
 
          :
-     Center(child: TextWidget( text:  noCoupon, color: colorPrimary,
-     fontFamily: fontMedium,fontSize: SizeConfig.mediumFontSize,))),
+     Center(child: TextWidget( text:  noCoupon, color: AppColors.colorPrimary,
+     fontFamily: FontFamily.fontMedium,fontSize: SizeConfig.mediumFontSize,))),
    ),*/

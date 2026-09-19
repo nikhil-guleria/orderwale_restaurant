@@ -8,14 +8,14 @@ import 'package:get/get.dart';
 import '../../component/button_widget.dart';
 import '../../component/ColorLoader.dart';
 import '../../component/CustomRadioButton.dart';
-import '../../component/TextFormFieldWidget.dart';
-import '../../component/TextWidget.dart';
-import '../../constant/app_color.dart';
-import '../../constant/app_constant.dart';
+import '../../component/custom_form_field.dart';
+import '../../component/custom_text_widget.dart';
+import '../../constant/app_colors.dart';
+import '../../constant/font_family.dart';
 import '../../constant/app_images.dart';
-import '../../constant/string_constants.dart';
+import '../../constant/app_strings.dart';
 import '../../services/commonModels/ProductItemModel.dart';
-import '../../utils/SizeConfig.dart';
+import '../../utils/size_config.dart';
 import 'UpdateProductController.dart';
 
 class UpdateProduct extends StatelessWidget{
@@ -32,18 +32,18 @@ class UpdateProduct extends StatelessWidget{
     UpdateProductController  controller = Get.put(UpdateProductController(details,catName,catId, subName,subId ));
     List<Widget> widgetList = [];
     var child =  Scaffold(
-        backgroundColor: colorWhite,
+        backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
             title: TextWidget(text:  update_app_bar_title,
             color: Colors.black,
             fontSize: SizeConfig.appbarTitleSize,
-            fontFamily: fontSemiBold,
-            weight: FontWeight.w600,),
+            fontFamily: FontFamily.fontSemiBold,
+            fontWeight: FontWeight.w600,),
             elevation: 0.0,
           centerTitle: true,
             systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: colorWhite,
+              statusBarColor: AppColors.white,
               statusBarIconBrightness: Brightness.dark,
             ),
           actions: [
@@ -96,8 +96,8 @@ class UpdateProduct extends StatelessWidget{
                                 width: Get.width,
                                 fit: BoxFit.cover,
                                 imageUrl: controller.image.value,
-                                placeholder: (context, url) => Image.asset(loadingGif, fit: BoxFit.cover),
-                                errorWidget: (context, url, error) => Image.asset(appLogoTransparent),
+                                placeholder: (context, url) => Image.asset(AppImages.loadingGif, fit: BoxFit.cover),
+                                errorWidget: (context, url, error) => Image.asset(AppImages.appLogoTransparent),
                               )
                           )
                           )
@@ -106,8 +106,8 @@ class UpdateProduct extends StatelessWidget{
                         margin:  EdgeInsets.only(right:  SizeConfig.blockSizeHorizontal*1.25,
                             bottom:  SizeConfig.blockSizeHorizontal*1.25),
                         decoration: BoxDecoration(
-                            color: colorPrimary,
-                            border: Border.all(color: colorWhite, width: 2.5),
+                            color: AppColors.colorPrimary,
+                            border: Border.all(color: AppColors.white, width: 2.5),
                             borderRadius: const BorderRadius.all(Radius.circular(
                               10.0,
                             ))),
@@ -118,12 +118,12 @@ class UpdateProduct extends StatelessWidget{
                               onTap: (){
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 Get.dialog(AlertDialog(
-                                    backgroundColor: colorWhite,
-                                    surfaceTintColor: colorWhite,
+                                    backgroundColor: AppColors.white,
+                                    surfaceTintColor: AppColors.white,
                                     title:  Text(
                                         "Select Image",textAlign: TextAlign.center,style: TextStyle(
                                       fontSize: SizeConfig.semiBoldFontSize,
-                                      fontFamily: fontSemiBold,
+                                      fontFamily: FontFamily.fontSemiBold,
                                     )),
                                     actionsPadding: const EdgeInsets.only(top: 0,bottom: 0),
                                     actions: [
@@ -131,7 +131,7 @@ class UpdateProduct extends StatelessWidget{
                                         child: MaterialButton(
                                             child:  Text(
                                               "Take Photo", style: TextStyle(fontSize: SizeConfig.mediumFontSize,
-                                                fontFamily: fontMedium),),
+                                                fontFamily: FontFamily.fontMedium),),
                                             onPressed: (){
                                               Get.back(result: "Camera");
                                             }),
@@ -143,7 +143,7 @@ class UpdateProduct extends StatelessWidget{
                                           },
                                           child:  Text(
                                             "Choose From Library",style: TextStyle(fontSize: SizeConfig.mediumFontSize,
-                                              fontFamily: fontMedium),),
+                                              fontFamily: FontFamily.fontMedium),),
                                         ),
                                       ),
                                       Center(
@@ -152,7 +152,7 @@ class UpdateProduct extends StatelessWidget{
                                             Get.back();},
                                           child:  Text(
                                               "Cancel",style: TextStyle(fontSize: SizeConfig.mediumFontSize,
-                                              fontFamily: fontMedium)),
+                                              fontFamily: FontFamily.fontMedium)),
                                         ),
                                       ),
                                     ])).then((value) {
@@ -166,7 +166,7 @@ class UpdateProduct extends StatelessWidget{
                               child: Icon(
                                 controller.image.value != "" ? Icons.edit
                               :  Icons.add,
-                                color: colorWhite,
+                                color: AppColors.white,
                                 size: SizeConfig.blockSizeHorizontal * 6.2,
                               )),
                         ),
@@ -174,9 +174,9 @@ class UpdateProduct extends StatelessWidget{
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 7),
                     TextWidget(
                       text: categories,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                     Obx(() =>
@@ -185,9 +185,9 @@ class UpdateProduct extends StatelessWidget{
                           height: SizeConfig.blockSizeHorizontal * 13.8,
                           padding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*2.5),
                           decoration: BoxDecoration(
-                              color: textFieldFillColor,
+                              color: AppColors.textFieldFillColor,
                               border: Border.all(
-                                  color: disabledBorderColor, width: 1.3),
+                                  color: AppColors.disabledBorderColor, width: 1.3),
                               borderRadius:
                               const BorderRadius.all(Radius.circular(
                                 10.0,
@@ -224,8 +224,8 @@ class UpdateProduct extends StatelessWidget{
                                             },
                                             title: Center(
                                               child: TextWidget(
-                                                text: controller.categoriesList[index].categoryName,
-                                                color: blackShades,
+                                                text: controller.categoriesList[index].categoryName ?? '',
+                                                color: AppColors.blackShades,
                                                 fontSize: SizeConfig.mediumFontSize,
                                               ),
                                             ),
@@ -249,7 +249,7 @@ class UpdateProduct extends StatelessWidget{
                                   padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal*1),
                                   child: Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: colorPrimary,
+                                    color: AppColors.colorPrimary,
                                     size: SizeConfig.boldFontSize,
                                   ),
                                 )
@@ -260,9 +260,9 @@ class UpdateProduct extends StatelessWidget{
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: add_menu_name,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                     Obx(() =>
@@ -271,9 +271,9 @@ class UpdateProduct extends StatelessWidget{
                           height: SizeConfig.blockSizeHorizontal * 13.8,
                           padding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*2.5),
                           decoration: BoxDecoration(
-                              color: textFieldFillColor,
+                              color: AppColors.textFieldFillColor,
                               border: Border.all(
-                                  color: disabledBorderColor, width: 1.3),
+                                  color: AppColors.disabledBorderColor, width: 1.3),
                               borderRadius:
                               const BorderRadius.all(Radius.circular(
                                 10.0,
@@ -288,7 +288,7 @@ class UpdateProduct extends StatelessWidget{
                                   showModalBottomSheet(
                                       useSafeArea: true,
                                       context: context,
-                                      backgroundColor: colorWhite,
+                                      backgroundColor: AppColors.white,
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.vertical(
                                           top: Radius.circular(25.0),
@@ -317,9 +317,9 @@ class UpdateProduct extends StatelessWidget{
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     TextWidget(text: select_menu,
-                                                      fontFamily: fontMedium,
+                                                      fontFamily: FontFamily.fontMedium,
                                                       fontSize: SizeConfig.mediumFontSize,
-                                                      color: Colors.black, weight: FontWeight.bold,),
+                                                      color: Colors.black, fontWeight: FontWeight.bold,),
                                                     Obx(() =>
                                                         Visibility(
                                                           visible: controller.subCategoryList.isNotEmpty,
@@ -327,7 +327,7 @@ class UpdateProduct extends StatelessWidget{
                                                               onTap: () {
                                                                 Get.back(result: "editMenu");
                                                               },
-                                                              child: Icon(Icons.edit, color: colorPrimary,size: SizeConfig.semiBoldFontSize,)),
+                                                              child: Icon(Icons.edit, color: AppColors.colorPrimary,size: SizeConfig.semiBoldFontSize,)),
                                                         ))
                                                   ],
                                                 ),
@@ -351,13 +351,13 @@ class UpdateProduct extends StatelessWidget{
                                                             left: SizeConfig.blockSizeHorizontal*2.5),
                                                         padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal*3.75),
                                                         decoration: BoxDecoration(
-                                                            border: Border.all(color: colorPrimary, width: 1.5),
+                                                            border: Border.all(color: AppColors.colorPrimary, width: 1.5),
                                                             borderRadius: BorderRadius.circular(5)
                                                         ),
                                                         child: Center(
                                                           child: TextWidget(
                                                             text: "Create Menu",
-                                                            color: colorPrimary,
+                                                            color: AppColors.colorPrimary,
                                                             fontSize: SizeConfig.mediumFontSize,
                                                             overflow: TextOverflow.ellipsis,
                                                             maxLines: 2,
@@ -427,8 +427,8 @@ class UpdateProduct extends StatelessWidget{
                                                                         child: TextWidget(
                                                                           text: controller
                                                                               .subCategoryList[index]
-                                                                              .title,
-                                                                          color: blackShades,
+                                                                              .title ?? '',
+                                                                          color: AppColors.blackShades,
                                                                           fontSize: SizeConfig
                                                                               .mediumFontSize,
                                                                           overflow: TextOverflow.ellipsis,
@@ -466,7 +466,7 @@ class UpdateProduct extends StatelessWidget{
                                                                       child: Center(
                                                                           child: TextWidget(
                                                                             text: "Add New",
-                                                                            color: colorPrimary,
+                                                                            color: AppColors.colorPrimary,
                                                                             fontSize: SizeConfig
                                                                                 .mediumFontSize,
                                                                             overflow: TextOverflow.ellipsis,
@@ -508,8 +508,8 @@ class UpdateProduct extends StatelessWidget{
                                                                         child: TextWidget(
                                                                           text: controller
                                                                               .subCategoryList[index]
-                                                                              .title,
-                                                                          color: blackShades,
+                                                                              .title ?? '',
+                                                                          color: AppColors.blackShades,
                                                                           fontSize: SizeConfig
                                                                               .mediumFontSize,
                                                                           overflow: TextOverflow.ellipsis,
@@ -549,7 +549,7 @@ class UpdateProduct extends StatelessWidget{
                                                                         child: Center(
                                                                             child: TextWidget(
                                                                               text: "Add New",
-                                                                              color: colorPrimary,
+                                                                              color: AppColors.colorPrimary,
                                                                               fontSize: SizeConfig
                                                                                   .mediumFontSize,
                                                                               overflow: TextOverflow
@@ -581,7 +581,7 @@ class UpdateProduct extends StatelessWidget{
                                                                     child: Center(
                                                                         child: TextWidget(
                                                                           text: "",
-                                                                          color: colorPrimary,
+                                                                          color: AppColors.colorPrimary,
                                                                           fontSize: SizeConfig
                                                                               .mediumFontSize,
                                                                           overflow: TextOverflow.ellipsis,
@@ -607,7 +607,7 @@ class UpdateProduct extends StatelessWidget{
                                   });
                                 }
                               } else {
-                                Get.snackbar(alert, "Please Select Category");
+                                Get.snackbar(AppStrings.alertTitle, "Please Select Category");
                               }
 
                             },
@@ -629,7 +629,7 @@ class UpdateProduct extends StatelessWidget{
                                   padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal*1),
                                   child: Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: colorPrimary,
+                                    color: AppColors.colorPrimary,
                                     size: SizeConfig.boldFontSize,
                                   ),
                                 )
@@ -643,12 +643,12 @@ class UpdateProduct extends StatelessWidget{
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: add_product_name,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-                    TextFormWidget(
+                    CustomFormField(
                       textCapitalization: TextCapitalization.words,
                       controller: controller.productNameController,
                       validator: Validations.validations.validateEmptyFields,
@@ -657,12 +657,12 @@ class UpdateProduct extends StatelessWidget{
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: item_descp,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal *2),
-                    TextFormWidget(
+                    CustomFormField(
                       controller: controller.itemDescriptionController,
                       validator: Validations.validations.validateEmptyFields,
                       inputAction: TextInputAction.next,
@@ -677,12 +677,12 @@ class UpdateProduct extends StatelessWidget{
                             children: [
                               TextWidget(
                                 text: item_price,
-                                fontFamily: fontMedium,
+                                fontFamily: FontFamily.fontMedium,
                                 fontSize: SizeConfig.mediumFontSize,
-                                color: normalTextColor,
+                                color: AppColors.normalTextColor,
                               ),
                               SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-                              TextFormWidget(
+                              CustomFormField(
                                 onlyNumbers: true,
                                 keyboardType: TextInputType.number,
                                 controller: controller.itemPriceController,
@@ -699,12 +699,12 @@ class UpdateProduct extends StatelessWidget{
                             children: [
                               TextWidget(
                                 text: item_discount,
-                                fontFamily: fontMedium,
+                                fontFamily: FontFamily.fontMedium,
                                 fontSize: SizeConfig.mediumFontSize,
-                                color: normalTextColor,
+                                color: AppColors.normalTextColor,
                               ),
                               SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-                              TextFormWidget(
+                              CustomFormField(
                                 allowDecimal: true,
                                 keyboardType: TextInputType.number,
                                 controller: controller.itemDiscountController,
@@ -718,18 +718,18 @@ class UpdateProduct extends StatelessWidget{
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: discount_type,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                     Container(
                       width: Get.width,
                       height: SizeConfig.blockSizeHorizontal * 15.8,
                       decoration: BoxDecoration(
-                          color: textFieldFillColor,
+                          color: AppColors.textFieldFillColor,
                           border:
-                          Border.all(color: disabledBorderColor, width: 1.3),
+                          Border.all(color: AppColors.disabledBorderColor, width: 1.3),
                           borderRadius: const BorderRadius.all(Radius.circular(
                             10.0,
                           ))),
@@ -744,9 +744,9 @@ class UpdateProduct extends StatelessWidget{
                                   controller.onChangeDiscountType(value!);
                                 },
                                 title: TextWidget(
-                                  text: radio_btn_flat,
+                                  text: AppStrings.btnRadioFlat,
                                   fontSize: SizeConfig.regularFontSize,
-                                  color: normalTextColor,
+                                  color: AppColors.normalTextColor,
                                 ),
                               ),
                           ),
@@ -758,9 +758,9 @@ class UpdateProduct extends StatelessWidget{
                                   controller.onChangeDiscountType(value!);
                                 },
                                 title: TextWidget(
-                                  text: radio_btn_percentage,
+                                  text: AppStrings.btnRadioPercentage,
                                   fontSize: SizeConfig.regularFontSize,
-                                  color: normalTextColor,
+                                  color: AppColors.normalTextColor,
                                 ),
                               ),
                           ),
@@ -770,18 +770,18 @@ class UpdateProduct extends StatelessWidget{
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: food_type,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                     Container(
                       width: Get.width,
                       height: SizeConfig.blockSizeHorizontal * 15.8,
                       decoration: BoxDecoration(
-                          color: textFieldFillColor,
+                          color: AppColors.textFieldFillColor,
                           border:
-                          Border.all(color: disabledBorderColor, width: 1.3),
+                          Border.all(color: AppColors.disabledBorderColor, width: 1.3),
                           borderRadius: const BorderRadius.all(Radius.circular(
                             10.0,
                           ))),
@@ -796,9 +796,9 @@ class UpdateProduct extends StatelessWidget{
                                   controller.onChangeFoodType(value!);
                                 },
                                 title: TextWidget(
-                                  text: radio_btn_veg,
+                                  text: AppStrings.btnRadioVeg,
                                   fontSize: SizeConfig.regularFontSize,
-                                  color: normalTextColor,
+                                  color: AppColors.normalTextColor,
                                 ),
                               ),
                           ),
@@ -810,9 +810,9 @@ class UpdateProduct extends StatelessWidget{
                                   controller.onChangeFoodType(value!);
                                 },
                                 title: TextWidget(
-                                  text: radio_btn_nonVeg,
+                                  text: AppStrings.btnRadioNonVeg,
                                   fontSize: SizeConfig.regularFontSize,
-                                  color: normalTextColor,
+                                  color: AppColors.normalTextColor,
                                 ),
                               ),
                           ),

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:food_merchant/constant/app_color.dart';
+import 'package:food_merchant/constant/app_colors.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -140,7 +140,7 @@ class CustomImgPicker {
           AndroidUiSettings(
               toolbarTitle: 'Crop Image',
               toolbarColor: Colors.white,
-              toolbarWidgetColor: colorPrimary,
+              toolbarWidgetColor: AppColors.colorPrimary,
               initAspectRatio: CropAspectRatioPreset.original,
               lockAspectRatio: false,
               hideBottomControls: true,

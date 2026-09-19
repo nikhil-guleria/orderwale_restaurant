@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_merchant/constant/app_color.dart';
-import 'package:food_merchant/routes/app_pages.dart';
+import 'package:food_merchant/constant/app_colors.dart';
+import 'package:food_merchant/routes/app_routes.dart';
 import 'package:get/get.dart';
 
-import '../../component/TextFormFieldWidget.dart';
-import '../../component/TextWidget.dart';
-import '../../constant/app_constant.dart';
+import '../../component/custom_form_field.dart';
+import '../../component/custom_text_widget.dart';
+import '../../constant/font_family.dart';
 import '../../constant/global_variables.dart';
-import '../../constant/string_constants.dart';
-import '../../utils/SizeConfig.dart';
+import '../../constant/app_strings.dart';
+import '../../utils/size_config.dart';
 import 'GetLocationController.dart';
 
 class GetLocation extends GetView<GetLocationController>{
@@ -19,13 +19,13 @@ class GetLocation extends GetView<GetLocationController>{
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: colorWhite,
+      backgroundColor: AppColors.white,
         appBar: AppBar(
         title: TextWidget(text: locationScreenTitle,
             color: Colors.black,
             fontSize: SizeConfig.appbarTitleSize,
-            fontFamily: fontSemiBold,
-            weight: FontWeight.w600,),
+            fontFamily: FontFamily.fontSemiBold,
+            fontWeight: FontWeight.w600,),
     elevation: 0.0,
     centerTitle: true,
            automaticallyImplyLeading: true,
@@ -40,7 +40,7 @@ class GetLocation extends GetView<GetLocationController>{
     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
     children: [
     SizedBox(height: SizeConfig.blockSizeHorizontal*4),
-      TextFormWidget(
+      CustomFormField(
           onTap: ()  {
            /* showSearch(
               context: context,
@@ -79,18 +79,18 @@ class GetLocation extends GetView<GetLocationController>{
                 Visibility(
                     visible: !controller.isHideIcon.value,
                     child:
-                Icon(Icons.clear,size: SizeConfig.semiBoldFontSize,color: normalTextColor)),
+                Icon(Icons.clear,size: SizeConfig.semiBoldFontSize,color: AppColors.normalTextColor)),
                     )),
-        prefixIcon: Icon(Icons.search,size: SizeConfig.semiBoldFontSize,color: normalTextColor)),
+        prefixIcon: Icon(Icons.search,size: SizeConfig.semiBoldFontSize,color: AppColors.normalTextColor)),
 
       SizedBox(height: SizeConfig.blockSizeHorizontal*6),
       InkWell(onTap: (){
-        Get.toNamed(Routes.MAP);
+        Get.toNamed(AppRoutes.map);
         },
         child: Row(
-          children:[ Icon(CupertinoIcons.location_fill,size: SizeConfig.mediumFontSize,color: colorPrimary),
+          children:[ Icon(CupertinoIcons.location_fill,size: SizeConfig.mediumFontSize,color: AppColors.colorPrimary),
             SizedBox(width: SizeConfig.blockSizeHorizontal*2),
-            TextWidget(text: currentLocation, fontFamily: fontSemiBold,color: colorPrimary,
+            TextWidget(text: currentLocation, fontFamily: FontFamily.fontSemiBold,color: AppColors.colorPrimary,
               fontSize: SizeConfig.mediumFontSize),
           ]
         )),
@@ -98,7 +98,7 @@ class GetLocation extends GetView<GetLocationController>{
       SizedBox(height: SizeConfig.blockSizeHorizontal*1),
       Divider(),
       SizedBox(height: SizeConfig.blockSizeHorizontal*1),
-    TextWidget(text: recentSearches, fontFamily: fontRegular,color: normalTextColor,
+    TextWidget(text: recentSearches, fontFamily: FontFamily.fontRegular,color: AppColors.normalTextColor,
     fontSize: SizeConfig.regularFontSize),
       SizedBox(height: SizeConfig.blockSizeHorizontal*4),
     Obx(() =>
@@ -111,14 +111,14 @@ class GetLocation extends GetView<GetLocationController>{
       return
         ListTile(
           leading:  Icon(CupertinoIcons.location_solid,
-              size: SizeConfig.mediumFontSize,color: enabledBorderColor),
+              size: SizeConfig.mediumFontSize,color: AppColors.enabledBorderColor),
           title:
           TextWidget( text: controller.suggestedList[index].description,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
 
           fontSize: SizeConfig.mediumFontSize,
-            color: colorBlack,fontFamily: fontMedium,),
+            color: AppColors.blackText,fontFamily: FontFamily.fontMedium,),
           onTap: () {
             GlobalVariables.selectedLocation = controller.suggestedList[index].description;
             Get.back();

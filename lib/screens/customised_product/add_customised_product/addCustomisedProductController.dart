@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/DialogBox.dart';
-import 'package:food_merchant/constant/string_constants.dart';
-import 'package:food_merchant/routes/app_pages.dart';
-import 'package:food_merchant/services/commonModels/customisation_topping_model.dart';
+import 'package:food_merchant/component/custom_dialog_box.dart';
+import 'package:food_merchant/constant/app_strings.dart';
+import 'package:food_merchant/routes/app_routes.dart';
+import 'package:food_merchant/screens/toppings/toppings_list/toppings_list_model.dart';
 import 'package:food_merchant/services/commonModels/customised_product_model.dart';
 import 'package:food_merchant/services/repo/CommonRepo.dart';
 import 'package:food_merchant/utils/CheckPermission.dart';
@@ -39,7 +39,7 @@ class AddCustomisedProductController extends GetxController {
   var customisationType = "".obs;
   var customisationTitle = "".obs;
   var customisationItemsList = <CustomisationItemModel>[].obs;
-  var toppingsList = <CustomisedToppings>[].obs;
+  var toppingsList = <Toppings>[].obs;
   var selectedToppingCount = 0.obs;
   var discountType = "".obs;
   var foodType = "".obs;
@@ -192,7 +192,7 @@ class AddCustomisedProductController extends GetxController {
 // add menu click
   addMenuTap(){
     FocusManager.instance.primaryFocus?.unfocus();
-    Get.toNamed(Routes.SUBCATEGORY_TITLE_SCREEN, arguments: [categoryId.value])?.then((value) {
+    Get.toNamed(AppRoutes.SUBCATEGORY_TITLE_SCREEN, arguments: [categoryId.value])?.then((value) {
       if(value == "added"){
         subCategoryTitle.value = "Select Menu Title";
         subcategoryId.value = "0";
@@ -203,7 +203,7 @@ class AddCustomisedProductController extends GetxController {
 
 // edit menu click
   editSubCategoryTap(){
-    Get.toNamed(Routes.SUBCATEGORY_EDIT_SCREEN, arguments: categoryId.value)?.then((value) {
+    Get.toNamed(AppRoutes.SUBCATEGORY_EDIT_SCREEN, arguments: categoryId.value)?.then((value) {
       subCategoryTitle.value = "Select Menu Title";
       subcategoryId.value = "0";
       getSubCategories();
@@ -222,7 +222,7 @@ class AddCustomisedProductController extends GetxController {
     FocusManager.instance.primaryFocus?.unfocus();
     if(customisationType.value.isNotEmpty) {
       Get.back();
-      Get.toNamed(Routes.customisationType, arguments: {"type": customisationType.value,
+      Get.toNamed(AppRoutes.customisationType, arguments: {"type": customisationType.value,
         "title" : customisationTitle.value,
        "list": customisationItemsList})?.then((value) {
          if(value != null){
@@ -242,7 +242,7 @@ class AddCustomisedProductController extends GetxController {
 // editCustomisation items
   editCustomisationItems(){
     FocusManager.instance.primaryFocus?.unfocus();
-    Get.toNamed(Routes.customisationType, arguments: {"type": customisationType.value,
+    Get.toNamed(AppRoutes.customisationType, arguments: {"type": customisationType.value,
       "title" : customisationTitle.value,
       "list": customisationItemsList})?.then((value) {
       if(value != null){
@@ -259,7 +259,7 @@ class AddCustomisedProductController extends GetxController {
 // clear customisation items list
  void  clearCustomisationItemList(){
     FocusManager.instance.primaryFocus?.unfocus();
-    Get.dialog(showDialogBox(title: alert,
+    Get.dialog(showDialogBox(title: AppStrings.alertTitle,
       message: "Are you really want to delete this list.",
       twoButtons: true,
       onCancel: () {
@@ -308,7 +308,7 @@ class AddCustomisedProductController extends GetxController {
      var toppingsListData = await ApiController().getToppingsList(restId);
      showLoader.value = false;
      if (toppingsListData.responseCode == 1) {
-       CustomisedToppingsModel toppingsListModel = CustomisedToppingsModel.fromJson(
+       ToppingsListModel toppingsListModel = ToppingsListModel.fromJson(
            toppingsListData.response!.data);
        var list = toppingsListModel.result!;
        if(list.isNotEmpty && toppingsList.isNotEmpty) {
@@ -337,7 +337,7 @@ class AddCustomisedProductController extends GetxController {
   addNewTopping() async {
     FocusManager.instance.primaryFocus?.unfocus();
     Get.back();
-    Get.toNamed(Routes.addUpdateTopping)?.then((value) {
+    Get.toNamed(AppRoutes.addUpdateTopping)?.then((value) {
       if(value == "added") {
         showLoader.value = true;
         getToppingsList();
@@ -371,11 +371,11 @@ class AddCustomisedProductController extends GetxController {
     showDiscountError.value = false;
     if(formKey.currentState!.validate() && foodType.value.isNotEmpty) {
       if(imageFile.value.isEmpty){
-        return  Get.snackbar(alert, "Please Add Image", duration: const Duration(seconds: 2));
+        return  Get.snackbar(AppStrings.alertTitle, "Please Add Image", duration: const Duration(seconds: 2));
       } else if(categoryId.value == "0"){
-        return Get.snackbar(alert, "Please Select Category",duration: const Duration(seconds: 2));
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Category",duration: const Duration(seconds: 2));
       }  else if(subcategoryId.value == "0"){
-        return Get.snackbar(alert, "Please Select Menu", duration: const Duration(seconds: 2));
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Menu", duration: const Duration(seconds: 2));
       } else if(discountType.value.isEmpty && num.parse(itemDiscountController.text.isEmpty? "0" :
       itemDiscountController.text) > 0){
         return showDiscountError.value = true;
@@ -426,9 +426,9 @@ class AddCustomisedProductController extends GetxController {
       showDiscountError.value = false;
       if(formKey.currentState!.validate() && foodType.value.isNotEmpty) {
         if(categoryId.value == "0"){
-          return Get.snackbar(alert, "Please Select Category");
+          return Get.snackbar(AppStrings.alertTitle, "Please Select Category");
         }  else if(subcategoryId.value == "0"){
-          return Get.snackbar(alert, "Please Select Menu");
+          return Get.snackbar(AppStrings.alertTitle, "Please Select Menu");
         } else if(discountType.value.isEmpty && num.parse(itemDiscountController.text.isEmpty? "0" :
         itemDiscountController.text) > 0){
           return showDiscountError.value = true;
@@ -436,7 +436,7 @@ class AddCustomisedProductController extends GetxController {
         if(imageFile.value != "" || image.value != "") {
           updateProduct();
         } else {
-          Get.snackbar(edit_screen_alert, "Please Select Image");
+          Get.snackbar(AppStrings.alertTitle, "Please Select Image");
         }
       }
     }
@@ -481,7 +481,7 @@ class AddCustomisedProductController extends GetxController {
   
 // delete product   
   void deleteProduct(){
-    Get.dialog(showDialogBox(title: alert,
+    Get.dialog(showDialogBox(title: AppStrings.alertTitle,
       message: delete_product,
       twoButtons: true,
       onCancel: () {

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_merchant/constant/string_constants.dart';
+import 'package:food_merchant/constant/app_strings.dart';
+import 'package:food_merchant/routes/app_routes.dart';
 import 'package:food_merchant/screens/dashboard/controller/dashboard_controller.dart';
 import 'package:food_merchant/screens/dashboard_orders/controller/dashboard_orders_controller.dart';
 import 'package:food_merchant/utils/GetStorageConstants.dart';
+import 'package:food_merchant/utils/storage_utils.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mime/mime.dart';
 import 'dart:ui' as ui;
-import '../component/DialogBox.dart';
+import '../component/custom_dialog_box.dart';
 import '../services/commonModels/cashfree_payment_model.dart';
 import '../services/commonModels/razorpay_payment_model.dart';
 import '../services/repo/CommonRepo.dart';
@@ -16,7 +18,6 @@ import '../services/repo/CommonRepo.dart';
 
 class CommonUtils {
   static final CommonUtils utils = CommonUtils._internal();
-  static var userToken = "";
 
   factory CommonUtils() {
     return utils;
@@ -40,22 +41,41 @@ class CommonUtils {
         case 301:
         case 400:
         case 500:
-        Get.dialog(showDialogBox(title: error,
-            message: message,
-            twoButtons: false,
-            onConfirm: () {
-              Get.back();
-            }));
+        Get.dialog(showDialogBox(title: AppStrings.alertError,
+            message: message));
         break;
         default:
-          Get.dialog(showDialogBox(title: title ?? error,
-              message: message,
-              twoButtons: false,
-              onConfirm: () {
-                Get.back();
-              }));
+          Get.dialog(showDialogBox(title: title ?? AppStrings.alertError,
+              message: message));
       }
     }
+  }
+
+  void handleAlertMsg({int? code,
+    String? message, String? title}) {
+    String msg = (message ?? AppStrings.errorSomethingWrong).replaceAll("_", " ");
+    int responseCode = code ?? 900;
+    bool?  check =  Get.isDialogOpen ?? false;
+    if(!check) {
+    switch (responseCode) {
+      case 301:
+      case 400:
+      case 500:
+      Get.dialog(showDialogBox(title: AppStrings.alertError,
+          message: msg));
+        break;
+
+      default:
+        Get.dialog(showDialogBox(title: title ?? AppStrings.alertError,
+            message: msg));
+    }
+}
+  }
+
+
+  Future<void> unauthenticatedRestaurant() async {
+    await StorageUtils.utils.clearSession();
+    Get.offAllNamed(AppRoutes.userLogin);
   }
 
 

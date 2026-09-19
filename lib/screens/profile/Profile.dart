@@ -3,12 +3,12 @@ import 'package:food_merchant/screens/profile/ProfileController.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../component/ColorLoader.dart';
-import '../../component/TextWidget.dart';
-import '../../constant/app_color.dart';
-import '../../constant/app_constant.dart';
+import '../../component/custom_text_widget.dart';
+import '../../constant/app_colors.dart';
+import '../../constant/font_family.dart';
 import '../../constant/app_images.dart';
-import '../../constant/string_constants.dart';
-import '../../utils/SizeConfig.dart';
+import '../../constant/app_strings.dart';
+import '../../utils/size_config.dart';
 
 class Profile extends GetView<ProfileController>{
   const Profile({super.key});
@@ -18,13 +18,13 @@ class Profile extends GetView<ProfileController>{
 
     List<Widget> widgetList = [];
     var child =  Scaffold(
-      backgroundColor: colorWhite,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        title: TextWidget(text: profileTitle,
+        title: TextWidget(text: AppStrings.profileTitle,
           color: Colors.black,
           fontSize: SizeConfig.appbarTitleSize,
-          fontFamily: fontSemiBold,
-          weight: FontWeight.w600,),
+          fontFamily: FontFamily.fontSemiBold,
+          fontWeight: FontWeight.w600,),
         elevation: 0.0,
         centerTitle: true,
         actions: [
@@ -36,7 +36,7 @@ class Profile extends GetView<ProfileController>{
               },
               icon: const Icon(
                 Icons.edit,
-                color: colorPrimary,
+                color: AppColors.colorPrimary,
               ),
             ),
           )
@@ -59,12 +59,12 @@ class Profile extends GetView<ProfileController>{
                   Container(height: SizeConfig.blockSizeHorizontal*25,
                     width: SizeConfig.blockSizeHorizontal*25,
                     decoration: BoxDecoration(
-                    border: Border.all(color: colorPrimary, width: 2),
+                    border: Border.all(color: AppColors.colorPrimary, width: 2),
                         borderRadius:  BorderRadius.all(Radius.circular(SizeConfig.blockSizeHorizontal*12.5))),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*12.5),
                         child: controller.profileDetails.value.profileImage == "" ?
-                        Image.asset(errorImg,
+                        Image.asset(AppImages.errorImg,
                           fit: BoxFit.cover,
                         ) :
                             Image.network("${controller.profileDetails.value.profileImage}",fit: BoxFit.cover,)
@@ -82,14 +82,14 @@ class Profile extends GetView<ProfileController>{
                             children: [
                               Icon(Icons.person,
                                 size: SizeConfig.semiBoldFontSize,
-                                color: colorPrimary,
+                                color: AppColors.colorPrimary,
                               ),
                               SizedBox(width: SizeConfig.blockSizeHorizontal*1.5),
                               SizedBox(width: SizeConfig.blockSizeHorizontal*60,
                                 child: TextWidget(overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     text: "${controller.profileDetails.value.name}",
-                                    fontFamily: fontMedium,
+                                    fontFamily: FontFamily.fontMedium,
                                     fontSize: SizeConfig.mediumFontSize),
                               ),
                             ],
@@ -100,14 +100,14 @@ class Profile extends GetView<ProfileController>{
                             children: [
                               Icon(Icons.email,
                                 size: SizeConfig.semiBoldFontSize,
-                                color: colorPrimary,
+                                color: AppColors.colorPrimary,
                               ),
                               SizedBox(width: SizeConfig.blockSizeHorizontal*1.5,),
                               SizedBox(width: SizeConfig.blockSizeHorizontal*60,
                                 child: TextWidget(overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     text: "${controller.profileDetails.value.email}",
-                                    fontFamily: fontMedium,
+                                    fontFamily: FontFamily.fontMedium,
                                     fontSize: SizeConfig.mediumFontSize),
                               ),
                             ],
@@ -118,14 +118,14 @@ class Profile extends GetView<ProfileController>{
                             children: [
                               Icon(Icons.phone,
                                 size: SizeConfig.semiBoldFontSize,
-                                color: colorPrimary,
+                                color: AppColors.colorPrimary,
                               ),
                               SizedBox(width: SizeConfig.blockSizeHorizontal*1.5,),
                               SizedBox(width: SizeConfig.blockSizeHorizontal*60,
                                 child: TextWidget(overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     text: "${controller.profileDetails.value.phone}",
-                                    fontFamily: fontMedium,
+                                    fontFamily: FontFamily.fontMedium,
                                     fontSize: SizeConfig.mediumFontSize),
                               ),
                             ],
@@ -145,9 +145,9 @@ class Profile extends GetView<ProfileController>{
                 width: SizeConfig.blockSizeHorizontal * 44,
                 height: SizeConfig.blockSizeHorizontal * 22,
                 decoration: BoxDecoration(
-                    color: textFieldFillColor,
+                    color: AppColors.textFieldFillColor,
                     border: Border.all(
-                        color: disabledBorderColor, width: 2),
+                        color: AppColors.disabledBorderColor, width: 2),
                     borderRadius:
                     const BorderRadius.all(Radius.circular(
                       10.0,
@@ -160,12 +160,12 @@ class Profile extends GetView<ProfileController>{
                       text: TextSpan(
                         children: [
                           WidgetSpan(
-                            child:  Icon(Icons.currency_rupee,size: SizeConfig.mediumFontSize,color: colorPrimary,),
+                            child:  Icon(Icons.currency_rupee,size: SizeConfig.mediumFontSize,color: AppColors.colorPrimary,),
                           ),
                           TextSpan(text: NumberFormat('0.00').format(controller.stringToDouble(controller.profileDetails.value.totalEarnings!)),
                             style: TextStyle(fontSize: SizeConfig.mediumFontSize,
-                                color: colorBlack,
-                                fontFamily: fontMedium),
+                                color: AppColors.blackText,
+                                fontFamily: FontFamily.fontMedium),
                           ),
                         ],
 
@@ -181,9 +181,9 @@ class Profile extends GetView<ProfileController>{
                 width: SizeConfig.blockSizeHorizontal * 44,
                 height: SizeConfig.blockSizeHorizontal * 22,
                 decoration: BoxDecoration(
-                    color: textFieldFillColor,
+                    color: AppColors.textFieldFillColor,
                     border: Border.all(
-                        color: disabledBorderColor, width: 2),
+                        color: AppColors.disabledBorderColor, width: 2),
                     borderRadius:
                     const BorderRadius.all(Radius.circular(
                       10.0,
@@ -196,12 +196,12 @@ class Profile extends GetView<ProfileController>{
                       text: TextSpan(
                         children: [
                           WidgetSpan(
-                            child:  Icon(Icons.currency_rupee,size: SizeConfig.mediumFontSize,color: colorPrimary,),
+                            child:  Icon(Icons.currency_rupee,size: SizeConfig.mediumFontSize,color: AppColors.colorPrimary,),
                           ),
                           TextSpan(text:  NumberFormat('0.00').format(controller.stringToDouble(controller.profileDetails.value.currentMonthEarnings!)),
                             style: TextStyle(fontSize: SizeConfig.mediumFontSize,
-                                color: colorBlack,
-                                fontFamily: fontMedium),
+                                color: AppColors.blackText,
+                                fontFamily: FontFamily.fontMedium),
                           ),
                         ],
 
@@ -222,9 +222,9 @@ class Profile extends GetView<ProfileController>{
                 width: SizeConfig.blockSizeHorizontal * 44,
                 height: SizeConfig.blockSizeHorizontal * 22,
                 decoration: BoxDecoration(
-                    color: textFieldFillColor,
+                    color: AppColors.textFieldFillColor,
                     border: Border.all(
-                        color: disabledBorderColor, width: 2),
+                        color: AppColors.disabledBorderColor, width: 2),
                     borderRadius:
                     const BorderRadius.all(Radius.circular(
                       10.0,
@@ -232,9 +232,9 @@ class Profile extends GetView<ProfileController>{
                 child: Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextWidget(text: "${controller.profileDetails.value.totalOrders}",
-                    fontFamily: fontMedium,
+                    fontFamily: FontFamily.fontMedium,
                     fontSize: SizeConfig.mediumFontSize,
-                    color: colorBlack,
+                    color: AppColors.blackText,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1),
                     SizedBox(width: SizeConfig.blockSizeHorizontal * 44,
@@ -247,9 +247,9 @@ class Profile extends GetView<ProfileController>{
                 width: SizeConfig.blockSizeHorizontal * 44,
                 height: SizeConfig.blockSizeHorizontal * 22,
                 decoration: BoxDecoration(
-                    color: textFieldFillColor,
+                    color: AppColors.textFieldFillColor,
                     border: Border.all(
-                        color: disabledBorderColor, width: 2),
+                        color: AppColors.disabledBorderColor, width: 2),
                     borderRadius:
                     const BorderRadius.all(Radius.circular(
                       10.0,
@@ -257,9 +257,9 @@ class Profile extends GetView<ProfileController>{
                 child: Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextWidget(text: "${controller.profileDetails.value.newOrders}",
-                        fontFamily: fontMedium,
+                        fontFamily: FontFamily.fontMedium,
                         fontSize: SizeConfig.mediumFontSize,
-                        color: colorBlack,
+                        color: AppColors.blackText,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1),
                     SizedBox(width: SizeConfig.blockSizeHorizontal * 44,
@@ -275,9 +275,9 @@ class Profile extends GetView<ProfileController>{
             width: SizeConfig.blockSizeHorizontal * 44,
             height: SizeConfig.blockSizeHorizontal * 22,
             decoration: BoxDecoration(
-                color: textFieldFillColor,
+                color: AppColors.textFieldFillColor,
                 border: Border.all(
-                    color: disabledBorderColor, width: 2),
+                    color: AppColors.disabledBorderColor, width: 2),
                 borderRadius:
                 const BorderRadius.all(Radius.circular(
                   10.0,
@@ -285,9 +285,9 @@ class Profile extends GetView<ProfileController>{
             child: Column(mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextWidget(text: "${controller.profileDetails.value.todaysOrders}",
-                    fontFamily: fontMedium,
+                    fontFamily: FontFamily.fontMedium,
                     fontSize: SizeConfig.mediumFontSize,
-                    color: colorBlack,
+                    color: AppColors.blackText,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1),
                 SizedBox(width: SizeConfig.blockSizeHorizontal * 36,

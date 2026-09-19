@@ -5,12 +5,12 @@ import 'package:food_merchant/utils/Validations.dart';
 import 'package:get/get.dart';
 
 import '../../../component/ColorLoader.dart';
-import '../../../component/TextFormFieldWidget.dart';
-import '../../../component/TextWidget.dart';
-import '../../../constant/app_color.dart';
-import '../../../constant/app_constant.dart';
-import '../../../constant/string_constants.dart';
-import '../../../utils/SizeConfig.dart';
+import '../../../component/custom_form_field.dart';
+import '../../../component/custom_text_widget.dart';
+import '../../../constant/app_colors.dart';
+import '../../../constant/font_family.dart';
+import '../../../constant/app_strings.dart';
+import '../../../utils/size_config.dart';
 
 class SubCategoryScreen extends GetView<SubCategoryController> {
   const SubCategoryScreen({super.key});
@@ -25,8 +25,8 @@ class SubCategoryScreen extends GetView<SubCategoryController> {
         title: TextWidget(text: subCategoryAppTitle,
         color: Colors.black,
         fontSize: SizeConfig.appbarTitleSize,
-        fontFamily: fontSemiBold,
-        weight: FontWeight.w600,),
+        fontFamily: FontFamily.fontSemiBold,
+        fontWeight: FontWeight.w600,),
     elevation: 0.0,
     centerTitle: true),
       body: Container(
@@ -42,13 +42,13 @@ class SubCategoryScreen extends GetView<SubCategoryController> {
             children: [
               TextWidget(
                 text: subCategoryMenuTitle,
-                fontFamily: fontMedium,
+                fontFamily: FontFamily.fontMedium,
                 fontSize: SizeConfig.mediumFontSize,
-                color: normalTextColor,
+                color: AppColors.normalTextColor,
               ),
               SizedBox(height: SizeConfig.blockSizeHorizontal*5),
               Form( key: controller.formKey,
-                child: TextFormWidget(
+                child: CustomFormField(
                   hintText: subCategoryHint,
                   controller: controller.titleController,
                   validator: Validations.validations.validateEmptyFields,

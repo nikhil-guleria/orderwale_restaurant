@@ -7,13 +7,13 @@ import 'package:get/get.dart';
 import '../../component/button_widget.dart';
 import '../../component/ColorLoader.dart';
 import '../../component/CustomRadioButton.dart';
-import '../../component/TextFormFieldWidget.dart';
-import '../../component/TextWidget.dart';
-import '../../constant/app_color.dart';
-import '../../constant/app_constant.dart';
+import '../../component/custom_form_field.dart';
+import '../../component/custom_text_widget.dart';
+import '../../constant/app_colors.dart';
+import '../../constant/font_family.dart';
 import '../../constant/app_images.dart';
-import '../../constant/string_constants.dart';
-import '../../utils/SizeConfig.dart';
+import '../../constant/app_strings.dart';
+import '../../utils/size_config.dart';
 import 'AddProductController.dart';
 
 class AddProduct extends GetView<AddProductController> {
@@ -23,19 +23,19 @@ class AddProduct extends GetView<AddProductController> {
   Widget build(BuildContext context) {
     List<Widget> widgetList = [];
     var child = Scaffold(
-        backgroundColor: colorWhite,
+        backgroundColor: AppColors.white,
         appBar: AppBar(
             title: TextWidget(
               text: app_bar_title,
               color: Colors.black,
               fontSize: SizeConfig.appbarTitleSize,
-              fontFamily: fontSemiBold,
-              weight: FontWeight.w600,
+              fontFamily: FontFamily.fontSemiBold,
+              fontWeight: FontWeight.w600,
             ),
             centerTitle: true,
             elevation: 0.0,
             systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: colorWhite,
+              statusBarColor: AppColors.white,
               statusBarIconBrightness: Brightness.dark,
             )),
         body: Container(
@@ -62,7 +62,7 @@ class AddProduct extends GetView<AddProductController> {
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(9),
                                   child: Image.asset(
-                                    errorImg,
+                                    AppImages.errorImg,
                                     fit: BoxFit.cover,
                                   ))
                               : ClipRRect(
@@ -76,8 +76,8 @@ class AddProduct extends GetView<AddProductController> {
                             right: SizeConfig.blockSizeHorizontal * 1.25,
                             bottom: SizeConfig.blockSizeHorizontal * 1.25),
                         decoration: BoxDecoration(
-                            color: colorPrimary,
-                            border: Border.all(color: colorWhite, width: 2.5),
+                            color: AppColors.colorPrimary,
+                            border: Border.all(color: AppColors.white, width: 2.5),
                             borderRadius: const BorderRadius.all(Radius.circular(
                               10.0,
                             ))),
@@ -88,13 +88,13 @@ class AddProduct extends GetView<AddProductController> {
                               onTap: () {
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 Get.dialog(AlertDialog(
-                                  surfaceTintColor: colorWhite,
-                                    backgroundColor: colorWhite,
+                                  surfaceTintColor: AppColors.white,
+                                    backgroundColor: AppColors.white,
                                     title: Text("Select Image",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: SizeConfig.semiBoldFontSize,
-                                          fontFamily: fontSemiBold,
+                                          fontFamily: FontFamily.fontSemiBold,
                                         )),
                                     actionsPadding:
                                         const EdgeInsets.only(top: 0, bottom: 0),
@@ -106,7 +106,7 @@ class AddProduct extends GetView<AddProductController> {
                                               style: TextStyle(
                                                   fontSize:
                                                       SizeConfig.mediumFontSize,
-                                                  fontFamily: fontMedium),
+                                                  fontFamily: FontFamily.fontMedium),
                                             ),
                                             onPressed: () {
                                               Get.back(result: "Camera");
@@ -122,7 +122,7 @@ class AddProduct extends GetView<AddProductController> {
                                             style: TextStyle(
                                                 fontSize:
                                                     SizeConfig.mediumFontSize,
-                                                fontFamily: fontMedium),
+                                                fontFamily: FontFamily.fontMedium),
                                           ),
                                         ),
                                       ),
@@ -135,7 +135,7 @@ class AddProduct extends GetView<AddProductController> {
                                               style: TextStyle(
                                                   fontSize:
                                                       SizeConfig.mediumFontSize,
-                                                  fontFamily: fontMedium)),
+                                                  fontFamily: FontFamily.fontMedium)),
                                         ),
                                       ),
                                     ])).then((value) {
@@ -148,7 +148,7 @@ class AddProduct extends GetView<AddProductController> {
                               },
                               child: Icon(
                                 Icons.add,
-                                color: colorWhite,
+                                color: AppColors.white,
                                 size: SizeConfig.blockSizeHorizontal * 6.2,
                               )),
                         ),
@@ -157,9 +157,9 @@ class AddProduct extends GetView<AddProductController> {
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 7),
                     TextWidget(
                       text: categories,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                     Obx(() => Container(
@@ -168,9 +168,9 @@ class AddProduct extends GetView<AddProductController> {
                           padding: EdgeInsets.only(
                               left: SizeConfig.blockSizeHorizontal * 2.5),
                           decoration: BoxDecoration(
-                              color: textFieldFillColor,
+                              color: AppColors.textFieldFillColor,
                               border: Border.all(
-                                  color: disabledBorderColor, width: 1.3),
+                                  color: AppColors.disabledBorderColor, width: 1.3),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(
                                 10.0,
@@ -223,8 +223,8 @@ class AddProduct extends GetView<AddProductController> {
                                               child: TextWidget(
                                                 text: controller
                                                     .categoriesList[index]
-                                                    .categoryName,
-                                                color: blackShades,
+                                                    .categoryName ?? '',
+                                                color: AppColors.blackShades,
                                                 fontSize:
                                                     SizeConfig.mediumFontSize,
                                               ),
@@ -252,7 +252,7 @@ class AddProduct extends GetView<AddProductController> {
                                       right: SizeConfig.blockSizeHorizontal * 1),
                                   child: Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: colorPrimary,
+                                    color: AppColors.colorPrimary,
                                     size: SizeConfig.boldFontSize,
                                   ),
                                 )
@@ -263,9 +263,9 @@ class AddProduct extends GetView<AddProductController> {
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: add_menu_name,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                     Obx(() => Container(
@@ -274,9 +274,9 @@ class AddProduct extends GetView<AddProductController> {
                           padding: EdgeInsets.only(
                               left: SizeConfig.blockSizeHorizontal * 2.5),
                           decoration: BoxDecoration(
-                              color: textFieldFillColor,
+                              color: AppColors.textFieldFillColor,
                               border: Border.all(
-                                  color: disabledBorderColor, width: 1.3),
+                                  color: AppColors.disabledBorderColor, width: 1.3),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(
                                 10.0,
@@ -290,7 +290,7 @@ class AddProduct extends GetView<AddProductController> {
                                 if (context.mounted) {
                                   showModalBottomSheet(
                                       useSafeArea: true,
-                                      backgroundColor: colorWhite,
+                                      backgroundColor: AppColors.white,
                                       context: context,
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.vertical(
@@ -337,11 +337,11 @@ class AddProduct extends GetView<AddProductController> {
                                                   children: [
                                                     TextWidget(
                                                       text: select_menu,
-                                                      fontFamily: fontMedium,
+                                                      fontFamily: FontFamily.fontMedium,
                                                       fontSize:
                                                           SizeConfig.mediumFontSize,
                                                       color: Colors.black,
-                                                      weight: FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                     Obx(() => Visibility(
                                                           visible: controller
@@ -355,7 +355,7 @@ class AddProduct extends GetView<AddProductController> {
                                                               },
                                                               child: Icon(
                                                                 Icons.edit,
-                                                                color: colorPrimary,
+                                                                color: AppColors.colorPrimary,
                                                                 size: SizeConfig
                                                                     .semiBoldFontSize,
                                                               )),
@@ -395,7 +395,7 @@ class AddProduct extends GetView<AddProductController> {
                                                               decoration: BoxDecoration(
                                                                   border: Border.all(
                                                                       color:
-                                                                          colorPrimary,
+                                                                          AppColors.colorPrimary,
                                                                       width: 1.5),
                                                                   borderRadius:
                                                                       BorderRadius
@@ -406,7 +406,7 @@ class AddProduct extends GetView<AddProductController> {
                                                                   text:
                                                                       "Create Menu",
                                                                   color:
-                                                                      colorPrimary,
+                                                                      AppColors.colorPrimary,
                                                                   fontSize: SizeConfig
                                                                       .mediumFontSize,
                                                                   overflow:
@@ -513,9 +513,9 @@ class AddProduct extends GetView<AddProductController> {
                                                                               child: TextWidget(
                                                                             text: controller
                                                                                 .subCategoryList[index]
-                                                                                .title,
+                                                                                .title ?? '',
                                                                             color:
-                                                                                blackShades,
+                                                                                AppColors.blackShades,
                                                                             fontSize:
                                                                                 SizeConfig.mediumFontSize,
                                                                             overflow:
@@ -562,7 +562,7 @@ class AddProduct extends GetView<AddProductController> {
                                                                             text:
                                                                                 "Add New",
                                                                             color:
-                                                                                colorPrimary,
+                                                                                AppColors.colorPrimary,
                                                                             fontSize:
                                                                                 SizeConfig.mediumFontSize,
                                                                             overflow:
@@ -620,9 +620,9 @@ class AddProduct extends GetView<AddProductController> {
                                                                               child: TextWidget(
                                                                             text: controller
                                                                                 .subCategoryList[index]
-                                                                                .title,
+                                                                                .title ?? '',
                                                                             color:
-                                                                                blackShades,
+                                                                                AppColors.blackShades,
                                                                             fontSize:
                                                                                 SizeConfig.mediumFontSize,
                                                                             overflow:
@@ -674,7 +674,7 @@ class AddProduct extends GetView<AddProductController> {
                                                                               text:
                                                                                   "Add New",
                                                                               color:
-                                                                                  colorPrimary,
+                                                                                  AppColors.colorPrimary,
                                                                               fontSize:
                                                                                   SizeConfig.mediumFontSize,
                                                                               overflow:
@@ -714,7 +714,7 @@ class AddProduct extends GetView<AddProductController> {
                                                                             text:
                                                                                 "",
                                                                             color:
-                                                                                colorPrimary,
+                                                                                AppColors.colorPrimary,
                                                                             fontSize:
                                                                                 SizeConfig.mediumFontSize,
                                                                             overflow:
@@ -741,7 +741,7 @@ class AddProduct extends GetView<AddProductController> {
                                   });
                                 }
                               } else {
-                                Get.snackbar(alert, "Please Select Category");
+                                Get.snackbar(AppStrings.alertTitle, "Please Select Category");
                               }
                             },
                             child: Row(
@@ -764,7 +764,7 @@ class AddProduct extends GetView<AddProductController> {
                                       right: SizeConfig.blockSizeHorizontal * 1),
                                   child: Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: colorPrimary,
+                                    color: AppColors.colorPrimary,
                                     size: SizeConfig.boldFontSize,
                                   ),
                                 )
@@ -775,12 +775,12 @@ class AddProduct extends GetView<AddProductController> {
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: add_product_name,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-                    TextFormWidget(
+                    CustomFormField(
                       hintText: add_product_name_hint,
                       controller: controller.productNameController,
                       textCapitalization: TextCapitalization.words,
@@ -790,12 +790,12 @@ class AddProduct extends GetView<AddProductController> {
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: item_descp,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-                    TextFormWidget(
+                    CustomFormField(
                       hintText: item_descp_hint,
                       controller: controller.itemDescriptionController,
                       validator: Validations.validations.validateEmptyFields,
@@ -811,13 +811,13 @@ class AddProduct extends GetView<AddProductController> {
                             children: [
                               TextWidget(
                                 text: item_price,
-                                fontFamily: fontMedium,
+                                fontFamily: FontFamily.fontMedium,
                                 fontSize: SizeConfig.mediumFontSize,
-                                color: normalTextColor,
+                                color: AppColors.normalTextColor,
                               ),
                               SizedBox(
                                   height: SizeConfig.blockSizeHorizontal * 2),
-                              TextFormWidget(
+                              CustomFormField(
                                 onlyNumbers: true,
                                 keyboardType: TextInputType.number,
                                 hintText: item_price_hint,
@@ -835,13 +835,13 @@ class AddProduct extends GetView<AddProductController> {
                             children: [
                               TextWidget(
                                 text: item_discount,
-                                fontFamily: fontMedium,
+                                fontFamily: FontFamily.fontMedium,
                                 fontSize: SizeConfig.mediumFontSize,
-                                color: normalTextColor,
+                                color: AppColors.normalTextColor,
                               ),
                               SizedBox(
                                   height: SizeConfig.blockSizeHorizontal * 2),
-                              TextFormWidget(
+                              CustomFormField(
                                 allowDecimal: true,
                                 keyboardType: TextInputType.number,
                                 controller: controller.itemDiscountController,
@@ -855,18 +855,18 @@ class AddProduct extends GetView<AddProductController> {
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: discount_type,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                     Container(
                       width: Get.width,
                       height: SizeConfig.blockSizeHorizontal * 15.8,
                       decoration: BoxDecoration(
-                          color: textFieldFillColor,
+                          color: AppColors.textFieldFillColor,
                           border:
-                              Border.all(color: disabledBorderColor, width: 1.3),
+                              Border.all(color: AppColors.disabledBorderColor, width: 1.3),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(10.0))),
                       child: Row(
@@ -880,9 +880,9 @@ class AddProduct extends GetView<AddProductController> {
                                 controller.onChangeDiscountType(value!);
                               },
                               title: TextWidget(
-                                text: radio_btn_flat,
+                                text: AppStrings.btnRadioFlat,
                                 fontSize: SizeConfig.regularFontSize,
-                                color: normalTextColor,
+                                color: AppColors.normalTextColor,
                               ),
                             ),
                           ),
@@ -894,9 +894,9 @@ class AddProduct extends GetView<AddProductController> {
                                 controller.onChangeDiscountType(value!);
                               },
                               title: TextWidget(
-                                text: radio_btn_percentage,
+                                text: AppStrings.btnRadioPercentage,
                                 fontSize: SizeConfig.regularFontSize,
-                                color: normalTextColor,
+                                color: AppColors.normalTextColor,
                               ),
                             ),
                           ),
@@ -906,18 +906,18 @@ class AddProduct extends GetView<AddProductController> {
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
                     TextWidget(
                       text: food_type,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                     Container(
                       width: Get.width,
                       height: SizeConfig.blockSizeHorizontal * 15.8,
                       decoration: BoxDecoration(
-                          color: textFieldFillColor,
+                          color: AppColors.textFieldFillColor,
                           border:
-                              Border.all(color: disabledBorderColor, width: 1.3),
+                              Border.all(color: AppColors.disabledBorderColor, width: 1.3),
                           borderRadius: const BorderRadius.all(Radius.circular(
                             10.0,
                           ))),
@@ -932,9 +932,9 @@ class AddProduct extends GetView<AddProductController> {
                                 controller.onChangeFoodType(value!);
                               },
                               title: TextWidget(
-                                text: radio_btn_veg,
+                                text: AppStrings.btnRadioVeg,
                                 fontSize: SizeConfig.regularFontSize,
-                                color: normalTextColor,
+                                color: AppColors.normalTextColor,
                               ),
                             ),
                           ),
@@ -946,9 +946,9 @@ class AddProduct extends GetView<AddProductController> {
                                 controller.onChangeFoodType(value!);
                               },
                               title: TextWidget(
-                                text: radio_btn_nonVeg,
+                                text: AppStrings.btnRadioNonVeg,
                                 fontSize: SizeConfig.regularFontSize,
-                                color: normalTextColor,
+                                color: AppColors.normalTextColor,
                               ),
                             ),
                           ),

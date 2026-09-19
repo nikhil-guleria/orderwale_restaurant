@@ -2,15 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_merchant/constant/app_images.dart';
-import 'package:food_merchant/constant/string_constants.dart';
+import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/screens/restaurant_details/menu/MenuController.dart';
 import 'package:food_merchant/utils/CommonUtils.dart';
 import 'package:get/get.dart';
 import '../../../component/ColorLoader.dart';
-import '../../../component/TextWidget.dart';
-import '../../../constant/app_color.dart';
-import '../../../constant/app_constant.dart';
-import '../../../utils/SizeConfig.dart';
+import '../../../component/custom_text_widget.dart';
+import '../../../constant/app_colors.dart';
+import '../../../constant/font_family.dart';
+import '../../../utils/size_config.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -21,26 +21,26 @@ class Menu extends StatelessWidget {
     List<Widget> widgetList = [];
     var child = Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: colorWhite,
+      backgroundColor: AppColors.white,
       body: RefreshIndicator(
-        color: colorPrimary,
+        color: AppColors.colorPrimary,
         onRefresh: controller.pullRefresh,
         child: Obx(() => controller.initialLoad.value
             ? Center(
                 child: TextWidget(
                     text: "Loading your products ...",
-                    color: colorPrimary,
+                    color: AppColors.colorPrimary,
                     fontSize: SizeConfig.mediumFontSize,
-                    fontFamily: fontMedium))
+                    fontFamily: FontFamily.fontMedium))
             : controller.productDetails.isEmpty
                 ? Center(
                     child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: TextWidget(
                         text: "Nothing to show please add some items.",
-                        color: colorPrimary,
+                        color: AppColors.colorPrimary,
                         fontSize: SizeConfig.mediumFontSize,
-                        fontFamily: fontMedium),
+                        fontFamily: FontFamily.fontMedium),
                   ))
                 : ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -72,13 +72,13 @@ class Menu extends StatelessWidget {
                                                       "${controller.productDetails[sub].title}",
                                                   fontSize:
                                                       SizeConfig.mediumFontSize,
-                                                  color: colorBlack,
-                                                  fontFamily: fontMedium,
-                                                  weight: FontWeight.w700,
+                                                  color: AppColors.blackText,
+                                                  fontFamily: FontFamily.fontMedium,
+                                                  fontWeight: FontWeight.w700,
                                                 ),
                                                 Card(
                                                     elevation: 0,
-                                                    color: colorWhite,
+                                                    color: AppColors.white,
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
@@ -108,8 +108,8 @@ class Menu extends StatelessWidget {
                                                             width: Get.width,
                                                             margin: EdgeInsets.only(bottom: SizeConfig.blockSizeHorizontal * 4.75),
                                                             child: InkWell(
-                                                              highlightColor: colorWhite,
-                                                              splashColor: colorWhite,
+                                                              highlightColor: AppColors.white,
+                                                              splashColor: AppColors.white,
                                                               onTap: () {
                                                                 controller.updateProduct(sub: sub, item: item);
                                                               },
@@ -128,8 +128,8 @@ class Menu extends StatelessWidget {
                                                                             memCacheHeight: (SizeConfig.blockSizeHorizontal * 24).toInt(),
                                                                             memCacheWidth: (SizeConfig.blockSizeHorizontal * 24).toInt(),
                                                                             imageUrl: controller.productDetails[sub].items?[item].image ?? "",
-                                                                            placeholder: (context, url) => Image.asset(loadingGif, fit: BoxFit.cover),
-                                                                            errorWidget: (context, url, error) => Image.asset(appLogoTransparent),
+                                                                            placeholder: (context, url) => Image.asset(AppImages.loadingGif, fit: BoxFit.cover),
+                                                                            errorWidget: (context, url, error) => Image.asset(AppImages.appLogoTransparent),
                                                                           )),
                                                                       Visibility(
                                                                         visible: (controller.productDetails[sub].items?[item].customisations ?? []).isNotEmpty
@@ -137,7 +137,7 @@ class Menu extends StatelessWidget {
                                                                         child: Padding(
                                                                             padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeHorizontal*0.38),
                                                                         child: TextWidget(text: "Customised",
-                                                                        weight: FontWeight.bold,
+                                                                        fontWeight: FontWeight.bold,
                                                                         color: Colors.grey.shade700,
                                                                         fontSize: SizeConfig.blockSizeHorizontal*3,)),
                                                                       )
@@ -163,19 +163,19 @@ class Menu extends StatelessWidget {
                                                                                 WidgetSpan(
                                                                                   child: controller.productDetails[sub].items?[item].type == 1
                                                                                       ? ImageIcon(
-                                                                                          const AssetImage(vegType),
+                                                                                          const AssetImage(AppImages.vegType),
                                                                                           size: SizeConfig.blockSizeHorizontal * 4.29,
                                                                                           color: Colors.green,
                                                                                         )
                                                                                       : ImageIcon(
-                                                                                          const AssetImage(nonVegType),
+                                                                                          const AssetImage(AppImages.nonVegType),
                                                                                           size: SizeConfig.blockSizeHorizontal * 4.29,
                                                                                           color: Colors.red,
                                                                                         ),
                                                                                 ),
                                                                                 TextSpan(
                                                                                   text: " ${controller.productDetails[sub].items?[item].name}",
-                                                                                  style: TextStyle(overflow: TextOverflow.ellipsis, fontFamily: fontMedium, color: Colors.black87, fontSize: SizeConfig.mediumFontSize),
+                                                                                  style: TextStyle(overflow: TextOverflow.ellipsis, fontFamily: FontFamily.fontMedium, color: Colors.black87, fontSize: SizeConfig.mediumFontSize),
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -185,10 +185,10 @@ class Menu extends StatelessWidget {
                                                                           TextWidget(
                                                                             overflow: TextOverflow.ellipsis,
                                                                             text: "${controller.productDetails[sub].items?[item].description}",
-                                                                            color: normalTextColor,
+                                                                            color: AppColors.normalTextColor,
                                                                             maxLines: 2,
                                                                             fontSize: SizeConfig.blockSizeHorizontal * 3,
-                                                                            fontFamily: fontRegular,
+                                                                            fontFamily: FontFamily.fontRegular,
                                                                           ),
                                                                           SizedBox(
                                                                               height: SizeConfig.blockSizeHorizontal * 0.65),
@@ -200,9 +200,9 @@ class Menu extends StatelessWidget {
                                                                                      Flexible(
                                                                                        child: Visibility(
                                                                                          visible: double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}") != 0,
-                                                                                         child: TextWidget(text: '$currSymbolIn${"$maxPrice"}',
+                                                                                         child: TextWidget(text: '${AppStrings.currSymbolIn}${"$maxPrice"}',
                                                                                            color: Colors.red.shade600,
-                                                                                           fontSize: SizeConfig.regularFontSize, weight: FontWeight.w600,
+                                                                                           fontSize: SizeConfig.regularFontSize, fontWeight: FontWeight.w600,
                                                                                            decoration: TextDecoration.lineThrough,
                                                                                            decorationColor: Colors.red.shade700,
                                                                                            decorationThickness: 1.5,
@@ -215,17 +215,17 @@ class Menu extends StatelessWidget {
                                                                                      controller.productDetails[sub].items?[item].discountType == 1
                                                                                          ? Flexible(
                                                                                        child: TextWidget(text: int.parse((double.parse("$maxPrice") - (double.parse("$maxPrice") * double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}") / 100)).toStringAsFixed(0)) > 0 ?
-                                                                                       '$currSymbolIn${CommonUtils.utils.formatNumber(num.parse(
+                                                                                       '${AppStrings.currSymbolIn}${CommonUtils.utils.formatNumber(num.parse(
                                                                                            (double.parse("$maxPrice") - (double.parse("$maxPrice") * double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}") / 100)).toStringAsFixed(2)))}'
-                                                                                           : "${currSymbolIn}0", color: colorBlack,
+                                                                                           : "${AppStrings.currSymbolIn}0", color: AppColors.blackText,
                                                                                            fontSize: SizeConfig.regularFontSize
                                                                                        ),
                                                                                      )
                                                                                          : Flexible(
                                                                                        child: TextWidget(text: int.parse((double.parse("$maxPrice") - double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}")).toStringAsFixed(0)) > 0 ?
-                                                                                       '$currSymbolIn${CommonUtils.utils.formatNumber(num.parse(
+                                                                                       '${AppStrings.currSymbolIn}${CommonUtils.utils.formatNumber(num.parse(
                                                                                            (double.parse("$maxPrice") - double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}")).toStringAsFixed(2)))}'
-                                                                                           : "${currSymbolIn}0", color: colorBlack, fontSize: SizeConfig.regularFontSize,
+                                                                                           : "${AppStrings.currSymbolIn}0", color: AppColors.blackText, fontSize: SizeConfig.regularFontSize,
                                                                                        ),
                                                                                      ),
                                                                                    ],
@@ -236,9 +236,9 @@ class Menu extends StatelessWidget {
                                                                                 Flexible(
                                                                                   child: Visibility(
                                                                                     visible: double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}") != 0,
-                                                                                    child: TextWidget(text: '$currSymbolIn${"${controller.productDetails[sub].items?[item].price ?? 0}"}',
+                                                                                    child: TextWidget(text: '${AppStrings.currSymbolIn}${"${controller.productDetails[sub].items?[item].price ?? 0}"}',
                                                                                       color: Colors.red.shade600,
-                                                                                      fontSize: SizeConfig.regularFontSize, weight: FontWeight.w600,
+                                                                                      fontSize: SizeConfig.regularFontSize, fontWeight: FontWeight.w600,
                                                                                         decoration: TextDecoration.lineThrough,
                                                                                         decorationColor: Colors.red.shade700,
                                                                                         decorationThickness: 1.5,
@@ -251,17 +251,17 @@ class Menu extends StatelessWidget {
                                                                                 controller.productDetails[sub].items?[item].discountType == 1
                                                                                     ? Flexible(
                                                                                         child: TextWidget(text: int.parse((double.parse("${controller.productDetails[sub].items?[item].price ?? 0}") - (double.parse("${controller.productDetails[sub].items?[item].price ?? 0}") * double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}") / 100)).toStringAsFixed(0)) > 0 ?
-                                                                                        '$currSymbolIn${CommonUtils.utils.formatNumber(num.parse(
+                                                                                        '${AppStrings.currSymbolIn}${CommonUtils.utils.formatNumber(num.parse(
                                                                                             (double.parse("${controller.productDetails[sub].items?[item].price ?? 0}") - (double.parse("${controller.productDetails[sub].items?[item].price ?? 0}") * double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}") / 100)).toStringAsFixed(2)))}'
-                                                                                            : "${currSymbolIn}0", color: colorBlack,
+                                                                                            : "${AppStrings.currSymbolIn}0", color: AppColors.blackText,
                                                                                             fontSize: SizeConfig.regularFontSize
                                                                                         ),
                                                                                       )
                                                                                     : Flexible(
                                                                                         child: TextWidget(text: int.parse((double.parse("${controller.productDetails[sub].items?[item].price ?? 0}") - double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}")).toStringAsFixed(0)) > 0 ?
-                                                                                        '$currSymbolIn${CommonUtils.utils.formatNumber(num.parse(
+                                                                                        '${AppStrings.currSymbolIn}${CommonUtils.utils.formatNumber(num.parse(
                                                                                             (double.parse("${controller.productDetails[sub].items?[item].price ?? 0}") - double.parse("${controller.productDetails[sub].items?[item].discount ?? 0}")).toStringAsFixed(2)))}'
-                                                                                            : "${currSymbolIn}0", color: colorBlack, fontSize: SizeConfig.regularFontSize,
+                                                                                            : "${AppStrings.currSymbolIn}0", color: AppColors.blackText, fontSize: SizeConfig.regularFontSize,
                                                                                         ),
                                                                                       ),
                                                                               ],
@@ -291,7 +291,7 @@ class Menu extends StatelessWidget {
                                                                                       ))),
                                                                               Obx(() => TextWidget(
                                                                                     text: controller.productDetails[sub].items?[item].status == 1 ? 'Available' : 'Out of Stock',
-                                                                                    fontFamily: fontMedium,
+                                                                                    fontFamily: FontFamily.fontMedium,
                                                                                     fontSize: controller.productDetails[sub].items?[item].status == 1 ? SizeConfig.blockSizeHorizontal * 2.5 : SizeConfig.blockSizeHorizontal * 2.3,
                                                                                   ))
                                                                             ],
@@ -313,10 +313,10 @@ class Menu extends StatelessWidget {
         onPressed: () {
           controller.addNewProduct();
         },
-        backgroundColor: colorPrimary,
+        backgroundColor: AppColors.colorPrimary,
         child: const Icon(
           Icons.add,
-          color: colorWhite,
+          color: AppColors.white,
         ),
       ),
     );

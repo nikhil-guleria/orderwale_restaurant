@@ -5,11 +5,11 @@ import 'package:food_merchant/utils/CommonUtils.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../component/ColorLoader.dart';
-import '../../../component/TextWidget.dart';
-import '../../../constant/app_color.dart';
-import '../../../constant/app_constant.dart';
+import '../../../component/custom_text_widget.dart';
+import '../../../constant/app_colors.dart';
+import '../../../constant/font_family.dart';
 import '../../../constant/app_images.dart';
-import '../../../utils/SizeConfig.dart';
+import '../../../utils/size_config.dart';
 import '../no_restaurant/NoRestaurant.dart';
 import 'SelectRestaurantController.dart';
 
@@ -21,15 +21,15 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
     CommonUtils.utils.statusBarColored();
     List<Widget> widgetList = [];
     var child = Scaffold(
-        backgroundColor: colorWhite,
+        backgroundColor: AppColors.white,
         appBar: AppBar(
           automaticallyImplyLeading: true,
           title: TextWidget(
             text: "Select Restaurant",
             color: Colors.black,
             fontSize: SizeConfig.appbarTitleSize,
-            fontFamily: fontSemiBold,
-            weight: FontWeight.w600,
+            fontFamily: FontFamily.fontSemiBold,
+            fontWeight: FontWeight.w600,
           ),
           elevation: 0.0,
           centerTitle: true,
@@ -42,7 +42,7 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
                       },
                       icon: Icon(
                         Icons.logout,
-                        color: colorPrimary,
+                        color: AppColors.colorPrimary,
                         size: SizeConfig.blockSizeHorizontal * 5,
                       )),
                 ))
@@ -188,7 +188,7 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
                                           color:
                                               controller.currentIndex.value ==
                                                       index
-                                                  ? colorPrimary
+                                                  ? AppColors.colorPrimary
                                                   : Colors.transparent,
                                           width: 4.3)),
                                   child: InkWell(
@@ -209,7 +209,7 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
                                                   borderRadius: BorderRadius.only(
                                                       topRight: Radius.circular(15),
                                                       topLeft: Radius.circular(15)),
-                                                  color: colorWhite,
+                                                  color: AppColors.white,
                                                 ),
                                                 foregroundDecoration:  BoxDecoration(
                                                   gradient: LinearGradient(
@@ -228,8 +228,8 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
                                                       height: SizeConfig.blockSizeHorizontal * 60,
                                                       fit: BoxFit.cover,
                                                       imageUrl: controller.restaurantsList[index].image,
-                                                      placeholder: (context, url) => Image.asset(loadingGif, fit: BoxFit.cover),
-                                                      errorWidget: (context, url, error) => Image.asset(appLogoTransparent),
+                                                      placeholder: (context, url) => Image.asset(AppImages.loadingGif, fit: BoxFit.cover),
+                                                      errorWidget: (context, url, error) => Image.asset(AppImages.appLogoTransparent),
                                                     )
                                                 ),
                                               ),
@@ -249,8 +249,8 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
                                                         TextOverflow.ellipsis,
                                                     text:
                                                         '${controller.restaurantsList[index].name}',
-                                                    color: colorWhite,
-                                                    fontFamily: fontBold,
+                                                    color: AppColors.white,
+                                                    fontFamily: FontFamily.fontBold,
                                                     fontSize:
                                                         SizeConfig.boldFontSize,
                                                   ),
@@ -299,9 +299,9 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
                                                                         TextAlign
                                                                             .center,
                                                                     color:
-                                                                        colorWhite,
+                                                                        AppColors.white,
                                                                     fontFamily:
-                                                                        fontSemiBold,
+                                                                        FontFamily.fontSemiBold,
                                                                     fontSize:
                                                                         SizeConfig
                                                                             .regularFontSize),
@@ -310,14 +310,14 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
                                                                   size: SizeConfig
                                                                       .regularFontSize,
                                                                   color:
-                                                                      colorWhite)
+                                                                      AppColors.white)
                                                             ],
                                                           )),
                                                     )
                                             ]),
                                             Container(
                                               decoration: const BoxDecoration(
-                                                color: colorWhite,
+                                                color: AppColors.white,
                                                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0),
                                                     bottomRight: Radius.circular(15.0)),
                                               ),
@@ -337,7 +337,7 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
                                                 children: [
                                                   Icon(
                                                     Icons.location_on,
-                                                    color: colorPrimary,
+                                                    color: AppColors.colorPrimary,
                                                     size: SizeConfig
                                                             .blockSizeHorizontal *
                                                         6,
@@ -357,7 +357,7 @@ class SelectRestaurant extends GetView<SelectRestaurantController> {
                                                       maxLines: 2,
                                                       text:
                                                           '${controller.restaurantsList[index].address!}',
-                                                      fontFamily: fontMedium,
+                                                      fontFamily: FontFamily.fontMedium,
                                                       fontSize: SizeConfig
                                                           .regularFontSize,
                                                     ),

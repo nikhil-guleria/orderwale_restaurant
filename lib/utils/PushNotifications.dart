@@ -8,7 +8,7 @@ import 'package:food_merchant/constant/global_variables.dart';
 import 'package:food_merchant/utils/CommonUtils.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../routes/app_pages.dart';
+import '../routes/app_routes.dart';
 
 
 class PushNotificationService {
@@ -50,7 +50,7 @@ class PushNotificationService {
 
      firebaseMessaging.getToken().then((token) async {
        debugPrint('deviceToken ===> $token');
-       GlobalVariables.token.value = "$token";
+       GlobalVariables.deviceToken.value = "$token";
      }).catchError((err) {});
    } catch (e){
      debugPrint("exception token--> $e");
@@ -75,7 +75,7 @@ class PushNotificationService {
       );
     }    firebaseMessaging.getToken().then((token)  {
       debugPrint('deviceToken ===> $token');
-      GlobalVariables.token.value = "$token";
+      GlobalVariables.deviceToken.value = "$token";
     }).catchError((err) {});
   }
 
@@ -86,7 +86,7 @@ class PushNotificationService {
 
 
   static Future<void> navigateAction(RemoteMessage message) async {
-    Get.toNamed(Routes.ORDER_DETAILS, arguments: message.data["order_id"]);
+    Get.toNamed(AppRoutes.orderDetails, arguments: message.data["order_id"]);
     cancelNotification();
   }
 

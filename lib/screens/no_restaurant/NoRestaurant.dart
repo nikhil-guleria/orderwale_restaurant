@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/constant/app_color.dart';
+import 'package:food_merchant/constant/app_colors.dart';
 import '../../constant/app_images.dart';
 
 class NoRestaurant extends StatelessWidget{
@@ -7,8 +7,8 @@ class NoRestaurant extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
    return Scaffold(
-     backgroundColor: colorWhite,
-     body: Center(child: Image.asset(noRestaurant)),
+     backgroundColor: AppColors.white,
+     body: Center(child: Image.asset(AppImages.noRestaurant)),
    );
   }
 

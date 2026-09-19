@@ -2,12 +2,12 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../../routes/app_pages.dart';
+import '../../../routes/app_routes.dart';
 import '../../../services/repo/CommonRepo.dart';
 import '../../../utils/CommonUtils.dart';
 import '../../../utils/GetStorageConstants.dart';
-import '../../component/DialogBox.dart';
-import '../../constant/string_constants.dart';
+import '../../component/custom_dialog_box.dart';
+import '../../constant/app_strings.dart';
 import '../home/home_model/RestaurantListModel.dart';
 
 class SelectRestaurantController extends GetxController {
@@ -66,7 +66,7 @@ class SelectRestaurantController extends GetxController {
     storage.write(GetStorageConstants.REST_NAME, restaurantsList[currentIndex.value].name!);
     storage.write(GetStorageConstants.RESTAURANT_LATLNG, latLng);
     storage.write(GetStorageConstants.GLOBAL_ID, currentIndex.value);
-    Get.offAllNamed(Routes.DASHBOARD);
+    Get.offAllNamed(AppRoutes.DASHBOARD);
         /*?.then((value) {
       restaurantList();
     });*/
@@ -103,15 +103,12 @@ class SelectRestaurantController extends GetxController {
     storage.remove(GetStorageConstants.RESTAURANTS_COUNT);
     storage.remove(GetStorageConstants.GLOBAL_ID);
     storage.remove(GetStorageConstants.RESTAURANT_LATLNG);
-    Get.offAllNamed(Routes.USER_LOGIN);
+    Get.offAllNamed(AppRoutes.userLogin);
   }
   logOut() {
-    Get.dialog(showDialogBox(title: settings_logout,
-      message: settings_logout_dialog_middle_text,
+    Get.dialog(showDialogBox(title: AppStrings.settingsLogoutHeading,
+      message: AppStrings.alertMsgLogout,
       twoButtons: true,
-      onCancel: () {
-        Get.back();
-      },
       onConfirm: (){processLogout();}));
   }
 

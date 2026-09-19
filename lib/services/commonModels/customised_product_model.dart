@@ -1,5 +1,6 @@
+import 'package:food_merchant/screens/toppings/toppings_list/toppings_list_model.dart';
+
 import 'customisation_list_model.dart';
-import 'customisation_topping_model.dart';
 
 class CustomisedProductModel {
   CustomisedProduct? result;
@@ -89,7 +90,7 @@ class CustomisedItems {
   int? type;
   String? description;
   List<CustomisationItemModel>? customisations = [];
-  List<CustomisedToppings>? toppings = [];
+  List<Toppings>? toppings = [];
 
   CustomisedItems(
       {this.id,
@@ -129,9 +130,9 @@ class CustomisedItems {
       });
     }
     if (json['toppings'] != null) {
-      toppings = <CustomisedToppings>[];
+      toppings = <Toppings>[];
       json['toppings'].forEach((v) {
-        toppings!.add(CustomisedToppings.fromJson(v));
+        toppings!.add(Toppings.fromJson(v));
       });
     }
   }

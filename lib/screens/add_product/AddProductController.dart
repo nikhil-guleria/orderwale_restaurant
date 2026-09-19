@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../constant/string_constants.dart';
-import '../../routes/app_pages.dart';
+import '../../constant/app_strings.dart';
+import '../../routes/app_routes.dart';
 import '../../services/repo/CommonRepo.dart';
 import '../../utils/CheckPermission.dart';
 import '../../utils/CommonUtils.dart';
@@ -111,16 +111,16 @@ class AddProductController extends GetxController {
     FocusManager.instance.primaryFocus?.unfocus();
     if(formKey.currentState!.validate()) {
       if(imageFile.value.isEmpty){
-        return  Get.snackbar(alert, "Please Add Image");
+        return  Get.snackbar(AppStrings.alertTitle, "Please Add Image");
       } else if(categoryId.value == "0"){
-        return Get.snackbar(alert, "Please Select Category");
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Category");
       }  else if(subcategoryId.value == "0"){
-        return Get.snackbar(alert, "Please Select Menu");
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Menu");
       } else if(discountType.value.isEmpty && num.parse(itemDiscountController.text.isEmpty? "0" :
       itemDiscountController.text) > 0){
-        return Get.snackbar(alert, "Please Select Discount Type");
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Discount Type");
       } else if(foodType.value.isEmpty){
-        return Get.snackbar(alert, "Please Select Food Type");
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Food Type");
       }
       addProduct();
     }
@@ -167,7 +167,7 @@ class AddProductController extends GetxController {
 
     addMenuTap(){
       FocusManager.instance.primaryFocus?.unfocus();
-    Get.toNamed(Routes.SUBCATEGORY_TITLE_SCREEN, arguments: [categoryId.value])?.then((value) {
+    Get.toNamed(AppRoutes.SUBCATEGORY_TITLE_SCREEN, arguments: [categoryId.value])?.then((value) {
      if(value == "added"){
        subCategoryTitle.value = "Select Menu Title";
        subcategoryId.value = "0";
@@ -177,7 +177,7 @@ class AddProductController extends GetxController {
     }
 
     editSubCategoryTap(){
-    Get.toNamed(Routes.SUBCATEGORY_EDIT_SCREEN, arguments: categoryId.value)?.then((value) {
+    Get.toNamed(AppRoutes.SUBCATEGORY_EDIT_SCREEN, arguments: categoryId.value)?.then((value) {
       subCategoryTitle.value = "Select Menu Title";
       subcategoryId.value = "0";
       getSubCategories();

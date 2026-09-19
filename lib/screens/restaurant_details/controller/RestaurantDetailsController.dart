@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../../services/repo/CommonRepo.dart';
 import '../../../utils/CommonUtils.dart';
-import '../model/RestaurantDetailsModel.dart';
+import '../model/restaurant_details_model.dart';
 
 class RestaurantDetailsController extends GetxController  with GetSingleTickerProviderStateMixin {
   late TabController tabController ;

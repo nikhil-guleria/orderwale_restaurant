@@ -1,14 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:food_merchant/constant/app_color.dart';
+import 'package:food_merchant/constant/app_colors.dart';
 
 class ColorLoader extends StatefulWidget {
   final Color color1;
   final Color color2;
   final Color color3;
 
-  ColorLoader({this.color1 = colorPrimary, this.color2 = Colors.black, this.color3 = colorPrimary});
+  ColorLoader({this.color1 = AppColors.colorPrimary, this.color2 = Colors.black, this.color3 = AppColors.colorPrimary});
 
   @override
   _ColorLoaderState createState() => _ColorLoaderState();

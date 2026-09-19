@@ -7,16 +7,16 @@ import 'package:food_merchant/screens/dashboard_orders/controller/dashboard_orde
 import 'package:food_merchant/screens/order_details/controller/order_details_controller.dart';
 import 'package:food_merchant/screens/restaurant_details/controller/RestaurantDetailsBinding.dart';
 import 'package:food_merchant/screens/restaurant_details/view/RestaurantDetails.dart';
-import 'package:food_merchant/screens/settings/controller/SettingsBinding.dart';
+import 'package:food_merchant/screens/settings/controller/settings_binding.dart';
 import 'package:food_merchant/utils/GetStorageConstants.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../../routes/app_pages.dart';
+import '../../../routes/app_routes.dart';
 import '../../settings/view/settings.dart';
 
 class DashboardController extends GetxController{
   var currentIndex = 1.obs;
-  final pages = <String>[Routes.RESTAURANT_DETAILS,Routes.MAIN, Routes.SETTINGS];
+  final pages = <String>[AppRoutes.RESTAURANT_DETAILS,AppRoutes.MAIN, AppRoutes.SETTINGS];
   var storage = GetStorage();
   var globalId = 1.obs;
 
@@ -61,7 +61,7 @@ class DashboardController extends GetxController{
     }
   }
   Route? onGenerateRoute(RouteSettings settings) {
-    if (settings.name == Routes.RESTAURANT_DETAILS) {
+    if (settings.name == AppRoutes.RESTAURANT_DETAILS) {
       return GetPageRoute(
           settings: settings,
           page: () => const RestaurantDetails(),
@@ -71,7 +71,7 @@ class DashboardController extends GetxController{
     }
 
 
-    if (settings.name == Routes.MAIN) {
+    if (settings.name == AppRoutes.MAIN) {
       return GetPageRoute(
           settings: settings,
           page: () =>const DashboardOrdersView(),
@@ -81,7 +81,7 @@ class DashboardController extends GetxController{
     }
 
 
-    if (settings.name == Routes.SETTINGS) {
+    if (settings.name == AppRoutes.SETTINGS) {
       return GetPageRoute(
           settings: settings,
           page: () => const Settings(),
@@ -112,7 +112,7 @@ class DashboardController extends GetxController{
           controller.getOrderDetails();
           storage.remove(GetStorageConstants.fcmOrderId);
         } else {
-          Get.toNamed(Routes.ORDER_DETAILS, arguments: data)?.then((value) {
+          Get.toNamed(AppRoutes.orderDetails, arguments: data)?.then((value) {
             bool register = Get.isRegistered<DashboardOrdersController>();
             if (register) {
               DashboardOrdersController controller = Get.find();
@@ -135,7 +135,7 @@ class DashboardController extends GetxController{
         controller.getOrderDetails();
         storage.remove(GetStorageConstants.fcmOrderId);
       } else {
-        Get.toNamed(Routes.ORDER_DETAILS, arguments: fcmOrderId)?.then((value) {
+        Get.toNamed(AppRoutes.orderDetails, arguments: fcmOrderId)?.then((value) {
           bool register = Get.isRegistered<DashboardOrdersController>();
           if (register) {
             DashboardOrdersController controller = Get.find();

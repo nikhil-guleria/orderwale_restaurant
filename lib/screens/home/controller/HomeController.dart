@@ -1,7 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../../routes/app_pages.dart';
+import '../../../routes/app_routes.dart';
 import '../../../services/repo/CommonRepo.dart';
 import '../../../utils/CommonUtils.dart';
 import '../../../utils/GetStorageConstants.dart';
@@ -40,7 +40,7 @@ class HomeController extends GetxController {
     myRestaurantList();
   }
 onTap(String id){
-  Get.toNamed(Routes.RESTAURANT_DETAILS,arguments: id)?.then((value) {
+  Get.toNamed(AppRoutes.RESTAURANT_DETAILS,arguments: id)?.then((value) {
     myRestaurantList();
 });
       }

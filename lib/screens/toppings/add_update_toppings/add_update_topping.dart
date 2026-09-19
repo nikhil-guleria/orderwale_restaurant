@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:food_merchant/component/button_widget.dart';
 import 'package:food_merchant/component/ColorLoader.dart';
 import 'package:food_merchant/component/CustomRadioButton.dart';
-import 'package:food_merchant/component/TextFormFieldWidget.dart';
-import 'package:food_merchant/component/TextWidget.dart';
-import 'package:food_merchant/constant/app_color.dart';
-import 'package:food_merchant/constant/app_constant.dart';
-import 'package:food_merchant/constant/string_constants.dart';
-import 'package:food_merchant/utils/SizeConfig.dart';
+import 'package:food_merchant/component/custom_form_field.dart';
+import 'package:food_merchant/component/custom_text_widget.dart';
+import 'package:food_merchant/constant/app_colors.dart';
+import 'package:food_merchant/constant/font_family.dart';
+import 'package:food_merchant/constant/app_strings.dart';
+import 'package:food_merchant/utils/size_config.dart';
 import 'package:food_merchant/utils/Validations.dart';
 import 'package:get/get.dart';
 import 'add_update_topping_controller.dart';
@@ -21,15 +21,15 @@ class AddUpdateTopping extends GetView<AddUpdateToppingController> {
     var child =
     Obx(() =>
     Scaffold(
-      backgroundColor: colorWhite,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
           title: TextWidget(
             text: controller.argument != null ?
-            updateToppingTitle : addToppingTitle,
-            color: Colors.black,
+            AppStrings.toppingsUpdateTitle : AppStrings.toppingsAddTitle,
+            color: AppColors.black,
             fontSize: SizeConfig.appbarTitleSize,
-            fontFamily: fontSemiBold,
-            weight: FontWeight.w600,
+            fontFamily: FontFamily.fontSemiBold,
+            fontWeight: FontWeight.w600,
           ),
           centerTitle: true,
           elevation: 0.0,
@@ -44,7 +44,7 @@ class AddUpdateTopping extends GetView<AddUpdateToppingController> {
                   },
                   icon: const Icon(
                     Icons.delete,
-                    color: Colors.red,
+                    color: AppColors.red,
                   ),
                 ),
               ),
@@ -53,7 +53,7 @@ class AddUpdateTopping extends GetView<AddUpdateToppingController> {
       body: SafeArea(
           child: controller.initialLoad.value ?
       Container(
-        color: Colors.white,
+        color: AppColors.white,
         child: Center(
           child: ColorLoader(),
         ),
@@ -75,29 +75,29 @@ class AddUpdateTopping extends GetView<AddUpdateToppingController> {
               children: [
                 // title
                 TextWidget(
-                  text: toppingTitle,
-                  fontFamily: fontMedium,
+                  text: AppStrings.headingTitle,
+                  fontFamily: FontFamily.fontMedium,
                   fontSize: SizeConfig.mediumFontSize,
-                  color: normalTextColor,
+                  color: AppColors.normalTextColor,
                 ),
                 SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-                TextFormWidget(
+                CustomFormField(
                   controller: controller.titleController,
                   textCapitalization: TextCapitalization.words,
-                  validator: Validations.validations.validateEmptyFields,
+                  validator: Validations.validations.validateTitle,
                   inputAction: TextInputAction.next,
                 ),
                 SizedBox(height: SizeConfig.blockSizeHorizontal * 6),
 
                 // price
                 TextWidget(
-                  text: toppingPrice,
-                  fontFamily: fontMedium,
+                  text: AppStrings.toppingsPrice,
+                  fontFamily: FontFamily.fontMedium,
                   fontSize: SizeConfig.mediumFontSize,
-                  color: normalTextColor,
+                  color: AppColors.normalTextColor,
                 ),
                 SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-                TextFormWidget(
+                CustomFormField(
                   controller: controller.priceController,
                   keyboardType: TextInputType.number,
                   onlyNumbers: true,
@@ -110,22 +110,22 @@ class AddUpdateTopping extends GetView<AddUpdateToppingController> {
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextWidget(
-                      text: toppingType,
-                      fontFamily: fontMedium,
+                      text: AppStrings.toppingsType,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     Obx(
                           () => MyRadioListTile(
                         value: "1",
                         groupValue: controller.foodType.value,
                         onChanged: (value) {
-                          controller.onChangeFoodType(value!);
+                          controller.onChangeFoodType(value);
                         },
                         title: TextWidget(
-                          text: radio_btn_veg,
+                          text: AppStrings.btnRadioVeg,
                           fontSize: SizeConfig.regularFontSize,
-                          color: normalTextColor,
+                          color: AppColors.normalTextColor,
                         ),
                       ),
                     ),
@@ -134,12 +134,12 @@ class AddUpdateTopping extends GetView<AddUpdateToppingController> {
                         value: "2",
                         groupValue: controller.foodType.value,
                         onChanged: (value) {
-                          controller.onChangeFoodType(value!);
+                          controller.onChangeFoodType(value);
                         },
                         title: TextWidget(
-                          text: radio_btn_nonVeg,
+                          text: AppStrings.btnRadioNonVeg,
                           fontSize: SizeConfig.regularFontSize,
-                          color: normalTextColor,
+                          color: AppColors.normalTextColor,
                         ),
                       ),
                     ),
@@ -151,9 +151,9 @@ class AddUpdateTopping extends GetView<AddUpdateToppingController> {
                   child: Padding(
                     padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*4,
                     top: SizeConfig.blockSizeHorizontal*1),
-                    child: Text("Please select toppings type",
+                    child: Text(AppStrings.errorSelectToppingType,
                     style: TextStyle(
-                      color: Colors.red.shade900, fontSize: 12,
+                      color: AppColors.red.shade900, fontSize: 12,
                     )),
                   ),
                 )),
@@ -163,7 +163,7 @@ class AddUpdateTopping extends GetView<AddUpdateToppingController> {
 
                 ButtonWidget(
                   text: controller.updateTopping.value ?
-                  toppingUpdateButton : toppingAddButton,
+                  AppStrings.toppingsUpdateTitle : AppStrings.toppingsAddTitle,
                   onPressed: () {
                     controller.addUpdateClick();
                   },
@@ -186,7 +186,7 @@ class AddUpdateTopping extends GetView<AddUpdateToppingController> {
         children: [
           const Opacity(
             opacity: 0.6,
-            child: ModalBarrier(dismissible: false, color: Colors.white),
+            child: ModalBarrier(dismissible: false, color: AppColors.white),
           ),
           ColorLoader()
         ],

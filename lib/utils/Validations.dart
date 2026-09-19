@@ -86,7 +86,7 @@ class Validations {
 
   String? validatePinCode(value) {
     if (value.trim().length != 6) {
-      return 'Please enter 6 digit pin code';
+      return '6 digit pin code';
     }
     return null;
   }
@@ -103,6 +103,36 @@ class Validations {
       return "The description must be at least 10 characters";
     } else {
       return null;
+    }
+  }
+
+
+
+
+  // validate name
+  String?  validateName(value) {
+    if(value.trim().length < 3) {
+      return "Name must be at least 3 characters";
+    } else {
+      return null;
+    }
+  }
+
+  // validate title
+  String?  validateTitle(value) {
+    if(value.trim().length < 3) {
+      return "Title must be at least 3 characters";
+    } else {
+      return null;
+    }
+  }
+
+  // validate drop down
+  String? validateDropDown(value){
+    if(value != null) {
+      return null;
+    } else {
+      return "Please select one";
     }
   }
 

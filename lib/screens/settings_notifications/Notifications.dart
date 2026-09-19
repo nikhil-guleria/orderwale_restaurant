@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
-import 'package:food_merchant/constant/app_color.dart';
+import 'package:food_merchant/constant/app_colors.dart';
 import 'package:get/get.dart';
 
 import '../../component/ColorLoader.dart';
-import '../../component/TextWidget.dart';
-import '../../constant/app_constant.dart';
+import '../../component/custom_text_widget.dart';
+import '../../constant/font_family.dart';
 import '../../constant/app_images.dart';
-import '../../utils/SizeConfig.dart';
+import '../../utils/size_config.dart';
 import 'NotificationsController.dart';
 
 class Notifications extends GetView<NotificationsController>{
@@ -15,22 +15,22 @@ class Notifications extends GetView<NotificationsController>{
   Widget build(BuildContext context) {
     List<Widget> widgetList = [];
     var child = Scaffold(
-      backgroundColor: colorWhite,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: TextWidget(text:  'Notifications',
           color: Colors.black,
           fontSize: SizeConfig.appbarTitleSize,
-          fontFamily: fontSemiBold,
-          weight: FontWeight.w600,),
+          fontFamily: FontFamily.fontSemiBold,
+          fontWeight: FontWeight.w600,),
         elevation: 0.0,
         centerTitle: true,
       ),
       body:
           Obx(() =>
       controller.notificationsList.isEmpty  ? Center(child: TextWidget(text: 'No Data Found',
-        fontFamily: fontRegular,fontSize: SizeConfig.regularFontSize,color: normalTextColor,)):
+        fontFamily: FontFamily.fontRegular,fontSize: SizeConfig.regularFontSize,color: AppColors.normalTextColor,)):
       RefreshIndicator(
-        color: colorPrimary,
+        color: AppColors.colorPrimary,
         onRefresh: controller.pullRefresh,
         child: ListView.builder(padding: const EdgeInsets.only(left: 10,right: 10),
 
@@ -46,7 +46,7 @@ class Notifications extends GetView<NotificationsController>{
                     borderRadius: const BorderRadius.all( Radius.circular(6)),
                     child:
                     controller.notificationsList[index].image == "" ?
-                    Image.asset(errorImg, fit: BoxFit.cover,) :
+                    Image.asset(AppImages.errorImg, fit: BoxFit.cover,) :
                     Image.network(controller.notificationsList[index].image,
                       fit: BoxFit.cover,
                     )
@@ -54,16 +54,16 @@ class Notifications extends GetView<NotificationsController>{
               ),
               trailing: TextWidget(
                 text: "#${controller.notificationsList[index].typeId}",
-                  fontFamily: fontMedium,
+                  fontFamily: FontFamily.fontMedium,
                   fontSize: SizeConfig.mediumFontSize),
               title:TextWidget(
                   text: "${controller.notificationsList[index].title}",
-                  fontFamily: fontMedium,
+                  fontFamily: FontFamily.fontMedium,
                   fontSize: SizeConfig.mediumFontSize),
               subtitle:TextWidget(
             text: "${controller.notificationsList[index].description}",
-            color: normalTextColor,
-            fontSize: SizeConfig.regularFontSize,fontFamily: fontRegular,));
+            color: AppColors.normalTextColor,
+            fontSize: SizeConfig.regularFontSize,fontFamily: FontFamily.fontRegular,));
     }),
       )
     ));

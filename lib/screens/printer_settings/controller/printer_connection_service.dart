@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PlatformException, MissingPluginException;
 import 'package:flutter_thermal_printer/flutter_thermal_printer.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
-import 'package:food_merchant/routes/app_pages.dart';
+import 'package:food_merchant/routes/app_routes.dart';
 import 'package:food_merchant/screens/order_details/models/order_details_model.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -695,7 +695,7 @@ class PrinterConnectionService {
           FilledButton(
             onPressed: () {
               Get.back();
-              Get.toNamed(Routes.printerSettings);
+              Get.toNamed(AppRoutes.printerSettings);
             },
             child: const Text('Go to Settings'),
           ),
@@ -706,7 +706,7 @@ class PrinterConnectionService {
 
 
   Future<void> printRestaurantOrderBill({
-    required OrderDetailsData? order,
+    required RestaurantOrderData? order,
     required double gst,
     required String gstLabel,
     required double packagingCharges,
@@ -783,7 +783,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PlatformException, MissingPluginException;
 import 'package:flutter_thermal_printer/flutter_thermal_printer.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
-import 'package:food_merchant/routes/app_pages.dart';
+import 'package:food_merchant/routes/app_routes.dart';
 import 'package:food_merchant/screens/order_details/models/order_details_model.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';

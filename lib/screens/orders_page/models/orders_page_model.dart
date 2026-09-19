@@ -82,7 +82,7 @@ class OrdersPageData {
   String? walletPrice;
   String? paymentType;
   String? orderStatus;
-  String? address;
+  String? deliveryAddress;
 
   OrdersPageData(
       {this.orderId,
@@ -92,7 +92,7 @@ class OrdersPageData {
         this.walletPrice,
         this.paymentType,
         this.orderStatus,
-        this.address});
+        this.deliveryAddress});
 
   OrdersPageData.fromJson(Map<String, dynamic> json) {
     orderId = json['order_id'];
@@ -102,7 +102,7 @@ class OrdersPageData {
     walletPrice = json['wallet_price'];
     paymentType = json['payment_type'];
     orderStatus = json['order_status'];
-    address = json['address'];
+    deliveryAddress = json['delivery_address'];
   }
 
   Map<String, dynamic> toJson() {
@@ -114,7 +114,7 @@ class OrdersPageData {
     data['wallet_price'] = walletPrice;
     data['payment_type'] = paymentType;
     data['order_status'] = orderStatus;
-    data['address'] = address;
+    data['delivery_address'] = deliveryAddress;
     return data;
   }
 }

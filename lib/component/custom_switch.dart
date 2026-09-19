@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/TextWidget.dart';
-import 'package:food_merchant/constant/app_color.dart';
-import 'package:food_merchant/constant/app_constant.dart';
-import 'package:food_merchant/utils/SizeConfig.dart';
+import 'package:food_merchant/component/custom_text_widget.dart';
+import 'package:food_merchant/constant/app_colors.dart';
+import 'package:food_merchant/constant/font_family.dart';
+import 'package:food_merchant/utils/size_config.dart';
 
 Widget customSwitch({required bool switchValue, GestureTapCallback? onTap,
  double? fontSize, double? openPadding, double? closedPadding, double? buttonSize}){
@@ -45,10 +45,10 @@ Widget customSwitch({required bool switchValue, GestureTapCallback? onTap,
                  : EdgeInsets.only(right: closedPadding ?? SizeConfig.blockSizeHorizontal*1.5),
                  child: TextWidget(
                   text:  switchValue ? 'Open' : 'Closed',
-                  color: colorWhite,
+                  color: AppColors.white,
                    height: 1.0,
                    fontSize: fontSize ?? SizeConfig.blockSizeHorizontal*3.5,
-                   fontFamily: fontBold,
+                   fontFamily: FontFamily.fontBold,
                  ),
                ),
              ),

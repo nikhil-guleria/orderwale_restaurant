@@ -5,7 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:food_merchant/constant/string_constants.dart';
+import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/screens/order_details/models/order_details_model.dart';
 import 'package:food_merchant/utils/CommonUtils.dart';
 
@@ -156,7 +156,7 @@ class RestaurantPrintBuilder {
 
   // Public: single, normal bill
   static EscPosBuilder restaurantBill({
-    required OrderDetailsData? order,
+    required RestaurantOrderData? order,
     required double gst,
     required String gstLabel,
     required double packagingCharges,
@@ -195,7 +195,7 @@ class RestaurantPrintBuilder {
   // Public: split-by-person bill. Prints [numberOfPersons] copies,
   // each with its own share, all in ONE combined buffer/command.
   static EscPosBuilder restaurantBillSplitByPersons({
-    required OrderDetailsData? order,
+    required RestaurantOrderData? order,
     required double gst,
     required String gstLabel,
     required double packagingCharges,
@@ -246,7 +246,7 @@ class RestaurantPrintBuilder {
 
 
   static EscPosBuilder restaurantBillSplitByItems({
-    required OrderDetailsData? order,
+    required RestaurantOrderData? order,
     required double gst,
     required String gstLabel,
     required double packagingCharges,
@@ -290,7 +290,7 @@ class RestaurantPrintBuilder {
   // caller controls init()/feedAndCut() so multi-copy jobs share one buffer.
   static void _writeBillBody(
       EscPosBuilder b, {
-        required OrderDetailsData? order,
+        required RestaurantOrderData? order,
         required double gst,
         required String gstLabel,
         required double packagingCharges,
@@ -389,44 +389,70 @@ class RestaurantPrintBuilder {
         .bold(false)
         .divider(char: '-', width: lineWidth);
 
-    final allProducts = order?.products ?? <Products>[];
+    // ── ITEMS grouped by KOT ────────────────────────────────────────────
+    final kotGroups = order?.kots ?? <KotOrdersData>[];
     final bool isItemFilter = selectedItemIds.isNotEmpty;
 
-    final filteredProducts = allProducts.where((item) {
-      if (!isItemFilter) return true;
-      return selectedItemIds.contains(item.id);
-    }).toList();
-
+    // Build a filtered list of (kot, items) so empty KOTs after filtering are skipped
+    final filteredKots = <MapEntry<KotOrdersData, List<RestaurantOrderItemsData>>>[];
     double filteredItemsTotal = 0;
-    for (final item in filteredProducts) {
-      filteredItemsTotal += _parseDouble(item.productPrice);
+    final bool showKotHeader = filteredKots.length > 1;
+    for (final kot in kotGroups) {
+      final items = (kot.items ?? <RestaurantOrderItemsData>[]).where((item) {
+        if (!isItemFilter) return true;
+        return selectedItemIds.contains(item.id);
+      }).toList();
+
+      if (items.isEmpty) continue;
+
+      for (final item in items) {
+        filteredItemsTotal += (item.price ?? 0);
+      }
+
+      filteredKots.add(MapEntry(kot, items));
     }
 
-    if (filteredProducts.isEmpty) {
+    final totalItemCount =
+    filteredKots.fold<int>(0, (sum, e) => sum + e.value.length);
+
+    if (filteredKots.isEmpty || totalItemCount == 0) {
       b.alignCenter().textLine('** NO ITEM DATA RECEIVED **').alignLeft();
     }
 
-    for (final item in filteredProducts) {
-      final wrappedLines = _wrapText(item.productName ?? '', itemWidth);
+    for (final entry in filteredKots) {
+      final kot = entry.key;
+      final items = entry.value;
+      if (showKotHeader) {
+      b
+          .alignCenter()
+          .bold(true)
+          .textLine('-- KOT #${kot.kotNo} --')
+          .bold(false)
+          .alignLeft();
+    }
 
-      for (int i = 0; i < wrappedLines.length; i++) {
-        final qtyStr = i == 0 ? item.productQuantity ?? '' : '';
-        final amtStr = i == 0 ? item.productPrice ?? '' : '';
+      for (final item in items) {
+        final wrappedLines = _wrapText(item.itemName ?? '', itemWidth);
 
-        b.textLine(
-          wrappedLines[i].padRight(nameCol) +
-              qtyStr.padLeft(qtyCol) +
-              amtStr.padLeft(amtCol),
-        );
-      }
+        for (int i = 0; i < wrappedLines.length; i++) {
+          final qtyStr = i == 0 ? '${item.itemCount ?? ''}' : '';
+          final amtStr = i == 0 ? '${item.price ?? 0}' : '';
 
-      if ((item.customisationTitle ?? '').isNotEmpty) {
-        b.textLine('  > ${item.customisationTitle}');
-      }
+          b.textLine(
+            wrappedLines[i].padRight(nameCol) +
+                qtyStr.padLeft(qtyCol) +
+                amtStr.padLeft(amtCol),
+          );
+        }
 
-      for (final topping in (item.toppings ?? <Toppings>[])) {
-        if ((topping.title ?? '').isNotEmpty) {
-          b.textLine('  + ${topping.title}');
+        if ((item.customisationTitle ?? '').isNotEmpty) {
+          b.textLine('  > ${item.customisationTitle}');
+        }
+
+        for (final topping in (item.toppings ?? <RestaurantToppingsData>[])) {
+          if ((topping.title ?? '').isNotEmpty) {
+            b.textLine('  + ${topping.title}');
+          }
         }
       }
     }
@@ -466,7 +492,7 @@ class RestaurantPrintBuilder {
     if (roundOff.trim().isNotEmpty) {
       b.keyValue(
         'Round Off',
-        roundOff.replaceAll(currSymbolIn, 'Rs'),
+        roundOff.replaceAll(AppStrings.currSymbolIn, 'Rs'),
         width: lineWidth,
       );
     }

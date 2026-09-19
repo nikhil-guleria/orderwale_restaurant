@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:food_merchant/utils/SizeConfig.dart';
+import 'package:food_merchant/utils/size_config.dart';
 import 'package:get/get.dart';
 
-import '../../constant/app_color.dart';
+import '../../constant/app_colors.dart';
 import '../../utils/ImagePicker.dart';
 import 'ImagePreviewController.dart';
 
@@ -18,7 +18,7 @@ class PreviewImages extends StatelessWidget {
     //SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
     ImagePreviewController controller = Get.put(ImagePreviewController(selectedImages));
     return Scaffold(
-      backgroundColor: colorWhite,
+      backgroundColor: AppColors.white,
       body:  Obx(()=> controller.newList.isNotEmpty ?
       Stack(alignment: Alignment.topCenter,
         children:[ PageView.builder(
@@ -52,7 +52,7 @@ class PreviewImages extends StatelessWidget {
                         color: Colors.black45),
                       child: IconButton(onPressed: () { Get.back(); }, icon: const Icon(
                         Icons.arrow_back,
-                        color: colorWhite,
+                        color: AppColors.white,
                       ),),
                     ),
                 )),
@@ -71,7 +71,7 @@ class PreviewImages extends StatelessWidget {
                             },
                             icon: const Icon(
                               Icons.delete_outline_outlined,
-                              color: colorWhite,
+                              color: AppColors.white,
                             ),
                           ),
                         ),
@@ -90,7 +90,7 @@ class PreviewImages extends StatelessWidget {
                             }); },
                             icon: const Icon(
                               Icons.crop,
-                              color: colorWhite,
+                              color: AppColors.white,
                             ),
                           ),
                         ),
@@ -104,7 +104,7 @@ class PreviewImages extends StatelessWidget {
                             },
                             icon: const Icon(
                               Icons.done,
-                              color: colorWhite,
+                              color: AppColors.white,
                             ),
                           ),
                         )

@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:food_merchant/constant/app_strings.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import '../../../routes/app_pages.dart';
+import '../../../routes/app_routes.dart';
 import '../../../services/repo/CommonRepo.dart';
 import '../../../utils/CommonUtils.dart';
-import '../../../utils/GetStorageConstants.dart';
 import '../models/orders_page_model.dart';
 
 
 class OrdersPageController extends GetxController {
-
-//var allOrders = <OrdersNew>[].obs;
-//var filterList = <OrdersNew>[].obs;
-//final List<String> choices = ['New Order',  'Preparing' , 'Ready' , "On The Way", 'Delivered' , 'Declined'];
-
 ScrollController scrollController = ScrollController();
   var showLoader = false.obs;
   var initialLoad = true.obs;
@@ -25,13 +19,6 @@ ScrollController scrollController = ScrollController();
   final RxString selectedChoice = "1".obs;
   var colorChange  = "1".obs;
   var updateStatus = false.obs;
-
-
-
-  //var notificationVisible = false.obs;
-  //var orderId = "".obs;
-  //var isVisible = true.obs;
-  //var storage = GetStorage();
 
 
 
@@ -47,18 +34,15 @@ void onInit() {
 
  Future<void> fetchList(int page) async {
   try {
-    var storage = GetStorage();
-    var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
-    var param = {
-      "restaurant_id": "$restaurantId",
-      "status": selectedChoice.value,
-      "per_page": 50
+    final param = {
+      "status": selectedChoice.value.trim(),
+      "per_page":50
     };
-    var ordersList = await ApiController().restaurantAllOrders(param, "$page");
+    var ordersList = await ApiController().restaurantOrdersPage(param, page);
     refreshLoad.value = false;
     showLoader.value = false;
     initialLoad.value = false;
-    if (ordersList.responseCode == 1) {
+    if (ordersList.responseCode == AppStrings.apiSuccess) {
       OrdersPageModel ordersListModel = OrdersPageModel.fromJson(ordersList.response?.data ?? {});
       if (page == 1) {
         orderList.clear();
@@ -68,12 +52,17 @@ void onInit() {
       currentPage.value = ordersListModel.currentPage ?? 1;
     }
     else {
+      if(ordersList.responseCode == AppStrings.unauthenticated){
+        await CommonUtils.utils.unauthenticatedRestaurant();
+        return;
+      }
       if(ordersList.responseCode == 0){
         orderList.clear();
         return;
       }
-        CommonUtils.utils.handleApiError(
-            ordersList.responseCode, ordersList.msg);
+        CommonUtils.utils.handleAlertMsg(
+            code: ordersList.responseCode,
+            message: ordersList.msg);
     }
   } catch (e){
     refreshLoad.value = false;
@@ -135,7 +124,7 @@ void changeChipsClick(String choice){
 
 
  void goToOrderDetails(int index){
-   Get.toNamed(Routes.ORDER_DETAILS, arguments: orderList[index].orderId)
+   Get.toNamed(AppRoutes.orderDetails, arguments: orderList[index].orderId)
        ?.then((value) {
      orderList[index].orderStatus = value[0];
      orderList.refresh();
@@ -147,65 +136,4 @@ void changeChipsClick(String choice){
     Get.back(result: ["0",
       updateStatus.value]);
   }
-
-
-
-
-
-
-
-
-
-/*void showNotification(String id) {
-  storage.write("order_id", id);
-  storage.write("notification", true);
-  knowNotificationStatus();
-}
-
-void knowNotificationStatus(){
-  if(storage.read("order_id") != null) {
-    orderId.value= storage.read("order_id");
-  }
-  if(storage.read("notification") !=null) {
-    notificationVisible.value = storage.read("notification");
-  }
-}
- checkConnectivity({bool silently = false, int attempt = 0}) async {
-    final connectionAvailable = await hasConnection();
-    if (!connectionAvailable) {
-      if (silently && attempt < 5) {
-        await Future.delayed(const Duration(seconds: 2));
-        checkConnectivity(silently: silently, attempt: attempt + 1);
-        return;
-      }
-      showNoConnectionDialog();
-    } else {
-
-    }}
-
-  Future<bool> hasConnection() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    return connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi ;
-  }
-
-
-  showNoConnectionDialog() {
-    Get.dialog(AlertDialog(
-      backgroundColor: colorWhite,
-      surfaceTintColor: colorWhite,
-          title: const Text("No Internet"),
-          content: const Text("Please check your internet connection"),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("Close"),
-              onPressed: () async {
-                Get.back();
-                checkConnectivity(silently: true);
-              },
-            ),
-          ],
-        ));
-  }
-*/
 }

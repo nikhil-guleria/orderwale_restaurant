@@ -6,11 +6,11 @@ import 'package:food_merchant/screens/restaurant_details/reviews/Reviews.dart';
 import 'package:food_merchant/screens/restaurant_details/controller/RestaurantDetailsController.dart';
 import 'package:get/get.dart';
 import '../../../component/ColorLoader.dart';
-import '../../../component/TextWidget.dart';
-import '../../../constant/app_color.dart';
-import '../../../constant/app_constant.dart';
+import '../../../component/custom_text_widget.dart';
+import '../../../constant/app_colors.dart';
+import '../../../constant/font_family.dart';
 import '../../../constant/app_images.dart';
-import '../../../utils/SizeConfig.dart';
+import '../../../utils/size_config.dart';
 import '../details/Details.dart';
 
 class RestaurantDetails extends  GetView<RestaurantDetailsController>  {
@@ -37,7 +37,7 @@ class RestaurantDetails extends  GetView<RestaurantDetailsController>  {
                  statusBarIconBrightness: innerBoxIsScrolled  ?   Brightness.dark : Brightness.light,
                ),
                elevation: 0.0,
-              // leading:IconButton(icon: Icon(Icons.arrow_back,color: innerBoxIsScrolled   ? Colors.black : colorWhite ,)
+              // leading:IconButton(icon: Icon(Icons.arrow_back,color: innerBoxIsScrolled   ? Colors.black : AppColors.white ,)
              //onPressed: (){Get.back();},),
                expandedHeight:SizeConfig.blockSizeHorizontal*60,
                pinned: true,
@@ -55,9 +55,9 @@ class RestaurantDetails extends  GetView<RestaurantDetailsController>  {
                                child: TextWidget(
                                    text:'${controller.restaurantsDetail.value.name}',
                                    maxLines: 3,
-                                   color: colorWhite,
+                                   color: AppColors.white,
                                    textAlign: TextAlign.start,
-                                   fontFamily: fontBold,fontSize: SizeConfig.mediumFontSize),
+                                   fontFamily: FontFamily.fontBold,fontSize: SizeConfig.mediumFontSize),
                              ),
                                controller.restaurantsDetail.value.avgReview == "0.0" ? Container() :
                                Container(padding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*1.5,
@@ -74,9 +74,9 @@ class RestaurantDetails extends  GetView<RestaurantDetailsController>  {
                                          child: TextWidget(
                                              text: '${controller.restaurantsDetail.value.avgReview}',
                                              maxLines: 1,
-                                             color: colorWhite ,fontFamily: fontSemiBold,fontSize: SizeConfig.blockSizeHorizontal*3),
+                                             color: AppColors.white ,fontFamily: FontFamily.fontSemiBold,fontSize: SizeConfig.blockSizeHorizontal*3),
                                        ),
-                                       Icon(Icons.star,size: SizeConfig.blockSizeHorizontal*3,color: colorWhite)
+                                       Icon(Icons.star,size: SizeConfig.blockSizeHorizontal*3,color: AppColors.white)
 
 
                                      ],))]),
@@ -85,10 +85,10 @@ class RestaurantDetails extends  GetView<RestaurantDetailsController>  {
                        return TextWidget(
                            text:'${controller.restaurantsDetail.value.name}',
                            maxLines:   1,
-                           color: colorBlack,
+                           color: AppColors.blackText,
                            textAlign:  TextAlign.center,
                            overflow: TextOverflow.ellipsis,
-                           fontFamily: fontBold,fontSize: SizeConfig.mediumFontSize);
+                           fontFamily: FontFamily.fontBold,fontSize: SizeConfig.mediumFontSize);
                      }
                    /*  return
                        Padding(
@@ -99,9 +99,9 @@ class RestaurantDetails extends  GetView<RestaurantDetailsController>  {
                                child: TextWidget(
                                    text:'${controller.restaurantsDetail.value.name}',
                                    maxLines:  constraints.maxHeight > SizeConfig.blockSizeVertical*10 ? 3: 1,
-                                   color: constraints.maxHeight > SizeConfig.blockSizeVertical*10 ? colorWhite :Colors.black,
+                                   color: constraints.maxHeight > SizeConfig.blockSizeVertical*10 ? AppColors.white :Colors.black,
                                    textAlign:  constraints.maxHeight > SizeConfig.blockSizeVertical*10 ? TextAlign.start : TextAlign.center,
-                                   fontFamily: fontBold,fontSize: SizeConfig.mediumFontSize),
+                                   fontFamily: FontFamily.fontBold,fontSize: SizeConfig.mediumFontSize),
                              ),
                                controller.restaurantsDetail.value.avgReview == "0.0" ? Container() :
                                Visibility(
@@ -120,9 +120,9 @@ class RestaurantDetails extends  GetView<RestaurantDetailsController>  {
                                            child: TextWidget(
                                                text: '${controller.restaurantsDetail.value.avgReview}',
                                                maxLines: 1,
-                                               color: colorWhite ,fontFamily: fontSemiBold,fontSize: SizeConfig.blockSizeHorizontal*3),
+                                               color: AppColors.white ,fontFamily: FontFamily.fontSemiBold,fontSize: SizeConfig.blockSizeHorizontal*3),
                                          ),
-                                         Icon(Icons.star,size: SizeConfig.blockSizeHorizontal*3,color: colorWhite)
+                                         Icon(Icons.star,size: SizeConfig.blockSizeHorizontal*3,color: AppColors.white)
 
 
                                        ],)),
@@ -147,11 +147,11 @@ class RestaurantDetails extends  GetView<RestaurantDetailsController>  {
                             width: Get.width,
                             fit: BoxFit.cover,
                             imageUrl: controller.restaurantsDetail.value.bannerImage!,
-                            placeholder: (context, url) => Image.asset(loadingGif,
+                            placeholder: (context, url) => Image.asset(AppImages.loadingGif,
                             fit: BoxFit.cover,
                             height: SizeConfig.blockSizeHorizontal*70,
                             width: Get.width,),
-                            errorWidget: (context, url, error) => Image.asset(appLogoTransparent,
+                            errorWidget: (context, url, error) => Image.asset(AppImages.appLogoTransparent,
                         height:SizeConfig.blockSizeHorizontal*70,
                              width: Get.width,)))
 
@@ -167,12 +167,12 @@ class RestaurantDetails extends  GetView<RestaurantDetailsController>  {
                    child:
                    TabBar(
                      controller: controller.tabController,
-                     indicatorColor: colorPrimary,
+                     indicatorColor: AppColors.colorPrimary,
                      dividerColor: Colors.transparent,
-                     labelStyle: TextStyle(fontFamily: fontSemiBold,fontSize: SizeConfig.mediumFontSize),
-                     unselectedLabelStyle: TextStyle(fontFamily: fontSemiBold,fontSize: SizeConfig.mediumFontSize),
-                     labelColor: colorPrimary,
-                     unselectedLabelColor: blackShades,
+                     labelStyle: TextStyle(fontFamily: FontFamily.fontSemiBold,fontSize: SizeConfig.mediumFontSize),
+                     unselectedLabelStyle: TextStyle(fontFamily: FontFamily.fontSemiBold,fontSize: SizeConfig.mediumFontSize),
+                     labelColor: AppColors.colorPrimary,
+                     unselectedLabelColor: AppColors.blackShades,
                      tabs:   const [
                        Tab(  text: "Details"),
                        Tab( text: "Menu"),

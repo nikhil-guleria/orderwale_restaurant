@@ -11,16 +11,6 @@ class DashboardOrdersModel {
     result =
     json['result'] != null ? DashboardOrdersResult.fromJson(json['result']) : null;
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['code'] = code;
-    data['message'] = message;
-    if (result != null) {
-      data['result'] = result!.toJson();
-    }
-    return data;
-  }
 }
 
 class DashboardOrdersResult {
@@ -40,16 +30,6 @@ class DashboardOrdersResult {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['is_available'] = isAvailable;
-    data['delivery_availability'] = deliveryAvailability;
-    if (orders != null) {
-      data['orders'] = orders!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class DashboardOrdersData {
@@ -68,6 +48,7 @@ class DashboardOrdersData {
   String? paymentType;
   String? created;
   List<DashboardOrderItemDetails>? details;
+  String? review;
 
   DashboardOrdersData(
       {this.name,
@@ -84,7 +65,9 @@ class DashboardOrdersData {
         this.walletPrice,
         this.paymentType,
         this.created,
-        this.details});
+        this.details,
+        this.review
+      });
 
   DashboardOrdersData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -101,34 +84,13 @@ class DashboardOrdersData {
     walletPrice = json['wallet_price'];
     paymentType = json['payment_type'];
     created = json['created'];
+    review = json['review'];
     if (json['details'] != null) {
       details = <DashboardOrderItemDetails>[];
       json['details'].forEach((v) {
         details!.add(DashboardOrderItemDetails.fromJson(v));
       });
     }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    data['user_name'] = userName;
-    data['user_phone'] = userPhone;
-    data['discount_price'] = discountPrice;
-    data['banner_image'] = bannerImage;
-    data['banner_thumbnail'] = bannerThumbnail;
-    data['address'] = address;
-    data['order_id'] = orderId;
-    data['order_status'] = orderStatus;
-    data['delivery_type'] = deliveryType;
-    data['total_price'] = totalPrice;
-    data['wallet_price'] = walletPrice;
-    data['payment_type'] = paymentType;
-    data['created'] = created;
-    if (details != null) {
-      data['details'] = details!.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
 }
 
@@ -167,21 +129,6 @@ class DashboardOrderItemDetails {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['customisation_title'] = customisationTitle;
-    data['item_name'] = itemName;
-    data['item_count'] = itemCount;
-    data['type'] = type;
-    data['price'] = price;
-    data['item_image'] = itemImage;
-    data['item_thumbnail'] = itemThumbnail;
-    if (toppings != null) {
-      data['toppings'] = toppings!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class DashboardOrderToppings {
@@ -210,17 +157,5 @@ class DashboardOrderToppings {
     price = json['price'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['restaurant_id'] = restaurantId;
-    data['title'] = title;
-    data['type'] = type;
-    data['price'] = price;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    return data;
   }
 }

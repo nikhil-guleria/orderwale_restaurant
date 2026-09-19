@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/DialogBox.dart';
-import 'package:food_merchant/constant/string_constants.dart';
+import 'package:food_merchant/component/custom_dialog_box.dart';
+import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/services/commonModels/customisation_list_model.dart';
 import 'package:food_merchant/services/repo/CommonRepo.dart';
 import 'package:food_merchant/utils/CommonUtils.dart';
@@ -70,7 +70,7 @@ class CustomisationTypeController extends GetxController {
 
 
  void  changeCustomisationType(value){
-    Get.dialog(showDialogBox(title: alert,
+    Get.dialog(showDialogBox(title: AppStrings.alertTitle,
       message: "If you change the type, previous list will be deleted",
       twoButtons: true,
       onCancel: () {
@@ -88,7 +88,7 @@ class CustomisationTypeController extends GetxController {
 
 
  void deleteCustomisationItem(index){
-    Get.dialog(showDialogBox(title: alert,
+    Get.dialog(showDialogBox(title: AppStrings.alertTitle,
       message: "Are you really want to delete this.",
       twoButtons: true,
       onCancel: () {

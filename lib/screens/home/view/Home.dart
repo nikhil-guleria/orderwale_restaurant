@@ -4,24 +4,24 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../component/ColorLoader.dart';
-import '../../../component/TextWidget.dart';
-import '../../../constant/app_color.dart';
-import '../../../constant/app_constant.dart';
+import '../../../component/custom_text_widget.dart';
+import '../../../constant/app_colors.dart';
+import '../../../constant/font_family.dart';
 import '../../../constant/app_images.dart';
-import '../../../utils/SizeConfig.dart';
+import '../../../utils/size_config.dart';
 
 class Home extends GetView<HomeController>{
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetList = [];
     var child = Scaffold(
-      backgroundColor: colorWhite,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title:  TextWidget(text: 'My Restaurant',
           color: Colors.black,
           fontSize: SizeConfig.appbarTitleSize,
-          fontFamily: fontSemiBold,
-          weight: FontWeight.w600,),
+          fontFamily: FontFamily.fontSemiBold,
+          fontWeight: FontWeight.w600,),
         elevation: 0.0,
         centerTitle: true,
       ),
@@ -100,7 +100,7 @@ class Home extends GetView<HomeController>{
 
 
          :
-      RefreshIndicator(color: colorPrimary,
+      RefreshIndicator(color: AppColors.colorPrimary,
           onRefresh: controller.pullRefresh, child:
    ListView.builder(padding: const EdgeInsets.only(left: 10,right: 10),
 
@@ -142,7 +142,7 @@ class Home extends GetView<HomeController>{
                              borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft: Radius.circular(15)),
                              child: controller.restaurantsList[index].image != "" ?
                              Image.network( controller.restaurantsList[index].image,fit: BoxFit.cover)
-                                 : Image.asset(errorImg,fit: BoxFit.cover,)
+                                 : Image.asset(AppImages.errorImg,fit: BoxFit.cover,)
 
 
                          )),
@@ -156,8 +156,8 @@ class Home extends GetView<HomeController>{
                            child: TextWidget(
                              maxLines: 2,
                              overflow: TextOverflow.ellipsis,
-                             text:'${controller.restaurantsList[index].name}',color: colorWhite,
-                             fontFamily: fontBold,fontSize: SizeConfig.boldFontSize,),
+                             text:'${controller.restaurantsList[index].name}',color: AppColors.white,
+                             fontFamily: FontFamily.fontBold,fontSize: SizeConfig.boldFontSize,),
                          ),
                        ),
                        controller.restaurantsList[index].review == "0.0" ? Container() :
@@ -174,8 +174,8 @@ class Home extends GetView<HomeController>{
                                children: [
                                  TextWidget(
                                      text: '${controller.restaurantsList[index].review}',
-                                     color: colorWhite ,fontFamily: fontSemiBold,fontSize: SizeConfig.regularFontSize),
-                                 Icon(Icons.star,size: SizeConfig.regularFontSize,color: colorWhite)
+                                     color: AppColors.white ,fontFamily: FontFamily.fontSemiBold,fontSize: SizeConfig.regularFontSize),
+                                 Icon(Icons.star,size: SizeConfig.regularFontSize,color: AppColors.white)
 
 
                                ],)),
@@ -187,14 +187,14 @@ class Home extends GetView<HomeController>{
                      padding: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*2, left: SizeConfig.blockSizeHorizontal*2),
                      child: Row(
                        children: [
-                         Icon(Icons.location_on,color: colorPrimary,size: SizeConfig.blockSizeHorizontal*6,),
+                         Icon(Icons.location_on,color: AppColors.colorPrimary,size: SizeConfig.blockSizeHorizontal*6,),
                          SizedBox(width: SizeConfig.blockSizeHorizontal*2,),
                          SizedBox(
                            width: SizeConfig.blockSizeHorizontal*80,
                            child: TextWidget(
                              overflow: TextOverflow.ellipsis,
                              maxLines: 2,
-                             text: '${controller.restaurantsList[index].address!}',fontFamily: fontMedium,fontSize: SizeConfig.regularFontSize,),
+                             text: '${controller.restaurantsList[index].address!}',fontFamily: FontFamily.fontMedium,fontSize: SizeConfig.regularFontSize,),
                          )
                        ],
                      ),

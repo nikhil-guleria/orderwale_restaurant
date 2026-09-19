@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:food_merchant/constant/app_color.dart';
+import 'package:food_merchant/constant/app_colors.dart';
 
 class SetUpOrdersData {
   static final SetUpOrdersData stUP = SetUpOrdersData._internal();
@@ -46,8 +45,8 @@ class SetUpOrdersData {
         );
       case "2":
         return const LinearGradient(
-          colors: [ colorPrimary,
-            colorPrimary,],
+          colors: [ AppColors.colorPrimary,
+            AppColors.colorPrimary,],
         );
       case "3":
         return const LinearGradient(
@@ -81,14 +80,14 @@ class SetUpOrdersData {
         );
       default:
         return const LinearGradient(
-          colors: [ colorPrimary,
-            colorPrimary],
+          colors: [ AppColors.colorPrimary,
+            AppColors.colorPrimary],
         );
     }
   }
 
 
-  setCardType(String type) {
+  String setCardType(String type) {
     if (type == "1") {
       return 'COD';
     } else if (type == "2") {

@@ -2,7 +2,7 @@ import 'package:food_merchant/services/commonModels/customised_product_model.dar
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../../../routes/app_pages.dart';
+import '../../../routes/app_routes.dart';
 import '../../../services/repo/CommonRepo.dart';
 import '../../../utils/CommonUtils.dart';
 import '../../../utils/GetStorageConstants.dart';
@@ -68,7 +68,7 @@ class RestaurantMenuController extends GetxController {
 
 
      updateProduct({sub, item}){
-       Get.toNamed(Routes.addCustomisedProduct, arguments: {
+       Get.toNamed(AppRoutes.addCustomisedProduct, arguments: {
          "item" : productDetails[sub].items![item],
          "category_name": productDetails[sub].items![item].categoryName.toString(),
          "category_id": productDetails[sub].items![item].categoryId.toString(),
@@ -94,7 +94,7 @@ class RestaurantMenuController extends GetxController {
      }
 
      addNewProduct(){
-       Get.toNamed(Routes.addCustomisedProduct)?.then((value) {
+       Get.toNamed(AppRoutes.addCustomisedProduct)?.then((value) {
          if(value == "added") {
            getInitialData();
          }

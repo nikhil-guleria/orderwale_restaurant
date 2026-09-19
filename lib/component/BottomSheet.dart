@@ -1,15 +1,15 @@
 
 import 'package:flutter/material.dart';
-import 'package:food_merchant/constant/app_color.dart';
-import '../constant/app_constant.dart';
-import '../utils/SizeConfig.dart';
-import 'TextWidget.dart';
+import 'package:food_merchant/constant/app_colors.dart';
+import '../constant/font_family.dart';
+import '../utils/size_config.dart';
+import 'custom_text_widget.dart';
 
  Future showCustomBottomSheet({required BuildContext context, required String title, required childWidget}){
   return showModalBottomSheet(
       useSafeArea: true,
       context: context,
-      backgroundColor: colorWhite,
+      backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(25.0),
@@ -35,9 +35,9 @@ import 'TextWidget.dart';
                alignment: Alignment.topLeft,
                padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal * 4),
                child: TextWidget(text: title,
-                   fontFamily: fontMedium,
+                   fontFamily: FontFamily.fontMedium,
                    fontSize: SizeConfig.mediumFontSize,
-                   color: Colors.black, weight: FontWeight.bold,),
+                   color: Colors.black, fontWeight: FontWeight.bold,),
              ),
              SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
              Expanded(

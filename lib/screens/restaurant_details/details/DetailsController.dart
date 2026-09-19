@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../services/repo/CommonRepo.dart';
 import '../../../utils/CommonUtils.dart';
-import '../model/RestaurantDetailsModel.dart';
+import '../model/restaurant_details_model.dart';
 
 class DetailsController extends GetxController{
   var restaurantDetails = RestaurantDetailsModel().obs;

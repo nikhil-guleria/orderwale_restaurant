@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/TextWidget.dart';
-import '../constant/app_color.dart';
-import '../constant/app_constant.dart';
-import '../utils/SizeConfig.dart';
+import 'package:food_merchant/component/custom_text_widget.dart';
+import '../constant/app_colors.dart';
+import '../constant/font_family.dart';
+import '../utils/size_config.dart';
 
 class ButtonWidget extends StatelessWidget{
   final VoidCallback? onPressed;
@@ -14,31 +14,39 @@ class ButtonWidget extends StatelessWidget{
   final double? height;
   final Color? backGroundColor;
   final double? roundedCorner;
-  const ButtonWidget({super.key,  required this.text, required this.onPressed,
-    this.txtColor ,this.fontFamily,this.fontSize, this.width, this.height, this.backGroundColor, this.roundedCorner});
+  final Color? borderColor;
+  final double? borderWidth;
+
+  const ButtonWidget({super.key,  required this.text, this.onPressed,
+    this.txtColor ,this.fontFamily,this.fontSize, this.width, this.height, this.backGroundColor,
+    this.borderColor, this.borderWidth, this.roundedCorner,});
   @override
   Widget build(BuildContext context) {
-    return Container( height: height ?? SizeConfig.blockSizeHorizontal*12.7,
+    return Container(
+      height: height ?? 44,
       width:  width ?? SizeConfig.screenWidth,
       decoration: BoxDecoration(
-        border: Border.all(color:   backGroundColor ?? colorPrimary,width: 0.0),
+        border: Border.all(color:  borderColor ??  backGroundColor ?? AppColors.colorPrimary,
+            width: borderWidth ?? 0.0),
     borderRadius:  BorderRadius.all(
-    Radius.circular(roundedCorner ?? 10.0))
-
-      ),
+        Radius.circular(roundedCorner ?? 8.0))),
 
       child:  ElevatedButton(style: ElevatedButton.styleFrom(
-        backgroundColor:  backGroundColor ?? colorPrimary,
+        backgroundColor:  backGroundColor ?? AppColors.colorPrimary,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(roundedCorner ?? 10.0),
+          borderRadius: BorderRadius.circular(roundedCorner ?? 8.0),
         ),
+        padding: EdgeInsets.zero
       ),
         onPressed: onPressed,
-        child: TextWidget(text: text,
-        fontFamily: fontFamily ?? fontMedium,
-        color:  txtColor ?? colorWhite,
-        maxLines: 1,overflow: TextOverflow.ellipsis,
-        fontSize: fontSize ?? SizeConfig.mediumFontSize),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: SizeConfig.padding4),
+          child: TextWidget(text: text,
+          fontFamily: fontFamily ?? FontFamily.fontSemiBold,
+          color:  txtColor ?? AppColors.white,
+          maxLines: 1,overflow: TextOverflow.ellipsis,
+          fontSize: fontSize ?? SizeConfig.commonButtonTextSize),
+        ),
       ),
 
     );

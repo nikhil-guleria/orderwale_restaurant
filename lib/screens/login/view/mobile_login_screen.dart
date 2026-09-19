@@ -1,19 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_merchant/component/button_widget.dart';
-import 'package:food_merchant/component/PasswordTextFormFieldWidget.dart';
-import 'package:food_merchant/constant/app_constant.dart';
+import 'package:food_merchant/component/custom_password_form_field.dart';
+import 'package:food_merchant/constant/font_family.dart';
 import 'package:food_merchant/screens/login/controller/login_controller.dart';
 import 'package:food_merchant/utils/CommonUtils.dart';
 import 'package:food_merchant/utils/Validations.dart';
 import 'package:get/get.dart';
 import '../../../component/ColorLoader.dart';
-import '../../../component/TextFormFieldWidget.dart';
-import '../../../constant/app_color.dart';
-import '../../../constant/string_constants.dart';
-import '../../../routes/app_pages.dart';
-import '../../../utils/SizeConfig.dart';
-import '../../../component/TextWidget.dart';
+import '../../../component/custom_form_field.dart';
+import '../../../constant/app_colors.dart';
+import '../../../constant/app_strings.dart';
+import '../../../utils/size_config.dart';
+import '../../../component/custom_text_widget.dart';
 
 
 class MobileLoginScreen extends GetView<LoginController> {
@@ -27,46 +26,49 @@ class MobileLoginScreen extends GetView<LoginController> {
     List<Widget> widgetList = [];
     var child = Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: colorWhite,
-      appBar: AppBar(
-        title: TextWidget(text: login,
-          color: Colors.black,
-          fontSize: SizeConfig.appbarTitleSize,
-          fontFamily: fontSemiBold,
-          weight: FontWeight.w600,),
-        elevation: 0.0,
-        centerTitle: true,
-      ),
+      backgroundColor: AppColors.white,
+      appBar: buildAppBar(title: AppStrings.loginTitle,
+          automaticallyImplyLeading: false),
       body: SafeArea(
         child: Container(
           height: SizeConfig.screenHeight, width: SizeConfig.screenWidth,
           padding: EdgeInsets.only(
-              bottom:  SizeConfig.blockSizeHorizontal*2,
-              left: SizeConfig.blockSizeHorizontal*4,
-              right: SizeConfig.blockSizeHorizontal*4),
+              bottom:  SizeConfig.padding8,
+              left: SizeConfig.padding16,
+              right: SizeConfig.padding16),
           child: SingleChildScrollView(
             child: Form(
               key: controller.formKey,
               child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: SizeConfig.blockSizeHorizontal*4),
-                  TextWidget(text: lbl_welcom, fontFamily: fontBold,
-                      fontSize: SizeConfig.boldFontSize),
-                  SizedBox(height: SizeConfig.blockSizeHorizontal*3),
-                  TextWidget(text: login_desc, fontFamily: fontMedium,color: normalTextColor,
-                      fontSize: SizeConfig.mediumFontSize),
-        
-                  SizedBox(height: SizeConfig.blockSizeHorizontal*12),
-                  TextFormWidget(controller: controller.emailController,
+                  // welcome
+                  TextWidget(text: AppStrings.welcome,
+                      fontFamily: FontFamily.fontBold,
+                      fontSize: SizeConfig.semiboldTextSize),
+                  SizeConfig.verticalSpace12,
+
+                  // login description
+                  TextWidget(text: AppStrings.loginDesc,
+                      color: AppColors.normalTextColor,),
+                  SizeConfig.verticalSpace40,
+
+
+                 // email field
+                  CustomFormField(
+                    controller: controller.emailController,
                     onSubmitted:  (v) {
                       FocusScope.of(context)
                           .requestFocus(controller.focusPassword);
                     },
                     focusNode: controller.focusEmailPassword,
                     validator: Validations.validations.validateEmail,
-                    hintText: email_hint,inputAction: TextInputAction.next,),
-                  SizedBox(height: SizeConfig.blockSizeHorizontal*6),
-                 Obx(() =>  PasswordTextFormWidget(controller: controller.passwordController,
+                    hintText: AppStrings.headingEmail,
+                    inputAction: TextInputAction.next,),
+                  SizeConfig.verticalSpace24,
+
+
+                 // password field
+                 Obx(() =>  CustomPasswordFormField(controller: controller.passwordController,
                     focusNode: controller.focusPassword,
                     validator: Validations.validations.validatePassword,
                       obscureText:
@@ -74,44 +76,48 @@ class MobileLoginScreen extends GetView<LoginController> {
                       toggle: () =>
                       controller.visiblePassword.value =
                       !controller.visiblePassword.value,
-                    hintText: password_hint)),
-                  SizedBox(height: SizeConfig.blockSizeHorizontal*7.6),
+                    hintText: AppStrings.headingPassword)),
+                  SizeConfig.verticalSpace28,
+
+
+                  // forgot password
                   Align(alignment: Alignment.topRight,
-                  child: InkWell( onTap: (){
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    Get.toNamed(Routes.FORGOT_PASSWORD);},
+                  child: InkWell( onTap: controller.forgotPasswordClick,
+                      highlightColor: AppColors.transparent,
+                      splashColor: AppColors.transparent,
                       child: TextWidget(
-                          text: forgot_password,color:blackShades ,
-                          fontSize: SizeConfig.blockSizeHorizontal*4))),
-                  SizedBox(height: SizeConfig.blockSizeHorizontal*12),
-                 ButtonWidget(text: btnLogin,fontFamily: fontMedium,
-        
-                   onPressed: (){
-                     controller.loginUser();
-                   },
-                 ),
-                  SizedBox(height: SizeConfig.blockSizeHorizontal*5),
+                          text: "${AppStrings.forgotPasswordLbl}?",
+                          color:AppColors.blackShades ,
+                          fontSize: SizeConfig.regularTextSize))),
+                  SizeConfig.verticalSpace28,
+
+                  // login btn
+                  ButtonWidget(
+                    text: AppStrings.btnLogin,
+                    onPressed: controller.loginUser
+                  ),
+                  SizeConfig.verticalSpace24,
+
+
+                  // create new account
                   Padding( padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*3),
                     child: RichText(
                         text: TextSpan(
-                            text: "Don't have an account?",
-                            style: TextStyle(color: normalTextColor,
-                                fontSize: SizeConfig.mediumFontSize,
-                                fontFamily: fontMedium),
+                            text: AppStrings.loginHaveAccount,
+                            style: TextStyle(color: AppColors.normalTextColor,
+                                fontSize: SizeConfig.regularTextSize,
+                                fontFamily: FontFamily.fontMedium),
                             children: [
                               TextSpan(
-                                text:  ' Create Account',
+                                text: AppStrings.loginCreateAccount,
                                      style:TextStyle(
-                                      color: colorPrimary,
-                                      fontSize: SizeConfig.mediumFontSize,
-                                      fontFamily: fontMedium),
-                              recognizer: TapGestureRecognizer()..onTap = (){
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                Get.toNamed(Routes.NEW_USER);
-                              })
+                                      color: AppColors.colorPrimary,
+                                      fontSize: SizeConfig.regularTextSize,
+                                      fontFamily: FontFamily.fontMedium),
+                              recognizer: TapGestureRecognizer()..onTap = controller.createAccountClick)
                               ])),
                   ),
-                  SizedBox(height: SizeConfig.blockSizeHorizontal*2),
+                  SizeConfig.verticalSpace8,
         
                 ],
               ),
@@ -127,7 +133,7 @@ class MobileLoginScreen extends GetView<LoginController> {
         children: [
           const Opacity(
             opacity: 0.6,
-            child: ModalBarrier(dismissible: false, color: Colors.white),
+            child: ModalBarrier(dismissible: false, color: AppColors.white),
           ),
           ColorLoader()
 

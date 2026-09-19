@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/DialogBox.dart';
-import 'package:food_merchant/constant/string_constants.dart';
+import 'package:food_merchant/component/custom_dialog_box.dart';
+import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/services/repo/CommonRepo.dart';
 import 'package:food_merchant/utils/CommonUtils.dart';
-import 'package:food_merchant/utils/GetStorageConstants.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class AddUpdateToppingController extends GetxController {
   var argument = Get.arguments;
@@ -13,7 +11,6 @@ class AddUpdateToppingController extends GetxController {
   var initialLoad = true.obs;
   final formKey = GlobalKey<FormState>();
   var foodType = "".obs;
-  var storage = GetStorage();
   var updateTopping = false.obs;
   var toppingId = "".obs;
   var showFoodError = false.obs;
@@ -30,11 +27,11 @@ class AddUpdateToppingController extends GetxController {
   }
 
 
-  checkArguments() {
+  void checkArguments() {
     if(argument != null){
       updateTopping.value = true;
-      titleController.text = argument.title;
-      priceController.text = "${argument.price}";
+      titleController.text = argument.title ?? '';
+      priceController.text = "${argument.price ?? 0}";
       foodType.value = checkToppingType("${argument.type}");
       toppingId.value = "${argument.id}";
       initialLoad.value = false;
@@ -45,7 +42,7 @@ class AddUpdateToppingController extends GetxController {
     }
   }
 
-  checkToppingType(String type){
+  String checkToppingType(String type){
     switch (type){
       case "veg":
         return "1";
@@ -59,88 +56,97 @@ class AddUpdateToppingController extends GetxController {
 
 
 
-  onChangeFoodType(String type) {
-    foodType.value = type;
+  void onChangeFoodType(String? type) {
+    if(type != null){
+    foodType.value = type;}
   }
 
 
-  addUpdateClick(){
+  void addUpdateClick(){
     FocusManager.instance.primaryFocus?.unfocus();
-    foodType.value.isEmpty ? showFoodError.value = true : showFoodError.value = false;
-    if(formKey.currentState!.validate() && foodType.value.isNotEmpty) {
+    foodType.value.trim().isEmpty ?
+    showFoodError.value = true : showFoodError.value = false;
+    if((formKey.currentState?.validate() ?? false) && foodType.value.trim().isNotEmpty) {
        updateTopping.value ? updateToppingProcess()
       : addToppingProcess();
     }
   }
 
 
-  addToppingProcess() async {
-    showLoader.value = true;
-    var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
-    var param = {
-      "restaurant_id": "$restaurantId",
-      "title": titleController.text,
-      "type": foodType.value,
-      "price": priceController.text
-    };
-    var addToppingResponse = await ApiController().addTopping(param);
-   showLoader.value = false;
-    if (addToppingResponse.responseCode == 1) {
-      Get.back(result: "added");
-    }
-    else {
-      CommonUtils.utils.handleApiError(
-          addToppingResponse.responseCode, addToppingResponse.msg);
+  Future<void> addToppingProcess() async {
+    try {
+      showLoader.value = true;
+      var param = {
+        "title": titleController.text.trim(),
+        "type": foodType.value.trim(),
+        "price": priceController.text.trim()
+      };
+      var addToppingResponse = await ApiController().restaurantAddTopping(param);
+      showLoader.value = false;
+      if (addToppingResponse.responseCode == AppStrings.apiSuccess) {
+        Get.back(result: "added");
+      }
+      else {
+        CommonUtils.utils.handleAlertMsg(
+           code: addToppingResponse.responseCode,
+           message: addToppingResponse.msg);
+      }
+    } catch (e){
+      showLoader.value = false;
     }
   }
 
 
-  updateToppingProcess() async {
-    showLoader.value = true;
-    var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
-    var param = {
-      "restaurant_id": "$restaurantId",
-      "title": titleController.text,
-      "type": foodType.value,
-      "price": priceController.text
-    };
-    var updateToppingResponse = await ApiController().updateTopping(param, toppingId.value);
-    showLoader.value = false;
-    if (updateToppingResponse.responseCode == 1) {
-      Get.back(result: "updated");
-    }
-    else {
-      CommonUtils.utils.handleApiError(
-          updateToppingResponse.responseCode, updateToppingResponse.msg);
+
+
+  Future<void> updateToppingProcess() async {
+    try {
+      showLoader.value = true;
+      var param = {
+        "title": titleController.text,
+        "type": foodType.value,
+        "price": priceController.text
+      };
+      var updateToppingResponse = await ApiController().restaurantUpdateTopping(
+          param, toppingId.value);
+      showLoader.value = false;
+      if (updateToppingResponse.responseCode == AppStrings.apiSuccess) {
+        Get.back(result: "updated");
+      }
+      else {
+        CommonUtils.utils.handleAlertMsg(
+            code: updateToppingResponse.responseCode,
+            message: updateToppingResponse.msg);
+      }
+    } catch (e){
+      showLoader.value = false;
     }
   }
 
 
  void deleteToppingClick(){
-      Get.dialog(showDialogBox(title: alert,
-        message: "Are you really want to delete this topping.",
+      Get.dialog(showDialogBox(title: AppStrings.alertTitle,
+        message: AppStrings.alertMsgDeleteTopping,
         twoButtons: true,
-        onCancel: () {
-          Get.back();
-        },
-        onConfirm: (){ Get.back(result: "delete");},
-      )).then((value) {
-        if(value == "delete"){
-          deleteToppingProcess();
-        }
-      });
+        onConfirm: (){deleteToppingProcess();}));
   }
 
-  deleteToppingProcess() async {
-    showLoader.value = true;
-    var deleteTopping = await  ApiController().deleteTopping(toppingId.value);
-    showLoader.value = false;
-    if(deleteTopping.responseCode == 1) {
-      Get.back(result: "deleted");
-    }
-    else {
-      CommonUtils.utils.handleApiError(
-          deleteTopping.responseCode, deleteTopping.msg);
+  Future<void> deleteToppingProcess() async {
+    try {
+      showLoader.value = true;
+      var deleteTopping = await ApiController().restaurantDeleteTopping(
+          toppingId.value);
+      showLoader.value = false;
+      if (deleteTopping.responseCode == AppStrings.apiSuccess) {
+        Get.back(result: "deleted");
+      }
+      else {
+        CommonUtils.utils.handleAlertMsg(
+            code: deleteTopping.responseCode,
+            message: deleteTopping.msg);
+      }
+    } catch (e){
+      showLoader.value = false;
     }
   }
 

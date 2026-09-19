@@ -3,7 +3,7 @@ import 'package:food_merchant/screens/profile/ProfileModel.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../../routes/app_pages.dart';
+import '../../routes/app_routes.dart';
 import '../../services/repo/CommonRepo.dart';
 import '../../utils/CommonUtils.dart';
 import '../../utils/GetStorageConstants.dart';
@@ -35,7 +35,7 @@ class ProfileController extends GetxController{
   }
 
   goToUpdateProfileScreen(){
-    Get.toNamed(Routes.UPDATE_PROFILE,
+    Get.toNamed(AppRoutes.updateProfile,
         arguments: [profileDetails.value.profileImage,
           profileDetails.value.name,
           profileDetails.value.phone,

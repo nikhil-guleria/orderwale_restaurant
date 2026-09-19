@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:food_merchant/constant/string_constants.dart';
-import 'package:food_merchant/routes/app_pages.dart';
+import 'package:food_merchant/constant/app_strings.dart';
+import 'package:food_merchant/routes/app_routes.dart';
 import 'package:food_merchant/services/repo/CommonRepo.dart';
 import 'package:food_merchant/utils/CommonUtils.dart';
-import 'package:food_merchant/utils/GetStorageConstants.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
@@ -13,9 +12,8 @@ import 'coupons_model.dart';
 class CouponsController extends GetxController {
 
   var showLoader = true.obs;
-  var couponsList = <CouponsData>[].obs;
+  var couponsList = <CouponsListItem>[].obs;
   GetStorage storage = GetStorage();
-  //var initialLoad = true.obs;
 
 
   @override
@@ -34,21 +32,24 @@ class CouponsController extends GetxController {
 
   Future<void> getCouponsList()  async {
     try {
-      var restId = storage.read(GetStorageConstants.RESTAURANT_ID);
-      var couponsListData = await ApiController().getCouponsList(restId);
+      var couponsListData = await ApiController().restaurantCoupons();
       couponsList.clear();
       showLoader.value = false;
-        if (couponsListData.responseCode == 1) {
+        if (couponsListData.responseCode == AppStrings.apiSuccess) {
           CouponsModel couponsModel = CouponsModel.fromJson(
               couponsListData.response?.data ?? "");
           couponsList.value = couponsModel.result ?? [];
         }
         else {
-          CommonUtils.utils.handleApiError(
-              couponsListData.responseCode, couponsListData.msg,
-            title: couponsListData.msg == 'No Data Found.' ?
-            alert : error
-          );
+          if(couponsListData.responseCode == AppStrings.unauthenticated){
+            await CommonUtils.utils.unauthenticatedRestaurant();
+            return;
+          }
+          if(couponsListData.responseCode != 0){
+          CommonUtils.utils.handleAlertMsg(
+             code: couponsListData.responseCode,
+             message: couponsListData.msg,
+          );}
         }
     } catch (e) {
       showLoader.value = false;
@@ -56,25 +57,7 @@ class CouponsController extends GetxController {
     }
   }
 
-  String calculateDiscount(CouponsData coupon) {
-    final discount = coupon.discount ?? '';
-    final maxDiscount = (coupon.maxDiscount ?? '').trim();
-    final minDiscount = (coupon.minDiscount ?? '').trim();
 
-    if (coupon.discountType == 1) {
-      // percentage
-      if (maxDiscount.isNotEmpty && maxDiscount != '0') {
-        return '$discount% off up to $currSymbolIn$maxDiscount';
-      }
-      return '$discount% off';
-    } else {
-      // flat
-      if (minDiscount.isNotEmpty && minDiscount != '0') {
-        return 'FLAT $currSymbolIn$discount off above $currSymbolIn$minDiscount';
-      }
-      return 'FLAT $currSymbolIn$discount off';
-    }
-  }
 
   bool isCouponValid(String endDateString) {
     if (endDateString.trim().isEmpty) return false;
@@ -91,8 +74,8 @@ class CouponsController extends GetxController {
     }
   }
 
-  void goToUpdateCoupon(CouponsData coupon){
-    Get.toNamed(Routes.ADD_COUPONS, arguments: coupon)?.then((value) {
+  void goToUpdateCoupon(CouponsListItem coupon){
+    Get.toNamed(AppRoutes.addUpdateCoupons, arguments: coupon)?.then((value) {
       if(value == "updated" || value == "deleted") {
         showLoader.value = true;
         getCouponsList();
@@ -103,7 +86,7 @@ class CouponsController extends GetxController {
 
 
   void goToAddCoupon(){
-    Get.toNamed(Routes.ADD_COUPONS)?.then((value)  {
+    Get.toNamed(AppRoutes.addUpdateCoupons)?.then((value)  {
       if(value == "added") {
         showLoader.value = true;
         getCouponsList();
@@ -113,27 +96,24 @@ class CouponsController extends GetxController {
 
 
 
-goToUpdateCouponOld(index){
-  var data = CouponsData();
-  data.id = couponsList[index].id;
-  data.image = couponsList[index].image;
-  data.couponCode = couponsList[index].couponCode;
-  data.description = couponsList[index].description;
-  data.startDate = couponsList[index].startDate;
-  data.endDate = couponsList[index].endDate;
-  data.discount = couponsList[index].discount;
-  data.discountType = couponsList[index].discountType;
-  data.time = couponsList[index].time;
-  Get.toNamed(Routes.ADD_COUPONS, arguments: data)?.then((value) {
-    if(value == "updated" || value == "deleted") {
-      showLoader.value = true;
-      getCouponsList();
+  String calculateDiscount(CouponsListItem coupon) {
+    final discount = coupon.discount ?? '';
+    final maxDiscount = (coupon.maxDiscount ?? '').trim();
+    final minDiscount = (coupon.minDiscount ?? '').trim();
+
+    if (coupon.discountType == 1) {
+      // percentage
+      if (maxDiscount.isNotEmpty && maxDiscount != '0') {
+        return '$discount% off up to ${AppStrings.currSymbolIn}$maxDiscount';
+      }
+      return '$discount% off';
+    } else {
+      // flat
+      if (minDiscount.isNotEmpty && minDiscount != '0') {
+        return 'FLAT ${AppStrings.currSymbolIn}$discount off above ${AppStrings.currSymbolIn}$minDiscount';
+      }
+      return 'FLAT ${AppStrings.currSymbolIn}$discount off';
     }
-
-  });
-
-}
-
-
+  }
 
 }

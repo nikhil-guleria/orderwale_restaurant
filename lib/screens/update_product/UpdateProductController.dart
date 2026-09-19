@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
-import '../../component/DialogBox.dart';
-import '../../constant/string_constants.dart';
-import '../../routes/app_pages.dart';
+import '../../component/custom_dialog_box.dart';
+import '../../constant/app_strings.dart';
+import '../../routes/app_routes.dart';
 import '../../services/commonModels/ProductItemModel.dart';
 import '../../services/repo/CommonRepo.dart';
 import '../../utils/CheckPermission.dart';
@@ -136,19 +136,19 @@ class UpdateProductController extends GetxController {
     FocusManager.instance.primaryFocus?.unfocus();
     if(formKey.currentState!.validate()) {
        if(categoryId.value == "0"){
-        return Get.snackbar(alert, "Please Select Category");
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Category");
       }  else if(subcategoryId.value == "0"){
-        return Get.snackbar(alert, "Please Select Menu");
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Menu");
       } else if(discountType.value.isEmpty && num.parse(itemDiscountController.text.isEmpty? "0" :
       itemDiscountController.text) > 0){
-        return Get.snackbar(alert, "Please Select Discount Type");
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Discount Type");
       } else if(foodType.value.isEmpty){
-        return Get.snackbar(alert, "Please Select Food Type");
+        return Get.snackbar(AppStrings.alertTitle, "Please Select Food Type");
       }
       if(imageFile.value != "" || image.value != "") {
         updateProduct();
       } else {
-        Get.snackbar(edit_screen_alert, "Please Select Image");
+        Get.snackbar(AppStrings.alertTitle, "Please Select Image");
       }
     }
   }
@@ -186,7 +186,7 @@ class UpdateProductController extends GetxController {
   }
 
  void deleteProduct(){
-    Get.dialog(showDialogBox(title: alert,
+    Get.dialog(showDialogBox(title: AppStrings.alertTitle,
       message: delete_product,
       twoButtons: true,
       onCancel: () {
@@ -216,7 +216,7 @@ class UpdateProductController extends GetxController {
 
   addMenuTap(){
     FocusManager.instance.primaryFocus?.unfocus();
-    Get.toNamed(Routes.SUBCATEGORY_TITLE_SCREEN, arguments: [categoryId.value])?.then((value) {
+    Get.toNamed(AppRoutes.SUBCATEGORY_TITLE_SCREEN, arguments: [categoryId.value])?.then((value) {
       if(value == "added"){
         subCategoryTitle.value = "Select Menu Title";
         subcategoryId.value = "0";
@@ -226,7 +226,7 @@ class UpdateProductController extends GetxController {
   }
 
   editSubCategoryTap(){
-    Get.toNamed(Routes.SUBCATEGORY_EDIT_SCREEN, arguments: categoryId.value)?.then((value) {
+    Get.toNamed(AppRoutes.SUBCATEGORY_EDIT_SCREEN, arguments: categoryId.value)?.then((value) {
       subCategoryTitle.value = "Select Menu Title";
       subcategoryId.value = "0";
       getSubCategories();

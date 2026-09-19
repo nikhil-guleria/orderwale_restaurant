@@ -1,25 +1,19 @@
 class CouponsModel {
-  int? code;
-  String? message;
-  List<CouponsData>? result;
+  List<CouponsListItem>? result = [];
 
-  CouponsModel({this.code, this.message, this.result});
+  CouponsModel({this.result});
 
   CouponsModel.fromJson(Map<String, dynamic> json) {
-    code = json['code'];
-    message = json['message'];
     if (json['result'] != null) {
-      result = <CouponsData>[];
+      result = <CouponsListItem>[];
       json['result'].forEach((v) {
-        result!.add(CouponsData.fromJson(v));
+        result!.add( CouponsListItem.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data =  <String, dynamic>{};
-    data['code'] = code;
-    data['message'] = message;
     if (result != null) {
       data['result'] = result!.map((v) => v.toJson()).toList();
     }
@@ -27,64 +21,89 @@ class CouponsModel {
   }
 }
 
-class CouponsData {
-  bool? isApplied;
-  String? couponCode;
-  String? image;
+
+class CouponsListItem {
   int? id;
+  String? couponCode;
   String? description;
+  int? discountType;
+  num? discount;
   String? startDate;
   String? endDate;
-  int? discount;
-  int? discountType;
+  int? time;
+  String? restaurantId;
+  String? image;
+  String? thumbnailUrl;
+  int? status;
+  String? createdAt;
+  String? updatedAt;
   String? maxDiscount;
   String? minDiscount;
-  int? time;
+  bool? isApplied;
+  String? restaurantName;
 
-  CouponsData(
-      { this.isApplied,
+  CouponsListItem(
+      {this.id,
         this.couponCode,
-        this.image,
-        this.id,
         this.description,
+        this.discountType,
+        this.discount,
         this.startDate,
         this.endDate,
-        this.discount,
-        this.discountType,
+        this.time,
+        this.restaurantId,
+        this.image,
+        this.thumbnailUrl,
+        this.status,
+        this.createdAt,
+        this.updatedAt,
+        this.isApplied,
         this.maxDiscount,
         this.minDiscount,
-        this.time,
+        this.restaurantName,
       });
 
-  CouponsData.fromJson(Map<String, dynamic> json) {
-    isApplied = json['is_appied'];
-    couponCode = json['coupon_code'];
-    image = json['image'] ?? '';
+  CouponsListItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    couponCode = json['coupon_code'];
     description = json['description'];
+    discountType = json['discount_type'];
+    discount = json['discount'];
     startDate = json['start_date'];
     endDate = json['end_date'];
-    discount = json['discount'];
-    discountType = json['discount_type'];
+    time = json['time'];
+    restaurantId = json['restaurant_id'];
+    image = json['image'] ?? "";
+    thumbnailUrl = json['thumbnail_url'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    isApplied = json['is_appied'];
     maxDiscount = json['max_discount'];
     minDiscount = json['min_discount'];
-    time = json['time'];
+    restaurantName = json['restaurant_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data =  <String, dynamic>{};
-    data['is_appied'] = isApplied;
-    data['coupon_code'] = couponCode;
-    data['image'] = image;
     data['id'] = id;
+    data['coupon_code'] = couponCode;
     data['description'] = description;
+    data['discount_type'] = discountType;
+    data['discount'] = discount;
     data['start_date'] = startDate;
     data['end_date'] = endDate;
-    data['discount'] = discount;
-    data['discount_type'] = discountType;
+    data['time'] = time;
+    data['restaurant_id'] = restaurantId;
+    data['image'] = image;
+    data['thumbnail_url'] = thumbnailUrl;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['is_appied'] = isApplied;
     data['max_discount'] = maxDiscount;
     data['min_discount'] = minDiscount;
-    data['time'] = time;
+    data['restaurant_name'] = restaurantName;
     return data;
   }
 }

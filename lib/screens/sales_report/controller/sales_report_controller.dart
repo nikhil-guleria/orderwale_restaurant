@@ -2,21 +2,23 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_cashfree_pg_sdk/api/cferrorresponse/cferrorresponse.dart';
 import 'package:flutter_cashfree_pg_sdk/api/cfpayment/cfdropcheckoutpayment.dart';
+import 'package:flutter_cashfree_pg_sdk/api/cfpayment/cfupi.dart';
+import 'package:flutter_cashfree_pg_sdk/api/cfpayment/cfupipayment.dart';
 import 'package:flutter_cashfree_pg_sdk/api/cfpaymentcomponents/cfpaymentcomponent.dart';
 import 'package:flutter_cashfree_pg_sdk/api/cfpaymentgateway/cfpaymentgatewayservice.dart';
 import 'package:flutter_cashfree_pg_sdk/api/cfsession/cfsession.dart';
 import 'package:flutter_cashfree_pg_sdk/api/cftheme/cftheme.dart';
 import 'package:flutter_cashfree_pg_sdk/utils/cfenums.dart';
 import 'package:flutter_cashfree_pg_sdk/utils/cfexceptions.dart';
-import 'package:food_merchant/component/DialogBox.dart';
-import 'package:food_merchant/screens/sales_report/model/SalesReportModel.dart';
+import 'package:food_merchant/component/custom_dialog_box.dart';
+import 'package:food_merchant/screens/sales_report/model/sales_report_model.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import '../../../constant/string_constants.dart';
+import '../../../constant/app_strings.dart';
 import '../../../services/api/ApiConstant.dart';
-import '../../../services/api/ApiHitter.dart';
+import '../../../services/api/api_hitter.dart';
 import '../../../services/commonModels/cashfree_payment_model.dart';
 import '../../../services/commonModels/razorpay_payment_model.dart';
 import '../../../services/repo/CommonRepo.dart';
@@ -208,18 +210,13 @@ String changeDateParam(DateTime dateTime){
 
   Future<void> getRestaurantSalesReport() async {
     showLoader.value = true;
-    var storage = GetStorage();
-    var ownerId = storage.read(GetStorageConstants.LOGIN_DATA);
-    var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
     var param = {
-      "owner_id": "${ownerId["id"]}",
-      "restaurant_id" : restaurantId,
       "date": changeDateParam(selectDate.value)
     };
 
-    var restaurantReport = await ApiController().getRestaurantSalesReport(param);
+    var restaurantReport = await ApiController().restaurantSalesReport(param);
     showLoader.value = false;
-    if (restaurantReport.responseCode == 1) {
+    if (restaurantReport.responseCode == AppStrings.apiSuccess) {
       initialLoad.value = false;
       SalesReportModel salesReportModel = SalesReportModel.fromJson(restaurantReport.response!.data);
       salesReport.value = salesReportModel.report!;
@@ -227,11 +224,15 @@ String changeDateParam(DateTime dateTime){
        xOffset.value = 70.0;
        pageScale.value = 0.8;
       animateContainer();
-
-
     }
     else {
-      CommonUtils.utils.handleApiError(restaurantReport.responseCode, restaurantReport.msg);
+      if(restaurantReport.responseCode == AppStrings.unauthenticated){
+        await CommonUtils.utils.unauthenticatedRestaurant();
+        return;
+      }
+      CommonUtils.utils.handleAlertMsg(
+         code:  restaurantReport.responseCode,
+         message:  restaurantReport.msg);
     }
   }
   
@@ -261,7 +262,9 @@ String changeDateParam(DateTime dateTime){
     if(apiResponse.responseCode == 1) {
       getRestaurantSalesReport();
     } else {
-      CommonUtils.utils.handleApiError(apiResponse.responseCode, apiResponse.msg);
+      CommonUtils.utils.handleAlertMsg(
+         code:  apiResponse.responseCode,
+         message:  apiResponse.msg);
     }
   }
 
@@ -278,15 +281,14 @@ String changeDateParam(DateTime dateTime){
     var apiResponse = await ApiController().requestForBalance(param);
     if(apiResponse.responseCode == 1) {
       getRestaurantSalesReport();
-      Get.dialog(showDialogBox(title: success,
-          message: salesReportRequestSuccess,
-          twoButtons: false,
-          onConfirm: () {
-            Get.back();
-          }));
+      CommonUtils.utils.handleAlertMsg(
+        title: AppStrings.alertSuccess,
+         message:  AppStrings.salesReportRequestSuccess,);
     } else {
       showLoader.value = false;
-      CommonUtils.utils.handleApiError(apiResponse.responseCode, apiResponse.msg);
+      CommonUtils.utils.handleAlertMsg(
+         code:  apiResponse.responseCode,
+         message:  apiResponse.msg);
     }
   }
 
@@ -330,7 +332,9 @@ String changeDateParam(DateTime dateTime){
 
     if(result is ApiResponse) {
       paymentLoader.value = false;
-    CommonUtils.utils.handleApiError(result.responseCode, result.msg);
+    CommonUtils.utils.handleAlertMsg(
+       code:  result.responseCode,
+       message:  result.msg);
     } else if (result is RazorPayResponse) {
     setUpRaZorPay(result.data!.id!);
     } else if(result is CashFreeResponse) {
@@ -339,7 +343,9 @@ String changeDateParam(DateTime dateTime){
     setUpCashFree();
     } else {
       paymentLoader.value = false;
-      CommonUtils.utils.handleApiError(400, "Server not responding. Please try later");
+      CommonUtils.utils.handleAlertMsg(
+         code:  400,
+         message:  "Server not responding. Please try later");
     }
 
   }
@@ -352,7 +358,9 @@ String changeDateParam(DateTime dateTime){
 
   void _handlePaymentError(PaymentFailureResponse response) {
     paymentLoader.value = false;
-    CommonUtils.utils.handleApiError(400, "Payment Failed");
+    CommonUtils.utils.handleAlertMsg(
+       code:  400,
+       message: "Payment Failed");
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
@@ -367,7 +375,7 @@ String changeDateParam(DateTime dateTime){
       'key': ApiConstant.razorPayId,
       'order_id' : id,
       'amount': (double.parse(previousBalance(salesReport.value.balance!)) * 100),
-      'name': appName,
+      'name': AppStrings.appName,
       'description': restName ?? "",
       'prefill': {'contact':  "${ownerPhone["phone"]}"},
       'config': {
@@ -432,14 +440,16 @@ String changeDateParam(DateTime dateTime){
         updateRemainingBalance();
       } else {
         paymentLoader.value = false;
-        CommonUtils.utils.handleApiError(400, "Payment Not Done");
+        CommonUtils.utils.handleAlertMsg(
+           code:  400,
+           message: "Payment Not Done");
       }
 
     } else {
       paymentLoader.value = false;
       verifyCount.value > 0 ? null
           : Get.dialog(showDialogBox(
-        title: error,
+        title: AppStrings.alertError,
         message:  verifyCount.value == 0 ?
         "Server not responding. Please try again"
         : "When your payment is successfully processed, the balance will be updated",
@@ -463,7 +473,9 @@ String changeDateParam(DateTime dateTime){
 
   void onError(CFErrorResponse errorResponse, String orderId) {
     paymentLoader.value = false;
-    CommonUtils.utils.handleApiError(400, errorResponse.getMessage().toString());
+    CommonUtils.utils.handleAlertMsg(
+       code:  400,
+       message:  errorResponse.getMessage().toString());
   }
 
 
@@ -476,7 +488,9 @@ String changeDateParam(DateTime dateTime){
       netBankingPay();
     } else {
       paymentLoader.value = false;
-      CommonUtils.utils.handleApiError(400, "Something went wrong. Please try later");
+      CommonUtils.utils.handleAlertMsg(
+         code:  400,
+         message:  "Something went wrong. Please try later");
     }
   }
 
@@ -488,7 +502,9 @@ String changeDateParam(DateTime dateTime){
       var session = CFSessionBuilder().setEnvironment(_cfEnvironment).setOrderId(oid).setPaymentSessionId(spi).build();
       return session;
     } on CFException catch (e) {
-      CommonUtils.utils.handleApiError(400, e.message);
+      CommonUtils.utils.handleAlertMsg(
+         code:  400,
+         message:  e.message);
     }
     return null;
   }
@@ -506,6 +522,21 @@ String changeDateParam(DateTime dateTime){
       var cfDropCheckoutPayment = CFDropCheckoutPaymentBuilder().setSession(sessionNew!).setPaymentComponent(paymentComponent).setTheme(theme).build();
 
       _cfPaymentGatewayService.doPayment(cfDropCheckoutPayment);
+    } on CFException catch (e) {
+      debugPrint(e.message);
+      paymentLoader.value = false;
+    }
+
+  }
+
+  Future<void> upiPayNew() async {
+    try {
+      var sessionNew = createSession();
+      if(sessionNew != null) {
+        var upi = CFUPIBuilder().setChannel(CFUPIChannel.INTENT_WITH_UI).build();
+        var upiPayment = CFUPIPaymentBuilder().setSession(sessionNew).setUPI(upi).build();
+        _cfPaymentGatewayService.doPayment(upiPayment);
+      }
     } on CFException catch (e) {
       debugPrint(e.message);
       paymentLoader.value = false;

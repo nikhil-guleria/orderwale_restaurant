@@ -4,12 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:food_merchant/component/button_widget.dart';
 import 'package:food_merchant/component/ColorLoader.dart';
-import 'package:food_merchant/component/TextFormFieldWidget.dart';
-import 'package:food_merchant/component/TextWidget.dart';
-import 'package:food_merchant/constant/app_color.dart';
-import 'package:food_merchant/constant/app_constant.dart';
-import 'package:food_merchant/constant/string_constants.dart';
-import 'package:food_merchant/utils/SizeConfig.dart';
+import 'package:food_merchant/component/custom_form_field.dart';
+import 'package:food_merchant/component/custom_text_widget.dart';
+import 'package:food_merchant/constant/app_colors.dart';
+import 'package:food_merchant/constant/font_family.dart';
+import 'package:food_merchant/constant/app_strings.dart';
+import 'package:food_merchant/utils/size_config.dart';
 import 'package:food_merchant/utils/Validations.dart';
 import 'package:get/get.dart';
 
@@ -32,19 +32,19 @@ class CustomisationTypeScreen extends GetView<CustomisationTypeController>{
 
       },
       child: Scaffold(
-        backgroundColor: colorWhite,
+        backgroundColor: AppColors.white,
         appBar: AppBar(
             title: TextWidget(
               text: customisationTypeTitle,
               color: Colors.black,
               fontSize: SizeConfig.appbarTitleSize,
-              fontFamily: fontSemiBold,
-              weight: FontWeight.w600,
+              fontFamily: FontFamily.fontSemiBold,
+              fontWeight: FontWeight.w600,
             ),
             centerTitle: true,
             elevation: 0.0,
             systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: colorWhite,
+              statusBarColor: AppColors.white,
               statusBarIconBrightness: Brightness.dark,
             )),
 
@@ -71,9 +71,9 @@ class CustomisationTypeScreen extends GetView<CustomisationTypeController>{
                     // select customisation type
                     TextWidget(
                       text: customisationTypeTitle,
-                      fontFamily: fontMedium,
+                      fontFamily: FontFamily.fontMedium,
                       fontSize: SizeConfig.mediumFontSize,
-                      color: normalTextColor,
+                      color: AppColors.normalTextColor,
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                    Container(
@@ -82,9 +82,9 @@ class CustomisationTypeScreen extends GetView<CustomisationTypeController>{
                       padding: EdgeInsets.only(
                           left: SizeConfig.blockSizeHorizontal * 2.5),
                       decoration: BoxDecoration(
-                          color: textFieldFillColor,
+                          color: AppColors.textFieldFillColor,
                           border: Border.all(
-                              color: disabledBorderColor, width: 1.3),
+                              color: AppColors.disabledBorderColor, width: 1.3),
                           borderRadius:
                           const BorderRadius.all(Radius.circular(
                             10.0,
@@ -110,7 +110,7 @@ class CustomisationTypeScreen extends GetView<CustomisationTypeController>{
                            */
                       /* suffixIcon: Icon(
                               Icons.keyboard_arrow_down,
-                              color: colorPrimary,
+                              color: AppColors.colorPrimary,
                             ),*/
                       /*
                           ),
@@ -134,9 +134,9 @@ class CustomisationTypeScreen extends GetView<CustomisationTypeController>{
                         Expanded(
                           child: TextWidget(
                             text: customisationDetails,
-                            fontFamily: fontMedium,
+                            fontFamily: FontFamily.fontMedium,
                             fontSize: SizeConfig.mediumFontSize,
-                            color: normalTextColor,
+                            color: AppColors.normalTextColor,
                           ),
                         ),
           
@@ -145,8 +145,8 @@ class CustomisationTypeScreen extends GetView<CustomisationTypeController>{
                           controller.addRemainingList.length,
                           child: Flexible(
                             child: InkWell(
-                              splashColor: colorWhite,
-                              highlightColor: colorWhite,
+                              splashColor: AppColors.white,
+                              highlightColor: AppColors.white,
                               onTap: () async {
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 controller.addRemainingItemsClick();
@@ -156,11 +156,11 @@ class CustomisationTypeScreen extends GetView<CustomisationTypeController>{
                                 children: [
                                   const Icon(
                                       Icons.add,
-                                      color: colorPrimary),
+                                      color: AppColors.colorPrimary),
                                   SizedBox(width: SizeConfig.blockSizeHorizontal*2),
                                   TextWidget(text: "Add",
                                       fontSize: SizeConfig.mediumFontSize,
-                                      color: colorPrimary),
+                                      color: AppColors.colorPrimary),
                                   SizedBox(width: SizeConfig.blockSizeHorizontal*2),
                                 ],
                               ),
@@ -187,9 +187,9 @@ class CustomisationTypeScreen extends GetView<CustomisationTypeController>{
                                     margin: EdgeInsets.only(
                                         right: SizeConfig.blockSizeHorizontal * 2),
                                     decoration: BoxDecoration(
-                                        color: textFieldFillColor,
+                                        color: AppColors.textFieldFillColor,
                                         border: Border.all(
-                                            color: disabledBorderColor, width: 1.3),
+                                            color: AppColors.disabledBorderColor, width: 1.3),
                                         borderRadius:
                                         const BorderRadius.all(Radius.circular(
                                           10.0,
@@ -200,11 +200,11 @@ class CustomisationTypeScreen extends GetView<CustomisationTypeController>{
                                         child: TextWidget(text: "${controller.customisationItemsList[index].title}",
                                         maxLines: 1,overflow: TextOverflow.ellipsis,
                                         fontSize: SizeConfig.mediumFontSize,
-                                        fontFamily: fontMedium),
+                                        fontFamily: FontFamily.fontMedium),
                                       ),
                                       const VerticalDivider(),
                                       Flexible(
-                                        child: TextFormWidget(
+                                        child: CustomFormField(
                                           hintText: "₹ Price",
                                           controller: TextEditingController(text: "${controller.customisationItemsList[index].price}"),
                                           onChanged: (value){

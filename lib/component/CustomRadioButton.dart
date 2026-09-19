@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/constant/app_color.dart';
+import 'package:food_merchant/constant/app_colors.dart';
 
-import '../utils/SizeConfig.dart';
+import '../utils/size_config.dart';
 
 class MyRadioListTile extends StatelessWidget {
   final  value;
@@ -22,8 +22,8 @@ class MyRadioListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final title = this.title;
     return InkWell(
-      splashColor: colorWhite,
-      highlightColor: colorWhite,
+      splashColor: AppColors.white,
+      highlightColor: AppColors.white,
       onTap: () => onChanged(value),
       child: SizedBox(
         height: SizeConfig.blockSizeHorizontal*10,
@@ -44,10 +44,10 @@ class MyRadioListTile extends StatelessWidget {
       height: SizeConfig.blockSizeHorizontal*6.35,
       width: SizeConfig.blockSizeHorizontal*6.7,
       decoration: BoxDecoration(
-        color: isSelected ? colorPrimary : Colors.transparent,
+        color: isSelected ? AppColors.colorPrimary : Colors.transparent,
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: isSelected ? colorPrimary : disabledBorderColor,
+          color: isSelected ? AppColors.colorPrimary : AppColors.disabledBorderColor,
           width: 2,
         ),
       ),
@@ -55,7 +55,7 @@ class MyRadioListTile extends StatelessWidget {
         visible: isSelected,
         child: Icon(
           Icons.check,
-            color:  colorWhite,
+            color:  AppColors.white,
             size: SizeConfig.blockSizeHorizontal*4.9,
 
         ),

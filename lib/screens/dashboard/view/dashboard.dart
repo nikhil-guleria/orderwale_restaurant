@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:food_merchant/component/DialogBox.dart';
+import 'package:food_merchant/component/custom_dialog_box.dart';
 import 'package:food_merchant/constant/app_images.dart';
 import 'package:food_merchant/utils/CommonUtils.dart';
 import 'package:get/get.dart';
-import '../../../constant/app_color.dart';
-import '../../../constant/string_constants.dart';
-import '../../../routes/app_pages.dart';
+import '../../../constant/app_colors.dart';
+import '../../../constant/app_strings.dart';
+import '../../../routes/app_routes.dart';
 import '../controller/dashboard_controller.dart';
 
 class Dashboard extends GetView<DashboardController> {
@@ -24,7 +24,7 @@ class Dashboard extends GetView<DashboardController> {
               return ;
             } else {
               if(controller.currentIndex.value == 1){
-              Get.dialog(showDialogBox(title: alert,
+              Get.dialog(showDialogBox(title: AppStrings.alertTitle,
                   message: "Do you want to exit the App?",
                   twoButtons: true,
                   onCancel: (){
@@ -40,10 +40,10 @@ class Dashboard extends GetView<DashboardController> {
           },
           child: Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: colorWhite,
+              backgroundColor: AppColors.white,
               body: Navigator(
                 key: Get.nestedKey(controller.globalId.value),
-                initialRoute: Routes.MAIN,
+                initialRoute: AppRoutes.MAIN,
                 onGenerateRoute: controller.onGenerateRoute,
               ),
 
@@ -64,17 +64,17 @@ class Dashboard extends GetView<DashboardController> {
                       onDestinationSelected: controller.changePage,
                       destinations: [
                         NavigationDestination(
-                            icon:  SvgPicture.asset(restaurantNav),
-                            selectedIcon:  SvgPicture.asset(restaurantNavActive),
-                            label: dashboard_lbl_restaurant),
+                            icon:  SvgPicture.asset(AppImages.restaurantNav),
+                            selectedIcon:  SvgPicture.asset(AppImages.restaurantNavActive),
+                            label: AppStrings.bottomNavRestaurant),
                         NavigationDestination(
-                            icon:  SvgPicture.asset(homeNav),
-                            selectedIcon:  SvgPicture.asset(homeNavActive),
-                            label: dashboard_lbl_main),
+                            icon:  SvgPicture.asset(AppImages.homeNav),
+                            selectedIcon:  SvgPicture.asset(AppImages.homeNavActive),
+                            label: AppStrings.bottomNavHome),
                         NavigationDestination(
-                            icon:  SvgPicture.asset(settingsNav),
-                            selectedIcon:  SvgPicture.asset(settingsNavActive),
-                            label: dashboard_lbl_settings),
+                            icon:  SvgPicture.asset(AppImages.settingsNav),
+                            selectedIcon:  SvgPicture.asset(AppImages.settingsNavActive),
+                            label: AppStrings.bottomNavSettings),
                       ],
                     ),
                   )

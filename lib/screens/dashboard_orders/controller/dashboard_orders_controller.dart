@@ -2,18 +2,18 @@ import 'dart:async';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:food_merchant/component/DialogBox.dart';
-import 'package:food_merchant/constant/string_constants.dart';
+import 'package:food_merchant/component/custom_dialog_box.dart';
+import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/screens/dashboard_orders/model/dashboard_orders_model.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
-import '../../../routes/app_pages.dart';
+import '../../../routes/app_routes.dart';
 import '../../../services/repo/CommonRepo.dart';
 import '../../../utils/CommonUtils.dart';
-import '../../../utils/GetStorageConstants.dart';
 
-class DashboardOrdersController extends GetxController with GetTickerProviderStateMixin{
+
+class DashboardOrdersController extends GetxController{
   SwiperController swiperController1 =  SwiperController();
   SwiperController swiperController2 =  SwiperController();
   CountDownController countdownController = CountDownController();
@@ -36,7 +36,7 @@ class DashboardOrdersController extends GetxController with GetTickerProviderSta
 Future<void> openTerminatedApp() async {
  await FirebaseMessaging.instance.getInitialMessage().then((message) {
     if (message != null) {
-      Get.toNamed(Routes.ORDER_DETAILS, arguments: message.data["order_id"]);
+      Get.toNamed(AppRoutes.orderDetails, arguments: message.data["order_id"]);
     }
   }).then((value) {
    fetchOrdersList();
@@ -84,7 +84,7 @@ int duration(String? orderTime){
 }
 
   void goToOrderDetails(String? orderId){
-    Get.toNamed(Routes.ORDER_DETAILS, arguments: orderId)
+    Get.toNamed(AppRoutes.orderDetails, arguments: orderId)
         ?.then((value) {
           if(value[1] == true){
             fetchOrdersList();
@@ -93,17 +93,22 @@ int duration(String? orderTime){
     });
 }
 
+  void goToOrdersList(){
+    Get.toNamed(AppRoutes.ordersList)?.then((value) {
+      if(value[1] == true) {
+        fetchOrdersList();
+      }
+    });
+  }
+
 
   Future<void> fetchOrdersList() async {
-    showLoader.value = true;
-    var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
-    var param = {
-      "restaurant_id": "$restaurantId",
-    };
-    var ordersList = await ApiController().restaurantDashboardOrders(param);
-    showLoader.value = false;
-    initialLoad.value = false;
-      if (ordersList.responseCode == 1) {
+    try {
+      showLoader.value = true;
+      var ordersList = await ApiController().restaurantDashboardOrders();
+      showLoader.value = false;
+      initialLoad.value = false;
+      if (ordersList.responseCode == AppStrings.apiSuccess) {
         DashboardOrdersModel ordersModel = DashboardOrdersModel.fromJson(
             ordersList.response?.data ?? {});
         receivedOrder.clear();
@@ -114,16 +119,27 @@ int duration(String? orderTime){
             .toList();
         acceptedOrder.value =
             (ordersModel.result?.orders ?? []).where(
-                    (item) => (item.orderStatus ?? '').trim() == "2" ||
-                        (item.orderStatus ?? '').trim() == "4"||
-                (item.orderStatus ?? '').trim() == "7").toList();
-      }
-      else {
+                    (item) =>
+                (item.orderStatus ?? '').trim() == "2" ||
+                    (item.orderStatus ?? '').trim() == "4" ||
+                    (item.orderStatus ?? '').trim() == "7").toList();
+      } else {
+        if(ordersList.responseCode == AppStrings.unauthenticated){
+         await CommonUtils.utils.unauthenticatedRestaurant();
+          return;
+        }
         receivedOrder.clear();
         acceptedOrder.clear();
-        CommonUtils.utils.handleApiError(
-            ordersList.responseCode, ordersList.msg);
+        CommonUtils.utils.handleAlertMsg(
+            code: ordersList.responseCode,
+            message: ordersList.msg);
       }
+    } catch (e){
+      showLoader.value = false;
+      initialLoad.value = false;
+      receivedOrder.clear();
+      acceptedOrder.clear();
+    }
   }
 
 
@@ -144,13 +160,15 @@ int duration(String? orderTime){
       "order_status": status,
       "order_id": orderId
     };
-    var order = await ApiController().orderOperations(param);
+    var order = await ApiController().restaurantAcceptDeclineOrder(param);
     showLoader.value = false;
-    if (order.responseCode == 1) {
+    if (order.responseCode == AppStrings.apiSuccess) {
       fetchOrdersList();
     }
     else {
-      CommonUtils.utils.handleApiError(order.responseCode, order.msg);
+      CommonUtils.utils.handleAlertMsg(
+        code: order.responseCode,
+        message: order.msg);
       fetchOrdersList();
     }
   }
@@ -158,28 +176,30 @@ int duration(String? orderTime){
 
   Future<void> changeRestaurantAvailability(bool isAvailable) async {
     var currentAvailability = isAvailable ? 1 : 0 ;
-    var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
+    restaurantAvailability.value = isAvailable ? 1 : 0;
     var param = {
       "is_available": currentAvailability,
-      "restaurant_id": "$restaurantId"
     };
-    var result = await ApiController().changeRestaurantAvailability(param);
-    if (result.responseCode == 1) {
+    var result = await ApiController().restaurantChangeAvailability(param);
+    if (result.responseCode == AppStrings.apiSuccess) {
       restaurantAvailability.value = isAvailable ? 1 : 0;
     }
     else {
-      CommonUtils.utils.handleApiError(result.responseCode, result.msg);
+      restaurantAvailability.value = isAvailable ? 0 : 1;
+      CommonUtils.utils.handleAlertMsg(
+         code: result.responseCode,
+         message: result.msg);
     }
   }
 
 
   // decline or cancel order
  void cancelOrder(int index) {
-    Get.dialog(showDialogBox(title: alert,
+    Get.dialog(showDialogBox(title: AppStrings.alertTitle,
       message: cancelOrderDescription,
       twoButtons: true,
-      cancelTxt: "No",
-      confirmTxt: "Yes",
+      cancelTxt: AppStrings.btnNo,
+      confirmTxt: AppStrings.btnYes,
       onCancel: () {
         Get.back();
       },
@@ -194,11 +214,11 @@ int duration(String? orderTime){
 
 
  void deliverOrderClick(String? orderId) {
-    Get.dialog(showDialogBox(title: alert,
+    Get.dialog(showDialogBox(title: AppStrings.alertTitle,
       message: deliverOrderDescription,
       twoButtons: true,
-      cancelTxt: "No",
-      confirmTxt: "Yes",
+      cancelTxt: AppStrings.btnNo,
+      confirmTxt: AppStrings.btnYes,
       onCancel: () {
         Get.back();
       },

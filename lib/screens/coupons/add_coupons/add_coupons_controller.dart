@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/DialogBox.dart';
+import 'package:food_merchant/component/custom_dialog_box.dart';
 import 'package:food_merchant/component/image_picker/image_picker.dart';
 import 'package:food_merchant/component/image_picker/picker_dialog.dart';
-import 'package:food_merchant/constant/string_constants.dart';
+import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/screens/coupons/CouponsList/coupons_model.dart';
 import 'package:food_merchant/services/repo/CommonRepo.dart';
 import 'package:food_merchant/utils/CommonUtils.dart';
-import 'package:food_merchant/utils/GetStorageConstants.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +16,7 @@ import 'package:dio/dio.dart' as dio;
 class AddCouponsController extends GetxController {
   var showLoader = true.obs;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  CouponsData? couponsData = Get.arguments;
+  CouponsListItem? couponsData = Get.arguments;
   Rxn<File> imageFile = Rxn<File>();
   var discountType = "".obs;
   var showDiscountError = false.obs;
@@ -124,13 +123,11 @@ class AddCouponsController extends GetxController {
   Future<void> addCouponProcess() async {
     try {
       showLoader.value = true;
-      var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
         var newFileName = (imageFile.value?.path ?? '').split('/').last;
         if (!newFileName.contains(".")) {
           newFileName = "$newFileName.png";
         }
       final formData = dio.FormData.fromMap({
-        "restaurant_id": restaurantId,
         "coupon_code": couponCodeController.text.toUpperCase(),
         "description": descriptionController.text.trim(),
         "start_date": startDateController.text.trim(),
@@ -146,13 +143,14 @@ class AddCouponsController extends GetxController {
             : null,
       });
 
-      final addCouponResponse = await ApiController().addCoupon(formData);
+      final addCouponResponse = await ApiController().restaurantAddCoupon(formData);
       showLoader.value = false;
-      if (addCouponResponse.responseCode == 1) {
+      if (addCouponResponse.responseCode == AppStrings.apiSuccess) {
         Get.back(result: "added");
       } else {
-        CommonUtils.utils.handleApiError(
-            addCouponResponse.responseCode, addCouponResponse.msg);
+        CommonUtils.utils.handleAlertMsg(
+           code:  addCouponResponse.responseCode,
+           message:  addCouponResponse.msg);
       }
     } catch (e) {
       showLoader.value = false;
@@ -180,14 +178,12 @@ class AddCouponsController extends GetxController {
   Future<void> updateCouponProcess() async {
     try {
       showLoader.value = true;
-      var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
       var newFileName = (imageFile.value?.path ?? '').split('/').last;
       if (!newFileName.contains(".")) {
         newFileName = "$newFileName.png";
       }
       final formData = dio.FormData.fromMap({
         "id": couponsData?.id,
-        "restaurant_id": restaurantId,
         "coupon_code": couponCodeController.text.toUpperCase(),
         "description": descriptionController.text.trim(),
         "start_date": startDateController.text.trim(),
@@ -203,14 +199,15 @@ class AddCouponsController extends GetxController {
             : (couponsData?.image ?? ""),
       });
 
-      final updateCouponResponse = await ApiController().updateCoupon(formData);
+      final updateCouponResponse = await ApiController().restaurantUpdateCoupon(formData);
       showLoader.value = false;
-      if (updateCouponResponse.responseCode == 1) {
+      if (updateCouponResponse.responseCode == AppStrings.apiSuccess) {
         Get.back(result:  "updated");
       }
       else {
-        CommonUtils.utils.handleApiError(
-            updateCouponResponse.responseCode, updateCouponResponse.msg);
+        CommonUtils.utils.handleAlertMsg(
+           code:  updateCouponResponse.responseCode,
+           message: updateCouponResponse.msg);
       }
     } catch (e) {
       showLoader.value = false;
@@ -221,30 +218,24 @@ class AddCouponsController extends GetxController {
 
   void deleteCouponClick() {
     FocusManager.instance.primaryFocus?.unfocus();
-    Get.dialog(showDialogBox(title: alert,
-      message: "Are you really want to delete this coupon.",
+    Get.dialog(showDialogBox(title: AppStrings.alertTitle,
+      message: AppStrings.alertMsgDeleteCoupon,
       twoButtons: true,
-      onCancel: () {
-        Get.back();
-      },
-      onConfirm: (){ Get.back(result: "delete");},
-    )).then((value) {
-      if(value == "delete"){
-        deleteCouponProcess();
-      }
-    });
+      onConfirm: (){ deleteCouponProcess();},
+    ));
   }
 
   Future<void> deleteCouponProcess() async {
     try {
      showLoader.value = true;
-    var deleteCoupon = await  ApiController().deleteCoupon("${couponsData?.id}");
+    var deleteCoupon = await  ApiController().restaurantDeleteCoupon("${couponsData?.id}");
     showLoader.value = false;
-    if(deleteCoupon.responseCode == 1) {
+    if(deleteCoupon.responseCode == AppStrings.apiSuccess) {
       Get.back(result: "deleted");
     } else {
-      CommonUtils.utils.handleApiError(
-          deleteCoupon.responseCode, deleteCoupon.msg);
+      CommonUtils.utils.handleAlertMsg(
+         code:  deleteCoupon.responseCode,
+         message:  deleteCoupon.msg);
     }
     } catch (e) {
       showLoader.value = false;

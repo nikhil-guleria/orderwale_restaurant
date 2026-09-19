@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:food_merchant/component/button_widget.dart';
 import 'package:get/get.dart';
 
-import '../constant/app_constant.dart';
-import '../constant/string_constants.dart';
-import '../utils/SizeConfig.dart';
-import 'TextFormFieldWidget.dart';
+import '../constant/font_family.dart';
+import '../constant/app_strings.dart';
+import '../utils/size_config.dart';
+import 'custom_form_field.dart';
 
 class AddMenuDialog extends StatelessWidget{
   TextEditingController menuNameController = TextEditingController();
@@ -33,10 +33,10 @@ class AddMenuDialog extends StatelessWidget{
               children: [
                 Text("Add Menu Title" , style: TextStyle( color: Colors.black,
                     decoration: TextDecoration.none,
-                    fontFamily: fontMedium,
+                    fontFamily: FontFamily.fontMedium,
                     fontSize: SizeConfig.mediumFontSize)),
 
-                TextFormWidget(
+                CustomFormField(
                     labelText: "Title",
                     controller: menuNameController,
                     inputAction: TextInputAction.done,
@@ -50,7 +50,7 @@ class AddMenuDialog extends StatelessWidget{
                       text: "Create New",
                       onPressed: (){
                         if(menuNameController.text.isEmpty){
-                          Get.snackbar(edit_screen_alert, "Please Enter Title");
+                          Get.snackbar(AppStrings.alertTitle, "Please Enter Title");
                         } else {
                           Get.back(result: menuNameController.text);
                         }

@@ -47,7 +47,7 @@
               maxLines: 2,
               style:const TextStyle(
                 fontSize: 20,
-                color: colorBlack,
+                color: AppColors.blackText,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.0,
               ),
@@ -61,7 +61,7 @@
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 16,
-                color: colorBlack,
+                color: AppColors.blackText,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 1.0,
               ),
@@ -91,8 +91,8 @@
                     ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size(350.0, 30.0),
-                          onPrimary: colorWhite,
-                          primary: colorPrimary,
+                          onPrimary: AppColors.white,
+                          primary: AppColors.colorPrimary,
                           textStyle: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -109,8 +109,8 @@
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(350, 30),
-                    onPrimary: colorWhite,
-                    primary: colorPrimary,
+                    onPrimary: AppColors.white,
+                    primary: AppColors.colorPrimary,
                     textStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,

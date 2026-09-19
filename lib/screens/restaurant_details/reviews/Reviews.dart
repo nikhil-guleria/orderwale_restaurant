@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:food_merchant/constant/app_constant.dart';
+import 'package:food_merchant/constant/font_family.dart';
 import 'package:food_merchant/screens/restaurant_details/reviews/ReviewsController.dart';
 import 'package:food_merchant/utils/DateTimeUtils.dart';
 import 'package:get/get.dart';
-import '../../../component/TextWidget.dart';
-import '../../../constant/app_color.dart';
+import '../../../component/custom_text_widget.dart';
+import '../../../constant/app_colors.dart';
 import '../../../constant/app_images.dart';
-import '../../../utils/SizeConfig.dart';
+import '../../../utils/size_config.dart';
 
 // ignore: must_be_immutable
 class Reviews extends StatelessWidget{
@@ -18,11 +18,11 @@ class Reviews extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-        backgroundColor: colorWhite,
+        backgroundColor: AppColors.white,
         body:
         Obx(()=> controller.restaurantReview.isEmpty  ? Center(child: TextWidget(text: 'No review found',
-        fontFamily: fontRegular,fontSize: SizeConfig.regularFontSize,color: normalTextColor,)):
-        RefreshIndicator(  color: colorPrimary,
+        fontFamily: FontFamily.fontRegular,fontSize: SizeConfig.regularFontSize,color: AppColors.normalTextColor,)):
+        RefreshIndicator(  color: AppColors.colorPrimary,
             onRefresh: controller.pullRefresh,
             child:
         ListView.builder(padding:  EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*2.5),
@@ -47,8 +47,8 @@ class Reviews extends StatelessWidget{
                             width: SizeConfig.blockSizeHorizontal*12,
                             fit: BoxFit.cover,
                             imageUrl: controller.restaurantReview[index].userImage,
-                            placeholder: (context, url) => Image.asset(loadingGif, fit: BoxFit.cover),
-                            errorWidget: (context, url, error) => Image.asset(appLogoTransparent),
+                            placeholder: (context, url) => Image.asset(AppImages.loadingGif, fit: BoxFit.cover),
+                            errorWidget: (context, url, error) => Image.asset(AppImages.appLogoTransparent),
                           )
                       ),
                       SizedBox(width: SizeConfig.blockSizeHorizontal*3,),
@@ -59,7 +59,7 @@ class Reviews extends StatelessWidget{
                               TextWidget(overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 text: '${controller.restaurantReview[index].userName}',
-                                fontFamily: fontSemiBold,fontSize: SizeConfig.regularFontSize, weight: FontWeight.w600,),
+                                fontFamily: FontFamily.fontSemiBold,fontSize: SizeConfig.regularFontSize, fontWeight: FontWeight.w600,),
                               Row(
                                 children: [
                                   Flexible(
@@ -70,7 +70,7 @@ class Reviews extends StatelessWidget{
                                         SizeConfig.blockSizeHorizontal*5,
                                         itemBuilder: (context, _) => const Icon(
                                           Icons.star,
-                                          color: colorPrimary,
+                                          color: AppColors.colorPrimary,
                                         )
                                     ),
                                   ),
@@ -78,20 +78,20 @@ class Reviews extends StatelessWidget{
                                   Expanded(
                                     child: TextWidget(text: '${controller.restaurantReview[index].review}',
                                       maxLines: 1,overflow: TextOverflow.ellipsis,
-                                      fontFamily: fontSemiBold,fontSize: SizeConfig.regularFontSize,),
+                                      fontFamily: FontFamily.fontSemiBold,fontSize: SizeConfig.regularFontSize,),
                                   ),
                                   SizedBox(width: SizeConfig.blockSizeHorizontal*1),
                                   Expanded(
                                     child: TextWidget(text: '${DateTimeUtils.utils.getDurationTimeAgo(controller.restaurantReview[index].date,
                                         DateTimeUtils().DATE_FORMAT_DD_MMM_YYYY, true)}', textAlign: TextAlign.end,
-                                      fontFamily: fontMedium,fontSize:  SizeConfig.regularFontSize,
-                                      color: normalTextColor,weight: FontWeight.w500, maxLines: 1,overflow: TextOverflow.ellipsis,),
+                                      fontFamily: FontFamily.fontMedium,fontSize:  SizeConfig.regularFontSize,
+                                      color: AppColors.normalTextColor,fontWeight: FontWeight.w500, maxLines: 1,overflow: TextOverflow.ellipsis,),
                                   )
                                 ],)]),
                       )]),
                 SizedBox(height: SizeConfig.blockSizeHorizontal*2),
                 TextWidget(text: '${controller.restaurantReview[index].message}',
-                  fontFamily: fontRegular,fontSize: SizeConfig.mediumFontSize,color: normalTextColor),
+                  fontFamily: FontFamily.fontRegular,fontSize: SizeConfig.mediumFontSize,color: AppColors.normalTextColor),
                 Visibility(
                     visible: index != controller.restaurantReview.length -1,
                     child: const Divider()),
@@ -112,8 +112,8 @@ class Reviews extends StatelessWidget{
               controller.restaurantReview[index].userImage != "" ?
                   CommonUtils.utils.haveImage(controller.restaurantReview[index].userImage) ?
               ProgressiveImage(
-                  placeholder:  const AssetImage(loadingGif),
-                  thumbnail:  const AssetImage(loadingGif),
+                  placeholder:  const AssetImage(AppImages.loadingGif),
+                  thumbnail:  const AssetImage(AppImages.loadingGif),
                   image:  NetworkImage(controller.restaurantReview[index].userImage),
                   fit: BoxFit.cover,
                   width: SizeConfig.blockSizeHorizontal*12,
@@ -133,7 +133,7 @@ class Reviews extends StatelessWidget{
               TextWidget(overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   text: '{controller.restaurantReview[index].userName}',
-                  fontFamily: fontSemiBold,fontSize: SizeConfig.regularFontSize),
+                  fontFamily: FontFamily.fontSemiBold,fontSize: SizeConfig.regularFontSize),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Row(
                   children: [
@@ -144,22 +144,22 @@ class Reviews extends StatelessWidget{
                         SizeConfig.blockSizeHorizontal*5.2,
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
-                          color: colorPrimary,
+                          color: AppColors.colorPrimary,
                         )
                     ),
                     SizedBox(width: SizeConfig.blockSizeHorizontal*2.2,),
                     TextWidget(text: '${controller.restaurantReview[index].review}',
-                      fontFamily: fontSemiBold,fontSize: SizeConfig.regularFontSize,),
+                      fontFamily: FontFamily.fontSemiBold,fontSize: SizeConfig.regularFontSize,),
                   ],
                 ),
 
             TextWidget(text: '${DateTimeUtils.utils.getDurationTimeAgo(controller.restaurantReview[index].date,
-            DateTimeUtils().DATE_FORMAT_DD_MMM_YYYY, true)}',fontFamily: fontMedium,fontSize: SizeConfig.regularFontSize,color: normalTextColor,)
+            DateTimeUtils().DATE_FORMAT_DD_MMM_YYYY, true)}',fontFamily: FontFamily.fontMedium,fontSize: SizeConfig.regularFontSize,color: AppColors.normalTextColor,)
                 ],)])
               )]),
         SizedBox(height: SizeConfig.blockSizeHorizontal*2),
         TextWidget(text: '${controller.restaurantReview[index].message}',
-          fontFamily: fontRegular,fontSize: SizeConfig.mediumFontSize,color: normalTextColor,),
+          fontFamily: FontFamily.fontRegular,fontSize: SizeConfig.mediumFontSize,color: AppColors.normalTextColor,),
         Visibility(
           visible: index != controller.restaurantReview.length -1,
             child: const Divider()),

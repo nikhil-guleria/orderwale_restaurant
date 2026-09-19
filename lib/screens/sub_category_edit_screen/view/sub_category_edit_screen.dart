@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/constant/app_color.dart';
+import 'package:food_merchant/constant/app_colors.dart';
 import 'package:food_merchant/screens/sub_category_edit_screen/controller/sub_category_edit_controller.dart';
 import 'package:get/get.dart';
 import '../../../component/ColorLoader.dart';
-import '../../../component/TextWidget.dart';
-import '../../../constant/app_constant.dart';
-import '../../../constant/string_constants.dart';
-import '../../../utils/SizeConfig.dart';
+import '../../../component/custom_text_widget.dart';
+import '../../../constant/font_family.dart';
+import '../../../constant/app_strings.dart';
+import '../../../utils/size_config.dart';
 
 
 
@@ -22,8 +22,8 @@ class SubCategoryEditScreen extends GetView<SubCategoryEditController> {
           title: TextWidget(text:  subCategoryEditAppTitle,
             color: Colors.black,
             fontSize: SizeConfig.appbarTitleSize,
-            fontFamily: fontSemiBold,
-            weight: FontWeight.w600,),
+            fontFamily: FontFamily.fontSemiBold,
+            fontWeight: FontWeight.w600,),
           elevation: 0.0,
           centerTitle: true),
       body:
@@ -74,7 +74,7 @@ class SubCategoryEditScreen extends GetView<SubCategoryEditController> {
                           padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal * 0.75),
                           width: SizeConfig.blockSizeHorizontal * 10,
                           child: Center(
-                              child: Icon(Icons.edit_outlined, color: colorPrimary,
+                              child: Icon(Icons.edit_outlined, color: AppColors.colorPrimary,
                                   size: SizeConfig.blockSizeHorizontal*6.5)),
                         ),
                       ),

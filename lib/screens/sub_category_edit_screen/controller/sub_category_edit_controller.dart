@@ -1,9 +1,9 @@
-import 'package:food_merchant/routes/app_pages.dart';
+import 'package:food_merchant/routes/app_routes.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../../../component/DialogBox.dart';
-import '../../../constant/string_constants.dart';
+import '../../../component/custom_dialog_box.dart';
+import '../../../constant/app_strings.dart';
 import '../../../services/repo/CommonRepo.dart';
 import '../../../utils/CommonUtils.dart';
 import '../../../utils/GetStorageConstants.dart';
@@ -43,7 +43,7 @@ class SubCategoryEditController extends GetxController {
 
 
   editButtonClick(index){
-  Get.toNamed(Routes.SUBCATEGORY_TITLE_SCREEN,
+  Get.toNamed(AppRoutes.SUBCATEGORY_TITLE_SCREEN,
       arguments: [subCategoryList[index].categoryId,
                   subCategoryList[index].title,
                   subCategoryList[index].subcategoryId]);
