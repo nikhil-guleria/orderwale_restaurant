@@ -4,21 +4,19 @@ import 'package:food_merchant/screens/coupons/CouponsList/coupons_binding.dart';
 import 'package:food_merchant/screens/coupons/CouponsList/new_coupon_screen.dart';
 import 'package:food_merchant/screens/coupons/add_coupons/add_coupons.dart';
 import 'package:food_merchant/screens/coupons/add_coupons/add_coupons_binding.dart';
-import 'package:food_merchant/screens/customised_product/add_customised_product/addCustomisedProduct.dart';
-import 'package:food_merchant/screens/customised_product/add_customised_product/addCustomisedProductBinding.dart';
-import 'package:food_merchant/screens/customised_product/customisation_type/customisationType.dart';
-import 'package:food_merchant/screens/customised_product/customisation_type/customisationTypeBinding.dart';
+import 'package:food_merchant/screens/customised_product/add_customised_product/add_customised_product.dart';
+import 'package:food_merchant/screens/customised_product/add_customised_product/add_customised_product_binding.dart';
+import 'package:food_merchant/screens/customised_product/customisation_type/customisation_type.dart';
+import 'package:food_merchant/screens/customised_product/customisation_type/customisation_type_binding.dart';
 import 'package:food_merchant/screens/dashboard/controller/dashboard_binding.dart';
 import 'package:food_merchant/screens/dashboard/view/dashboard.dart';
-import 'package:food_merchant/screens/dashboard_orders/controller/dashboard_orders_binding.dart';
 import 'package:food_merchant/screens/dashboard_orders/controller/dashboard_orders_controller.dart';
-import 'package:food_merchant/screens/dashboard_orders/view/dashboard_orders_view.dart';
-import 'package:food_merchant/screens/edit_details/manage_restaurant.dart';
-import 'package:food_merchant/screens/edit_details/manage_restaurant_binding.dart';
 import 'package:food_merchant/screens/forgotPassword/controller/forgot_password_binding.dart';
 import 'package:food_merchant/screens/forgotPassword/view/forgot_password_view.dart';
-import 'package:food_merchant/screens/get_location/GetLocation.dart';
-import 'package:food_merchant/screens/get_location/GetLocationBinding.dart';
+import 'package:food_merchant/screens/help_and_support/controller/help_and_support_binding.dart';
+import 'package:food_merchant/screens/help_and_support/view/help_and_support_view.dart';
+import 'package:food_merchant/screens/manage_restaurant/manage_restaurant.dart';
+import 'package:food_merchant/screens/manage_restaurant/manage_restaurant_binding.dart';
 import 'package:food_merchant/screens/map/map_view_binding.dart';
 import 'package:food_merchant/screens/new_user/view/new_user.dart';
 import 'package:food_merchant/screens/new_user/controller/new_user_binding.dart';
@@ -30,17 +28,18 @@ import 'package:food_merchant/screens/orders_page/controller/orders_page_binding
 import 'package:food_merchant/screens/orders_page/view/orders_page_view.dart';
 import 'package:food_merchant/screens/printer_settings/controller/printer_settings_binding.dart';
 import 'package:food_merchant/screens/printer_settings/view/printer_settings_view.dart';
-import 'package:food_merchant/screens/profile/Profile.dart';
-import 'package:food_merchant/screens/profile/ProfileBinding.dart';
-import 'package:food_merchant/screens/restaurant_details/controller/RestaurantDetailsBinding.dart';
-import 'package:food_merchant/screens/restaurant_details/controller/RestaurantDetailsController.dart';
-import 'package:food_merchant/screens/restaurant_details/view/RestaurantDetails.dart';
+import 'package:food_merchant/screens/restaurant_details/controller/restaurant_details_binding.dart';
+import 'package:food_merchant/screens/restaurant_details/controller/restaurant_details_controller.dart';
+import 'package:food_merchant/screens/restaurant_details/details/details_controller.dart';
+import 'package:food_merchant/screens/restaurant_details/menu/restaurant_menu_controller.dart';
+import 'package:food_merchant/screens/restaurant_details/reviews/reviews_controller.dart';
+import 'package:food_merchant/screens/restaurant_details/view/restaurant_details.dart';
 import 'package:food_merchant/screens/sales_report/view/sales_report.dart';
 import 'package:food_merchant/screens/sales_report/controller/sales_report_binding.dart';
 import 'package:food_merchant/screens/select_delivery_area/delivery_area_binding.dart';
 import 'package:food_merchant/screens/settings/controller/settings_controller.dart';
-import 'package:food_merchant/screens/tab_bar/controller/tab_bar_controller.dart';
-import 'package:food_merchant/screens/tab_bar/view/tab_bar_view.dart';
+import 'package:food_merchant/screens/tab_bar/controller/main_shell_controller.dart';
+import 'package:food_merchant/screens/tab_bar/view/main_shell.dart';
 import 'package:food_merchant/screens/toppings/add_update_toppings/add_update_topping.dart';
 import 'package:food_merchant/screens/toppings/add_update_toppings/add_update_topping_binding.dart';
 import 'package:food_merchant/screens/toppings/toppings_list/toppings_list_binding.dart';
@@ -49,18 +48,10 @@ import 'package:food_merchant/screens/update_profile/controller/update_profile_b
 import 'package:food_merchant/screens/update_profile/view/update_profile.dart';
 import 'package:food_merchant/utils/storage_utils.dart';
 import 'package:get/get.dart';
-import '../screens/add_product/AddProduct.dart';
-import '../screens/add_product/AddProductBinding.dart';
-import '../screens/home/controller/HomeBinding.dart';
-import '../screens/home/view/Home.dart';
 import '../screens/login/controller/login_binding.dart';
 import '../screens/login/view/mobile_login_screen.dart';
 import '../screens/map/map.dart';
 import '../screens/select_delivery_area/delivery_area.dart';
-import '../screens/select_restaurant/SelectRestaurant.dart';
-import '../screens/select_restaurant/SelectRestaurantBinding.dart';
-import '../screens/settings_notifications/Notifications.dart';
-import '../screens/settings_notifications/NotificationsBinding.dart';
 import '../screens/sub_category_edit_screen/controller/sub_category_edit_binding.dart';
 import '../screens/sub_category_edit_screen/view/sub_category_edit_screen.dart';
 import '../screens/sub_category_title_screen/controller/sub_category_binding.dart';
@@ -83,7 +74,7 @@ class AppPages {
   static final routes = [
     ...authRoutes,
     ...homeRoutes,
-
+    ...restaurantRoutes,
     ...settingsRoutes
   ];
 
@@ -117,20 +108,36 @@ class AppPages {
         transitionDuration: Duration(milliseconds: durationTime)
     ),
 
+    // user address
+    GetPage(
+        name: AppRoutes.userAddress,
+        page: () => const UserAddress(),
+        binding: UserAddressBinding(),
+        transition: Transition.rightToLeft,
+        transitionDuration: Duration(milliseconds: durationTime)
+    ),
+
   ];
 
 
   // home routes
   static final List<GetPage> homeRoutes = [
-    // tab bar
+    // main shell
     GetPage(
         name: AppRoutes.tabBar,
-        page: () => TabBarView(),
+        page: () => MainShell(),
         binding: BindingsBuilder(() {
-          Get.lazyPut<TabBarController>(() => TabBarController());
+          // outer tab bindings
+          Get.lazyPut<MainShellController>(() => MainShellController());
           Get.lazyPut<DashboardOrdersController>(() => DashboardOrdersController());
           Get.lazyPut<RestaurantDetailsController>(() => RestaurantDetailsController());
           Get.lazyPut<SettingsController>(() => SettingsController());
+
+
+          // inner tab bindings
+          Get.lazyPut<DetailsController>(() => DetailsController());
+          Get.lazyPut<RestaurantMenuController>(() => RestaurantMenuController());
+          Get.lazyPut<ReviewsController>(() => ReviewsController());
         }),
         transition: Transition.rightToLeft,
         transitionDuration: Duration(milliseconds: durationTime)
@@ -156,11 +163,50 @@ class AppPages {
 
 
   // restaurant routes
+  static final List<GetPage> restaurantRoutes = [
+    // add update item
+    GetPage(
+        name: AppRoutes.addCustomisedProduct,
+        page: () => const AddCustomisedProduct(),
+        binding: AddCustomisedProductBinding(),
+        transition: Transition.rightToLeft,
+        transitionDuration: Duration(milliseconds: durationTime)
+    ),
+
+    // customisation type
+    GetPage(
+        name: AppRoutes.customisationType,
+        page: () => const CustomisationTypeScreen(),
+        binding: CustomisationTypeBinding(),
+        transition: Transition.rightToLeft,
+        transitionDuration: Duration(milliseconds: durationTime)
+    ),
+
+    // subcategory title screen
+    GetPage(
+        name: AppRoutes.subcategoryTitleScreen,
+        page: ()=> const SubCategoryScreen(),
+        binding: SubCategoryBinding(),
+        transition: Transition.rightToLeft,
+        transitionDuration: Duration(milliseconds: durationTime)
+
+    ),
+
+    // subcategory edit screen
+    GetPage(
+        name: AppRoutes.subcategoryEditScreen,
+        page: ()=> const SubCategoryEditScreen(),
+        binding: SubCategoryEditBinding(),
+        transition: Transition.rightToLeft,
+        transitionDuration: Duration(milliseconds: durationTime)
+    ),
+  ];
+
 
 
 
   // settings routes
-  static final settingsRoutes = [
+  static final List<GetPage> settingsRoutes = [
 
     // view & profile update
     GetPage(
@@ -193,7 +239,9 @@ class AppPages {
     GetPage(
         name: AppRoutes.map,
         page: () => const CustomMap(),
-        binding: MapViewBinding()
+        binding: MapViewBinding(),
+        transition: Transition.rightToLeft,
+        transitionDuration: Duration(milliseconds: durationTime)
     ),
 
     // delivery area
@@ -250,6 +298,28 @@ class AppPages {
         transitionDuration: Duration(milliseconds: durationTime)
     ),
 
+    // printer settings
+    GetPage(
+        name: AppRoutes.printerSettings,
+        page: () => const PrinterSettingsView(),
+        binding: PrinterSettingsBinding(),
+        transition: Transition.rightToLeft,
+        transitionDuration: Duration(milliseconds: durationTime)
+    ),
+
+    // help & support
+    GetPage(
+        name: AppRoutes.helpAndSupport,
+        page: () => const HelpAndSupportView(),
+        binding: HelpAndSupportBinding(),
+        transition: Transition.rightToLeft,
+        transitionDuration: Duration(milliseconds: durationTime)
+    ),
+
+
+
+
+
 
 
 
@@ -264,86 +334,6 @@ class AppPages {
       name: AppRoutes.DASHBOARD,
       page: () => const Dashboard(),
      binding: DashboardBinding(),
-    ),
-
-
-    // dashboard page
-    GetPage(
-        name: AppRoutes.MAIN,
-        page: ()=> const DashboardOrdersView(),
-        binding: DashboardOrdersBinding()
-    ),
-
-    GetPage(
-        name: AppRoutes.SETTINGS_NOTIFICATIONS,
-        page: () => Notifications(),
-        binding: NotificationsBinding()
-    ),
-    GetPage(
-        name: AppRoutes.SELECT_RESTAURANT,
-        page: () => const SelectRestaurant(),
-        binding: SelectRestaurantBinding()
-    ),
-
-    // printer settings
-    GetPage(
-        name: AppRoutes.printerSettings,
-        page: () => const PrinterSettingsView(),
-        binding: PrinterSettingsBinding()
-    ),
-
-    GetPage(
-        name: AppRoutes.RESTAURANT_DETAILS,
-        page: () => const RestaurantDetails(),
-        binding: RestaurantDetailsBinding()
-    ),
-    GetPage(
-        name: AppRoutes.ADD_PRODUCT,
-        page: () => const AddProduct(),
-        binding: AddProductBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.addCustomisedProduct,
-      page: () => const AddCustomisedProduct(),
-      binding: AddCustomisedProductBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.customisationType,
-      page: () => const CustomisationTypeScreen(),
-      binding: CustomisationTypeBinding(),
-    ),
-
-   /* GetPage(
-        name: AppRoutes.GET_LOCATION,
-        page: () => const GetLocation(),
-        binding: GetLocationBinding()
-    ),*/
-
-    GetPage(
-      name: AppRoutes.PROFILE,
-      page: () => const Profile(),
-      binding: ProfileBinding(),
-    ),
-
-    GetPage(
-        name: AppRoutes.USER_ADDRESS,
-        page: () => const UserAddress(),
-      binding: UserAddressBinding()
-       ),
-
-    GetPage(
-        name: AppRoutes.SUBCATEGORY_TITLE_SCREEN,
-        page: ()=> const SubCategoryScreen(),
-        binding: SubCategoryBinding()),
-    GetPage(
-        name: AppRoutes.SUBCATEGORY_EDIT_SCREEN,
-        page: ()=> const SubCategoryEditScreen(),
-        binding: SubCategoryEditBinding()),
-
-    GetPage(
-        name: AppRoutes.HOME,
-        page: () => Home(),
-        binding: HomeBinding()
     ),
 
   ];

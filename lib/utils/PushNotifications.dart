@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:food_merchant/constant/global_variables.dart';
-import 'package:food_merchant/utils/CommonUtils.dart';
+import 'package:food_merchant/utils/common_utils.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../routes/app_routes.dart';

@@ -24,6 +24,7 @@ class AppImages {
 
   // settings
   static const settingsBack = "assets/images/back.svg";
+  static const settingsUserLogo = "assets/images/user.png";
 
   // navigation bar icons
   static const restaurantNav = "assets/images/food.svg";

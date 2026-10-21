@@ -18,17 +18,18 @@ class SalesReportModel {
 }
 
 class Report {
-  String? earning;
   String? todaySales;
   String? monthlyEarning;
-  String? thisMonthSales;
-  String? totalSales;
   String? todayOrders;
-  String? dateOrders;
   String? monthlyDateOrders;
-  String? thisMonthOrders;
-  String? totalOrders;
+// below are used in sales report view
   String? balance;
+  String? thisMonthSales;
+  String? thisMonthOrders;
+  String? totalSales;
+  String? totalOrders;
+  String? earning;
+  String? dateOrders;
   int? paymentGateWay;
   int? withdrawalStatus; // 0=no request, 1=pending, 2=accepted, 3=declined
   int? withdrawalId;

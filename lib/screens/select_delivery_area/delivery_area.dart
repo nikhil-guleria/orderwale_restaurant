@@ -5,7 +5,7 @@ import 'package:food_merchant/screens/select_delivery_area/delivery_area_control
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../component/button_widget.dart';
-import '../../component/ColorLoader.dart';
+import '../../component/color_loader.dart';
 import '../../constant/app_colors.dart';
 import '../../utils/size_config.dart';
 

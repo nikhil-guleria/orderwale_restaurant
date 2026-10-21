@@ -9,8 +9,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import '../../../routes/app_routes.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../../utils/CommonUtils.dart';
+import '../../../services/repo/api_controller.dart';
+import '../../../utils/common_utils.dart';
 
 
 class DashboardOrdersController extends GetxController{
@@ -196,38 +196,24 @@ int duration(String? orderTime){
   // decline or cancel order
  void cancelOrder(int index) {
     Get.dialog(showDialogBox(title: AppStrings.alertTitle,
-      message: cancelOrderDescription,
+      message: AppStrings.dashboardCancelOrderDescription,
       twoButtons: true,
       cancelTxt: AppStrings.btnNo,
       confirmTxt: AppStrings.btnYes,
-      onCancel: () {
-        Get.back();
-      },
-      onConfirm: (){Get.back(result: "ok");},
-    )).then((value) {
-      if(value == "ok"){
-        acceptDeclineOrders("3",receivedOrder[index].orderId);
-      }
-    });
+      onConfirm: (){acceptDeclineOrders("3",receivedOrder[index].orderId);},
+    ));
   }
 
 
 
  void deliverOrderClick(String? orderId) {
     Get.dialog(showDialogBox(title: AppStrings.alertTitle,
-      message: deliverOrderDescription,
+      message: AppStrings.dashboardDeliverOrderDescription,
       twoButtons: true,
       cancelTxt: AppStrings.btnNo,
       confirmTxt: AppStrings.btnYes,
-      onCancel: () {
-        Get.back();
-      },
-      onConfirm: (){Get.back(result: "ok");},
-    )).then((value) {
-      if(value == "ok"){
-        acceptDeclineOrders("5",orderId);
-      }
-    });
+      onConfirm: (){acceptDeclineOrders("5",orderId);},
+    ));
   }
 
 }

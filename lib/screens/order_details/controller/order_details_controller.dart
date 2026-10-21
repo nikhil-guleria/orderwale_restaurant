@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:food_merchant/component/custom_dialog_box.dart';
 import 'package:food_merchant/screens/printer_settings/controller/printer_connection_service.dart';
-import 'package:food_merchant/services/commonModels/cancel_reasons_model.dart';
 import 'package:food_merchant/utils/storage_utils.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../constant/app_strings.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../../utils/CommonUtils.dart';
+import '../../../services/repo/api_controller.dart';
+import '../../../utils/common_utils.dart';
 import '../models/order_details_model.dart';
+
 
 class OrderDetailsController extends GetxController {
   var  orderDetails = RestaurantOrderData().obs;
@@ -18,8 +18,6 @@ class OrderDetailsController extends GetxController {
   var result = "".obs;
   var updateStatus = false.obs;
   var orderId = "";
-  var cancelReasonsList = <CancelResult>[].obs;
-
 
 
   @override
@@ -37,7 +35,7 @@ class OrderDetailsController extends GetxController {
 
   void removeValue(){
     //storage.remove(GetStorageConstants.fcmOrderId);
-    StorageUtils.utils.removeKey(StorageUtils.utils.fcmOrderId);
+    StorageUtils.utils.removeFCMOrderId();
   }
 
   Future<void> getOrderDetails() async {
@@ -169,38 +167,24 @@ void getBack(){
 
  void cancelOrder() {
     Get.dialog(showDialogBox(title: AppStrings.alertTitle,
-      message: cancelOrderDescription,
+      message: AppStrings.dashboardCancelOrderDescription,
       twoButtons: true,
       cancelTxt: AppStrings.btnNo,
       confirmTxt: AppStrings.btnYes,
-      onCancel: () {
-        Get.back();
-      },
-      onConfirm: (){Get.back(result: "ok");},
-    )).then((value) {
-      if(value == "ok"){
-        acceptDeclineOrders("3");
-      }
-    } );
+      onConfirm: (){acceptDeclineOrders("3");},
+    ));
   }
 
 
 
   void deliverOrderClick() {
     Get.dialog(showDialogBox(title: AppStrings.alertTitle,
-      message: deliverOrderDescription,
+      message: AppStrings.dashboardDeliverOrderDescription,
       twoButtons: true,
       cancelTxt: AppStrings.btnNo,
       confirmTxt: AppStrings.btnYes,
-      onCancel: () {
-        Get.back();
-      },
-      onConfirm: (){Get.back(result: "ok");},
-    )).then((value) {
-      if(value == "ok"){
-        acceptDeclineOrders("5");
-      }
-    });
+      onConfirm: (){acceptDeclineOrders("5");},
+    ));
   }
 
 
@@ -248,60 +232,6 @@ void getBack(){
 
 
 
-
-  /// -------------------------------------------------------------
-  /// -------------------- currently not in use -------------------
-  /// -------------------------------------------------------------
-  // fetch cancel reasons list
-  Future<void> fetchCancelReasonsList() async {
-    var cancelResponse = await ApiController().getCancelReasons();
-    if(cancelResponse.responseCode == 1){
-      CancelReasonsModel cancelReasonsModel = CancelReasonsModel.fromJson(cancelResponse.response?.data);
-      cancelReasonsList.value = cancelReasonsModel.result ?? [];
-    }
-  }
-
-
-
-  void changeCancelReason(int index, bool val) {
-    for (var reason in cancelReasonsList) {
-      reason.selected = false;
-    }
-    cancelReasonsList[index].selected = val;
-  }
-
-
-  Future<void> submitCancelReason() async {
-    bool selected = cancelReasonsList.any((item) => item.selected == true);
-    if(selected){
-      showLoader.value = true;
-      var selectedItem = cancelReasonsList.firstWhere(
-            (item) => item.selected == true,
-      );
-      var param = {
-        "reason_id": selectedItem.reasonId,
-        "order_id": orderId
-      };
-      var response = await ApiController().cancelOrderWithReason(param);
-      showLoader.value = false;
-      if (response.responseCode == 1) {
-        updateStatus.value = true;
-        getOrderDetails();
-      }
-      else {
-        CommonUtils.utils.handleAlertMsg(
-            code: response.responseCode,
-            message: response.msg);
-        getOrderDetails();
-      }
-    } else {
-      Get.snackbar(AppStrings.alertError, snackBarMsgCancelReason);
-    }
-  }
-
-
-
-
-  }
+}
 
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/routes/app_routes.dart';
-import 'package:food_merchant/services/repo/CommonRepo.dart';
-import 'package:food_merchant/utils/CommonUtils.dart';
+import 'package:food_merchant/services/repo/api_controller.dart';
+import 'package:food_merchant/utils/common_utils.dart';
 import 'package:get/get.dart';
 import 'toppings_list_model.dart';
 

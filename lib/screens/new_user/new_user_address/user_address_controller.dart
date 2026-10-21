@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_merchant/constant/app_strings.dart';
 import 'package:get/get.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../get_location/SuggestionModel.dart';
+import '../../../services/repo/api_controller.dart';
+import 'address_suggestion_model.dart';
 
 class UserAddressController extends GetxController{
   TextEditingController searchLocation = TextEditingController();

@@ -1,14 +1,24 @@
 class RazorPayResponse {
-  bool? status;
+  int? code;
   String? message;
   RazorpayData? data;
 
-  RazorPayResponse({this.status, this.message, this.data});
+  RazorPayResponse({this.code, this.message, this.data});
 
   RazorPayResponse.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
+    code = json['code'];
     message = json['message'];
     data = json['data'] != null ? RazorpayData.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
   }
 }
 
@@ -21,11 +31,12 @@ class RazorpayData {
   String? currency;
   String? entity;
   String? id;
-  List? notes;
+  //List? notes;
   String? offerId;
   String? receipt;
   String? status;
-  String? orderId;
+  String? keyId;
+  String? phone;
 
   RazorpayData(
       {this.amount,
@@ -36,11 +47,13 @@ class RazorpayData {
         this.currency,
         this.entity,
         this.id,
-        this.notes,
+        //this.notes,
         this.offerId,
         this.receipt,
         this.status,
-        this.orderId});
+        this.keyId,
+        this.phone,
+      });
 
   RazorpayData.fromJson(Map<String, dynamic> json) {
     amount = json['amount'];
@@ -51,10 +64,38 @@ class RazorpayData {
     currency = json['currency'];
     entity = json['entity'];
     id = json['id'];
-    notes = json['notes'];
+    /*if (json['notes'] != null) {
+      notes = <Null>[];
+      json['notes'].forEach((v) {
+        notes!.add(Null.fromJson(v));
+      });
+    }*/
     offerId = json['offer_id'];
     receipt = json['receipt'];
     status = json['status'];
-    orderId = json['order_id'];
+    keyId = json['key_id'];
+    phone = json['phone'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['amount'] = amount;
+    data['amount_due'] = amountDue;
+    data['amount_paid'] = amountPaid;
+    data['attempts'] = attempts;
+    data['created_at'] = createdAt;
+    data['currency'] = currency;
+    data['entity'] = entity;
+    data['id'] = id;
+   /* if (this.notes != null) {
+      data['notes'] = this.notes!.map((v) => v.toJson()).toList();
+    }*/
+    data['offer_id'] = offerId;
+    data['receipt'] = receipt;
+    data['status'] = status;
+    data['key_id'] = keyId;
+    data['phone'] = phone;
+    return data;
   }
 }
+

@@ -4,12 +4,11 @@ import 'package:get_storage/get_storage.dart';
 class StorageUtils {
 
   static final StorageUtils utils = StorageUtils._internal();
-  static const _sRestaurantName = 'restaurant.name';
-  static const _sRestaurantImage = 'restaurant.image';
   static const _sRestaurantUserName = 'restaurant.user.name';
   static const _sRestaurantUserToken = 'restaurant.user.token';
+  static const _sRestaurantUserRole = 'restaurant.user.role';
+  static const sFCMOrderId = 'fcm_orderId';
 
-   final String fcmOrderId = 'fcm_orderId';
 
   factory StorageUtils() {
     return utils;
@@ -39,33 +38,39 @@ class StorageUtils {
      }
   }
 
+  Future<void> removeFCMOrderId() async {
+    await removeKey(sFCMOrderId);
+  }
 
-  String get restaurantName => _storage.read(_sRestaurantName) ?? "";
 
-  String get restaurantImage => _storage.read(_sRestaurantImage) ?? "";
+
 
   String get restaurantUserName => _storage.read(_sRestaurantUserName) ?? "";
 
   String get restaurantUserToken => _storage.read(_sRestaurantUserToken) ?? "";
 
+  String get restaurantUserRole => _storage.read(_sRestaurantUserRole) ?? "";
+
+  String? get getFcmOrderId => _storage.read(sFCMOrderId);
 
 
    Future<void> saveSession({
-    String? restaurantName, String? restaurantImage,
-    String? restaurantUserName, String? restaurantUserToken
+    String? restaurantUserName,
+     String? restaurantUserToken,
+     String? userRole
 }) async {
    await _storeValue(key: _sRestaurantUserToken, value: restaurantUserToken);
-   await _storeValue(key: _sRestaurantName, value: restaurantName);
-   await _storeValue(key: _sRestaurantImage, value: restaurantImage);
+   await _storeValue(key: _sRestaurantUserRole, value: userRole);
    await _storeValue(key: _sRestaurantUserName, value: restaurantUserName);
+
 }
 
 
     Future<void> clearSession() async {
-    await removeKey(_sRestaurantName);
-    await removeKey(_sRestaurantImage);
-    await removeKey(_sRestaurantUserName);
     await removeKey(_sRestaurantUserToken);
+    await removeKey(_sRestaurantUserRole);
+    await removeKey(_sRestaurantUserName);
+    await removeKey(sFCMOrderId);
   }
 
 

@@ -7,6 +7,10 @@ class AppStrings {
   static const currSymbolIn = '₹';
   static const hpLatitude = 31.833859;
   static const hpLongitude = 76.5054652;
+  static const orderWale = "OrderWale";
+  static const fcmIsolatePort = 'fcm_Message';
+  static const userRoleAdmin = 'admin';
+  static const userRoleManager = 'manager';
 
 
 
@@ -24,6 +28,12 @@ class AppStrings {
   static const btnRadioPercentage = 'Percentage';
   static const btnCancel = 'Cancel';
   static const btnOk = 'Ok';
+  static const btnDeclined = "Declined";
+  static const btnAcceptOrder = "Accept Order";
+  static const btnContinue =  "Continue";
+  static const btnEdit = "Edit";
+  static const btnRetry = "Retry";
+  static const btnAddImg = 'Add Image';
 
 
 
@@ -34,6 +44,7 @@ class AppStrings {
   static const alertError = 'Error';
   static const alertTitleRegister = "Request received! 🎉";
   static const alertTitleReprintKot = "Reprint KOT?";
+  static const alertTitleNoConnection = "No Connection";
 
 
   // alert messages
@@ -44,11 +55,17 @@ class AppStrings {
   static const alertMsgSomethingWentWrong =
       "Something went wrong.\n"
       "Please try again in a moment.";
+  static const alertMsgConnectInternet = 'PLEASE CONNECT TO THE INTERNET';
   static const alertMsgExitApp = "Do you want to exit the App?";
   static const alertMsgLogout = 'Are you really want to logout?';
   static const alertMsgDeleteTopping = "Are you really want to delete this topping.";
   static const alertMsgDeleteCoupon = "Are you really want to delete this coupon.";
   static const alertMsgManageRestaurant = "Restaurant details have been successfully updated.";
+  static const alertMsgClearCustomisationList = "Are you really want to delete this list.";
+  static const alertMsgDeleteItem = "Are you really want to delete this item";
+  static const alertMsgDeleteCustomisation = "Are you really want to delete this.";
+  static const alertMsgHelpAndSupport = "You can add up to 3 images only";
+
 
   // error messages
   static const errorMsgToken = 'Error fetching FCM token';
@@ -57,6 +74,11 @@ class AppStrings {
   static const errorSelectToppingType = "Please select topping type";
   static const errorSelectDiscountType = "Please select discount type";
   static const errorSelectImage = "Please select image";
+  static const errorFoodType = "Please select food type";
+  static const errorCustomisationType = "Please Select Customisation Type";
+  static const errorServerNotResponding = "Server not responding. Please try later";
+  static const errorPaymentDeducted = "Your payment has been deducted, but confirmation is pending. Your balance will be updated once the payment is verified.";
+  static const errorPaymentFailed = "Payment Failed";
 
 
   // hints
@@ -65,6 +87,13 @@ class AppStrings {
   static const hintSelectState = "Select State";
   static const hintSelectCity = "Select City";
   static const hintSelectRestaurantImage = "Select  Restaurant Image";
+  static const hintEnterItemName = "Enter Item Name";
+  static const hintEnterItemDescription = "Enter Item Description";
+  static const hintSelectCustomisationType = "Select Customisation Type";
+  static const hintSelectTopping = "Select Topping";
+  static const hintItemPrice = 'e.g. 25';
+  static const hintItemDiscount = 'e.g. 3';
+  static const hintSubcategoryTitle = "enter menu title";
 
 
   // headings
@@ -84,6 +113,7 @@ class AppStrings {
   static const headingLoading  = 'Loading...';
   static const headingPleaseWait = 'Please wait...';
   static const headingTitle = 'Title';
+  static const headingDescription = "Description";
 
 
 
@@ -132,8 +162,30 @@ class AppStrings {
   static const settingsChangePasswordDesc ='Change your password';
   static const settingsPrinterSettingsHeading = 'Printer Settings';
   static const settingsPrinterSettingsDesc = 'Configure your printer';
+  static const settingsHelpAndSupportHeading = 'Help & Support';
+  static const settingsHelpAndSupportDesc = 'Get help whenever you need it';
   static const settingsLogoutHeading = "Logout";
   static const settingsLogoutDesc = 'Logout your account';
+
+
+  // home/dashboard
+  static const dashboardTitle ="Home";
+  static const dashboardViewMore = "View more";
+  static const dashboardMarkAsReady = "Mark As Ready";
+  static const dashboardMarkAsDelivered = "Mark As Delivered";
+  static const dashboardMarkOutForDelivery = "Mark As Out for Delivery";
+  static const dashboardCancelOrderDescription = "Are you really want to\ncancel this Order??";
+  static const dashboardDeliverOrderDescription = "You are responsible for delivering this order, so please ensure everything is completed and checked carefully.";
+  static const snackBarMsgCancelReason = "Please Select Cancel Reason";
+  static const dashboardTotalPriceCard = "Total Price:  ";
+  static const dashboardNewOrder = "New Order";
+  static const dashboardDelivery = "Delivery";
+  static const dashboardTakeaway = "TakeAway";
+  static const dashboardPreparingOrder = "Preparing";
+  static const dashboardReadyOrder = "Ready";
+  static const dashboardDelayed = "Delayed";
+
+
 
 
   // orders list
@@ -223,7 +275,6 @@ class AppStrings {
   static const couponAddTitle = "Add Coupon";
   static const couponUpdateTitle = "Update Coupon";
   static const couponCode = "Coupon Code";
-  static const couponDescription = "Description";
   static const couponStartDate = "Start Date";
   static const couponEndDate = "End Date";
   static const couponUsage = "Usage Time";
@@ -233,153 +284,74 @@ class AppStrings {
   static const couponMinDiscount = "Min Discount";
 
 
-
-
   // change password
   static const passwordTitle = "Change Password";
   static const passwordOld = "Old Password";
   static const passwordNew = "New Password";
   static const passwordConfirm = "Confirm Password";
 
+  // help & support
+  static const helpAndSupportTitle = "Help & Support";
+
+
+  // restaurant tab
+  static const restaurantTabDetails = "Details";
+  static const restaurantTabMenu = "Menu";
+  static const restaurantTabReviews = "Reviews";
+
+  static const restaurantViewOnMap = "View on Map";
+  static const restaurantDeliveryAvailability = 'Delivery Availability';
+  static const restaurantFssaiNo = "FSSAI No.";
+  static const restaurantAveragePrice = "Avg. cost/meal";
+  static const restaurantMinOrderPrice = "Min. Order Price";
+  static const restaurantMinDeliveryCharge = "Min. Delivery Charges";
+  static const restaurantChargesPerKm = "Charges Per KM";
+  static const restaurantFreeDeliveryAmount = "Free Delivery Amount";
+  static const restaurantMinDeliveryDistance = "Min. Delivery Distance";
+
+
+  // restaurant reviews
+  static const reviewsEmpty = "No Review Found";
+
+  // restaurant menu
+  static const menuLoading = "Loading your items ...";
+  static const menuEmptyList = "Nothing to show please add some items.";
+  static const menuItemCustomised = "Customised";
+  static const menuItemAvailable = 'Available';
+  static const menuItemOutOfStock = 'Out of Stock';
+
+  // restaurant add update item
+  static const itemAddTitle = "Add Item";
+  static const itemUpdateTitle = "Update Item";
+  static const itemCategories = "Categories";
+  static const itemSelectCategory = "Select Category";
+  static const itemMenuTitle = "Menu Title";
+  static const itemSelectMenuTitle = "Select Menu Title";
+  static const itemSelectMenu = "Select Menu";
+  static const itemCreateMenu = "Create Menu";
+  static const itemAddNew = "Add New";
+  static const itemProductName = "Enter Item Name";
+  static const itemProductDescription = "Item Description";
+  static const itemAddCustomisation = "Add Customisation";
+  static const itemAddToppings = "Add Toppings";
+  static const itemAddNewTopping = "+ Add New";
+  static const itemPriceHeading = "Item's Price";
+  static const itemDiscountHeading = "Item's Discount";
+  static const itemDiscountType = "Discount Type";
+  static const itemFoodType = "Food Type";
+
+  // subcategory
+  static const subcategoryAppBarTitle = "Add Menu";
+  static const subcategoryMenuTitle = "Menu Title";
+  static const subcategoryDelete = "Delete";
+  static const subcategoryDeleteDesc = "If you delete menu then items of this menu will also be deleted !!";
+  static const subcategoryEditAppTitle = "Edit Menu";
+
+
+
+  // customisation type
+  static const customisationTypeTitle = "Customisation Type";
+  static const customisationDetails = "Enter Details";
 
 
 }
-
-
-
-
-
-
-//Login  and Sign Up
-
-const hintPassword = "Password";
-const hintConfirmPassword = "Confirm password";
-const hintPin = "Pin Number";
-const hintUserName = "User name";
-const hintEmail = "Email";
-const lblSignIn = "Sign In";
-const lblSignUp = "Sign Up";
-
-const lblCreateAccount = "CREATE ACCOUNT";
-const lblPleaseWait = "Please Wait..";
-const lblCreateNewAccount = "Create a new account";
-const lblSignInAccount = "Sign in to your account";
-const lbl_or_sign_in_with = "Or sign in with";
-const lbl_no_account = "Don’t have an account ? ";
-const lbl_already_account = "Already have an account ? ";
-const lbl_forgot_password = "Forgot your password";
-const lbl_forgot_password_desc =
-    "Enter your email address below and we will send you a link to reset or create your password";
-const lbl_continue = "Continue";
-const lbl_cancel = "Cancel";
-
-const lbl_keep_login = "keep me logged In";
-const lbl_forgot_password_ = "Forgot your password?";
-const lbl_or_sign_up_with = "Or sign up with";
-const lbl_select_gender = "Select Gender";
-const lbl_first_name = "First Name";
-const lbl_gender = "Gender";
-const lbl_last_name = "Last Name";
-const lbl_dob = "DOB";
-const lbl_email = "Email";
-const lbl_phone = "Phone Number";
-const lbl_bio = "Bio";
-const lbl_address = "Address";
-const lbl_cover_photo = "Cover Photo";
-const lbl_logout_confirm = "Do you really want to Logout?";
-
-// Validations Labels
-const lbl_enter_email = "Please enter email id";
-const lbl_enter_password = "Please enter password";
-const lbl_enter_conf_password = "Please enter confirm password";
-const selectBusinessTypeFirst = "Please Select Business Type";
-const allFieldsRequired = "All Fields are required";
-const are_YouSure_To_Logout = "Are You Sure You Want To logout?";
-const keep_logged_in = "No,Keep Me Logged In";
-
-const invalidEmail = "Please enter valid email id";
-const invalidPassword = "Please enter valid password";
-const password_not_same = "Password and confirm password must be same";
-
-// Error Messages
-const error_no_internet = "Please check your internet connection";
-const error_unknown = "Sorry Something went wrong.";
-const error_login_required =
-    "To access this feature You need to Login. Proceed with Login ?";
-const logout = "Logout";
-
-///// Main Screen
-const main_screen_title ="Home";
-const new_order = "New Orders";
-const waiting = "Waiting for New order";
-const preparing_order = "Preparing";
-const decline_btn = "Declined";
-const accept_order_btn = "Accept Order";
-const mark_as_ready = "Mark As Ready";
-const mark_as_delivered = "Mark As Delivered";
-const mark_as_out_for_delivery= "Mark As Out for Delivery";
-const show_all_lbl = "View more";
-const cancelOrderDescription = "Are you really want to\ncancel this Order??";
-const snackBarMsgCancelReason = "Please Select Cancel Reason";
-const deliverOrderDescription = "You are responsible for delivering this order, so please ensure everything is completed and checked carefully.";
-
-
-///// Get Location Screen
-const locationScreenTitle = 'Enter Your Address';
-const currentLocation = 'Use my current location';
-const recentSearches = 'Recent Searches';
-
-
-///// Add Product Screen & Update Product
-const update_app_bar_title = "Update Product";
-const app_bar_title = "Add Product";
-const select_image = "Select Image";
-const categories = "Categories";
-const select_category = "Select Category";
-const add_product_name = "Add Product Name";
-const select_menu = "Select Menu";
-const add_menu_name = "Menu Title";
-const add_menu_name_hint = "menu title";
-const add_product_name_hint = "add product name";
-const item_descp = "Item Description";
-const item_descp_hint = "add item description";
-const item_price = "Item's Price";
-const item_price_hint ="₹ Price";
-const item_discount = "Item's Discount";
-const item_discount_hint = "e.g. 10";
-const discount_type = "Discount Type";
-const food_type = "Food Type";
-const add_item_btn = "ADD ITEM";
-const update_item_btn = "UPDATE ITEM";
-const snackbar_alert_msg = "Please Check All Details";
-const snackbar_alert = "Something Went Wrong";
-const delete_product = "Are you really want to delete product";
-const selectTopping = "Select Topping";
-const addNewTopping = "+ Add New";
-
-///// Customised Product Screen
-const customisedProductTitle = "Add Item";
-const customisedProductCategories = "Categories";
-const customisedProductMenu = "Menu Title";
-const customisedProductName = "Add Product Name";
-const customisedProductDescription = "Item Description";
-const customisedProductCustomisation = "Add Customisation";
-const customisedProductAddToppings = "Add Toppings";
-const selectCustomisationType = "Select Customisation Type";
-const customisationTypeTitle = "Customisation Type";
-const customisationDetails = "Enter Details";
-const customisationContinue = "CONTINUE";
-const customisedUpdateProduct = "Update Item";
-
-///// SubCategory
-const subCategoryAppTitle = "Add Menu";
-const subCategoryMenuTitle = "Menu Title";
-const subCategoryHint = "enter menu title";
-const subCategoryButton = "SUBMIT";
-const subCategoryEditAppTitle = "Edit Menu";
-const subCategoryDelete = "Delete";
-const subCategoryDeleteDesc = "If you delete menu then items of this menu will also be deleted !!";
-
-
-// printer settings
-const printerSettingsTitle = 'Printer Settings';

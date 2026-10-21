@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:food_merchant/constant/app_strings.dart';
-import 'package:food_merchant/services/repo/CommonRepo.dart';
+import 'package:food_merchant/services/repo/api_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as lc;
 import 'package:permission_handler/permission_handler.dart';
 import '../../constant/app_colors.dart';
 import '../../constant/font_family.dart';
-import '../../utils/CommonUtils.dart';
+import '../../utils/common_utils.dart';
 import '../../utils/size_config.dart';
 
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_merchant/component/button_widget.dart';
 import 'package:food_merchant/screens/sub_category_title_screen/controller/sub_category_controller.dart';
-import 'package:food_merchant/utils/Validations.dart';
+import 'package:food_merchant/utils/validations.dart';
 import 'package:get/get.dart';
 
-import '../../../component/ColorLoader.dart';
+import '../../../component/color_loader.dart';
 import '../../../component/custom_form_field.dart';
 import '../../../component/custom_text_widget.dart';
 import '../../../constant/app_colors.dart';
@@ -19,16 +19,9 @@ class SubCategoryScreen extends GetView<SubCategoryController> {
   Widget build(BuildContext context) {
     List<Widget> widgetList = [];
     var child = Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-        title: TextWidget(text: subCategoryAppTitle,
-        color: Colors.black,
-        fontSize: SizeConfig.appbarTitleSize,
-        fontFamily: FontFamily.fontSemiBold,
-        fontWeight: FontWeight.w600,),
-    elevation: 0.0,
-    centerTitle: true),
+        appBar: buildAppBar(title: AppStrings.subcategoryAppBarTitle),
       body: Container(
         height: Get.height,
         width: Get.width,
@@ -40,8 +33,9 @@ class SubCategoryScreen extends GetView<SubCategoryController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // menu title
               TextWidget(
-                text: subCategoryMenuTitle,
+                text: AppStrings.subcategoryMenuTitle,
                 fontFamily: FontFamily.fontMedium,
                 fontSize: SizeConfig.mediumFontSize,
                 color: AppColors.normalTextColor,
@@ -49,9 +43,9 @@ class SubCategoryScreen extends GetView<SubCategoryController> {
               SizedBox(height: SizeConfig.blockSizeHorizontal*5),
               Form( key: controller.formKey,
                 child: CustomFormField(
-                  hintText: subCategoryHint,
+                  hintText: AppStrings.hintSubcategoryTitle,
                   controller: controller.titleController,
-                  validator: Validations.validations.validateEmptyFields,
+                  validator: Validations.validations.validateTitle,
                   inputAction: TextInputAction.done,
                   textCapitalization: TextCapitalization.words,
                 ),
@@ -59,7 +53,7 @@ class SubCategoryScreen extends GetView<SubCategoryController> {
 
               SizedBox(height: SizeConfig.blockSizeHorizontal*9),
               ButtonWidget(
-                  text: subCategoryButton,
+                  text: AppStrings.btnSubmit,
                   onPressed: (){
                     controller.submitBtnClick();
                   })
@@ -79,7 +73,7 @@ class SubCategoryScreen extends GetView<SubCategoryController> {
         children: [
           const Opacity(
             opacity: 0.6,
-            child: ModalBarrier(dismissible: false, color: Colors.white),
+            child: ModalBarrier(dismissible: false, color: AppColors.white),
           ),
           ColorLoader()
         ],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/utils/DateTimeUtils.dart';
+import 'package:food_merchant/utils/date_time_utils.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../component/ColorLoader.dart';
-import '../../../component/DottedLine.dart';
+import '../../../component/color_loader.dart';
+import '../../../component/dotted_line_separator.dart';
 import '../../../component/custom_text_widget.dart';
 import '../../../constant/app_colors.dart';
 import '../../../constant/font_family.dart';
@@ -43,14 +43,14 @@ class SalesReport extends GetView<SalesReportController>{
                 curve: Curves.easeInOut,
                 transform: Matrix4.translationValues(controller.xOffset.value,
                     controller.yOffset.value, -1.0)..scaleByDouble(controller.pageScale.value, controller.pageScale.value, controller.pageScale.value, 1.0),
-                child: double.parse(controller.salesReport.value.balance!) > 0 ?
+                child: (double.tryParse(controller.salesReport.value.balance ?? '0') ?? 0) > 0 ?
                 Visibility(
                     visible: controller.requestedBalance(controller.salesReport.value.balance ?? '0')
                         != "0" && controller.salesReport.value.withdrawalStatus != 1,
                     child: Material(
                       elevation: 2.2,
                       color: AppColors.white,
-                      shape:RoundedRectangleBorder(
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.end,
@@ -136,7 +136,7 @@ class SalesReport extends GetView<SalesReportController>{
                       )
                     ))
               :  Visibility(
-                  visible: controller.previousBalance(controller.salesReport.value.balance!)
+                  visible: controller.previousBalance(controller.salesReport.value.balance)
                   != "0",
                   child: Material(
                     elevation: 2.2,
@@ -180,7 +180,7 @@ class SalesReport extends GetView<SalesReportController>{
                                       ),
                                   ),
                                   TextSpan(
-                                      text: "${AppStrings.currSymbolIn}${controller.previousBalance(controller.salesReport.value.balance!)}",
+                                      text: "${AppStrings.currSymbolIn}${controller.previousBalance(controller.salesReport.value.balance)}",
                                       style: TextStyle(
                                           fontFamily: FontFamily.fontMedium,
                                           color: AppColors.colorPrimary,
@@ -195,6 +195,8 @@ class SalesReport extends GetView<SalesReportController>{
                             ],
                           ),
                         ),
+
+                        // cash free payment methods
                         Obx(() =>   Visibility(
                             visible: controller.isCashFree.value ,
                             child: RadioGroup(
@@ -205,13 +207,13 @@ class SalesReport extends GetView<SalesReportController>{
                               },
                               child: Column(
                                 children: [
-                                  SizedBox(
-                                    height: SizeConfig.blockSizeHorizontal * 5,
-                                  ),
+                                  SizedBox(height: SizeConfig.blockSizeHorizontal * 5),
+
+                                  // upi - cash free
                                   RadioListTile(
                                       dense: true,
                                       contentPadding: EdgeInsets.zero,
-                                      title:   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                               child: TextWidget(text: AppStrings.salesReportUpi,
@@ -226,9 +228,14 @@ class SalesReport extends GetView<SalesReportController>{
                                       value: 1,
                                       activeColor: AppColors.colorPrimary,
                                   ),
-                                  SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-                                  const MySeparator(color: AppColors.disabledBorderColor,dashWidth: 3, height: 0.7),
-                                  SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: SizeConfig.blockSizeHorizontal * 2),
+                                    child: const DottedLineSeparator(color: AppColors.disabledBorderColor,dashWidth: 3, height: 0.7),
+                                  ),
+
+
+                                  // card - cash free
                                   RadioListTile(
                                       dense: true,
                                       contentPadding: EdgeInsets.zero,
@@ -247,9 +254,14 @@ class SalesReport extends GetView<SalesReportController>{
                                       value: 2,
                                       activeColor: AppColors.colorPrimary,
                                   ),
-                                  SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
-                                  const MySeparator(color: AppColors.disabledBorderColor,dashWidth: 3, height: 0.7),
-                                  SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: SizeConfig.blockSizeHorizontal * 2),
+                                    child: const DottedLineSeparator(color: AppColors.disabledBorderColor,dashWidth: 3, height: 0.7),
+                                  ),
+
+
+                                 // net banking - cash free
                                   RadioListTile(
                                       dense: true,
                                       contentPadding: EdgeInsets.zero,
@@ -271,18 +283,22 @@ class SalesReport extends GetView<SalesReportController>{
                                 ],
                               ),
                             ))),
+
+
+                        // pay now button
                         InkWell(
                           highlightColor: AppColors.white,
                           splashColor: AppColors.white,
                           onTap: (){
-                            controller.checkForCashFree();
+                            controller.payNowBtnClick();
                           },
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: AppColors.colorPrimary
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*2,
+                            padding: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.blockSizeHorizontal*2,
                             vertical: SizeConfig.blockSizeHorizontal*1),
                             margin: EdgeInsets.only(
                                 right: SizeConfig.blockSizeHorizontal * 2.5,
@@ -299,6 +315,9 @@ class SalesReport extends GetView<SalesReportController>{
                   ),
                 ),
               ),
+
+
+              // balance, monthly, total sales & orders
               Container(
                 width: Get.width,
                 decoration: BoxDecoration(
@@ -307,6 +326,7 @@ class SalesReport extends GetView<SalesReportController>{
                 ),
                 child: Column(
                   children: [
+                    // account balance
                     Container(
                       padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*4),
                       width: Get.width,
@@ -315,12 +335,12 @@ class SalesReport extends GetView<SalesReportController>{
                         children: [
                           TextWidget(text: AppStrings.salesReportAccountBalance,
                           fontSize: SizeConfig.regularFontSize,fontFamily: FontFamily.fontMedium,
-                          color: AppColors.white,),
+                          color: AppColors.white),
 
                           TextWidget(text:"${AppStrings.currSymbolIn}${controller.salesReport.value.balance ?? '0'}",
                               letterSpacing: 0.5,
                               fontSize: SizeConfig.semiBoldFontSize,
-                              color: double.parse(controller.salesReport.value.balance ?? "0") >= 0 ?
+                              color: (double.tryParse(controller.salesReport.value.balance ?? "0") ?? 0) >= 0 ?
                               AppColors.lightGreenAccent : AppColors.redColorAmount,
                               fontFamily: FontFamily.fontSemiBold),
                         ],
@@ -328,140 +348,148 @@ class SalesReport extends GetView<SalesReportController>{
                     ),
                     const Divider(color: AppColors.white60,height: 0.0,
                     ),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.only(
-                              left: SizeConfig.blockSizeHorizontal*4,
-                                top:SizeConfig.blockSizeHorizontal*3,
-                            bottom: SizeConfig.blockSizeHorizontal*4),
-                            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextWidget(text: AppStrings.salesReportThisMonth,
-                                  fontSize: SizeConfig.mediumFontSize,fontFamily: FontFamily.fontMedium,
-                                  color: AppColors.white,),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "${AppStrings.salesReportSales}:  ",
+
+                    // monthly and total sales & orders
+                    IntrinsicHeight(
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // this month
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                left: SizeConfig.blockSizeHorizontal*4,
+                                  top:SizeConfig.blockSizeHorizontal*3,
+                              bottom: SizeConfig.blockSizeHorizontal*4),
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextWidget(text: AppStrings.salesReportThisMonth,
+                                    fontSize: SizeConfig.mediumFontSize,fontFamily: FontFamily.fontMedium,
+                                    color: AppColors.white,),
+                                  // sales
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "${AppStrings.salesReportSales}:  ",
+                                        style: TextStyle(
+                                            fontSize: SizeConfig.regularFontSize,
+                                            color: AppColors.white,
+                                            fontFamily: FontFamily.fontMedium),
+                                      children: [
+                                        TextSpan(
+                                            text: AppStrings.currSymbolIn,
+                                            style: TextStyle(
+                                                fontSize: SizeConfig.mediumFontSize,
+                                                color: AppColors.white,
+                                                fontFamily: FontFamily.fontMedium) ),
+                                        TextSpan(text:
+                                         controller.formatAmount(double.tryParse(controller.salesReport.value.thisMonthSales ?? "0") ?? 0),
+                                          style: TextStyle(
+                                              letterSpacing: 0.5,
+                                              fontSize: SizeConfig.mediumFontSize,
+                                              color: AppColors.white,
+                                              fontFamily: FontFamily.fontSemiBold),
+                                        ),
+                                      ],
+                      
+                                    ),
+                                  ),
+                                  SizedBox(height: SizeConfig.blockSizeHorizontal*1),
+
+                                  // orders
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "${AppStrings.salesReportOrders}:  ",
                                       style: TextStyle(
                                           fontSize: SizeConfig.regularFontSize,
                                           color: AppColors.white,
                                           fontFamily: FontFamily.fontMedium),
-                                    children: [
-                                      TextSpan(
-                                          text: AppStrings.currSymbolIn,
+                                      children: [
+                                        TextSpan(text: controller.formatOrders(double.tryParse(controller.salesReport.value.thisMonthOrders ?? "0") ?? 0),
                                           style: TextStyle(
-                                              fontSize: SizeConfig.mediumFontSize,
+                                              letterSpacing: 0.5,
+                                              fontSize: SizeConfig.regularFontSize,
                                               color: AppColors.white,
-                                              fontFamily: FontFamily.fontMedium) ),
-                                      TextSpan(text:
-                                      controller.salesReport.value.thisMonthSales == "" ? controller.formatAmount(double.parse("0"))
-                                    :  controller.formatAmount(double.parse(controller.salesReport.value.thisMonthSales ?? "0")),
-                                        style: TextStyle(
-                                            letterSpacing: 0.5,
-                                            fontSize: SizeConfig.mediumFontSize,
-                                            color: AppColors.white,
-                                            fontFamily: FontFamily.fontSemiBold),
-                                      ),
-                                    ],
-
+                                              fontFamily: FontFamily.fontSemiBold),
+                                        ),
+                                      ],
+                      
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: SizeConfig.blockSizeHorizontal*2),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "${AppStrings.salesReportOrders}:  ",
-                                    style: TextStyle(
-                                        fontSize: SizeConfig.regularFontSize,
-                                        color: AppColors.white,
-                                        fontFamily: FontFamily.fontMedium),
-                                    children: [
-                                      TextSpan(text: controller.formatOrders(double.parse(controller.salesReport.value.thisMonthOrders ?? "0")),
-                                        style: TextStyle(
-                                            letterSpacing: 0.5,
-                                            fontSize: SizeConfig.regularFontSize,
-                                            color: AppColors.white,
-                                            fontFamily: FontFamily.fontSemiBold),
-                                      ),
-                                    ],
-
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                         SizedBox(
-                           height: SizeConfig.blockSizeHorizontal * 29,
-                           child: const VerticalDivider(
+                           const VerticalDivider(
                             color:AppColors.white60),
-                         ),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.only(
-                              right: SizeConfig.blockSizeHorizontal*4,
-                                top:SizeConfig.blockSizeHorizontal*3,
-                                bottom: SizeConfig.blockSizeHorizontal*4),
-                            child: Column(crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextWidget(text: AppStrings.salesReportAllTime,
-                                  fontSize: SizeConfig.mediumFontSize,fontFamily: FontFamily.fontMedium,
-                                  color: AppColors.white,),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "${AppStrings.salesReportSales}:  ",
-                                    style: TextStyle(
-                                        fontSize: SizeConfig.regularFontSize,
-                                        color: AppColors.white,
-                                        fontFamily: FontFamily.fontMedium),
-                                    children: [
-                                      TextSpan(
-                                          text: AppStrings.currSymbolIn,
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                right: SizeConfig.blockSizeHorizontal*4,
+                                  top:SizeConfig.blockSizeHorizontal*3,
+                                  bottom: SizeConfig.blockSizeHorizontal*4),
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextWidget(text: AppStrings.salesReportAllTime,
+                                    fontSize: SizeConfig.mediumFontSize,fontFamily: FontFamily.fontMedium,
+                                    color: AppColors.white,),
+
+                                  // sales
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "${AppStrings.salesReportSales}:  ",
+                                      style: TextStyle(
+                                          fontSize: SizeConfig.regularFontSize,
+                                          color: AppColors.white,
+                                          fontFamily: FontFamily.fontMedium),
+                                      children: [
+                                        TextSpan(
+                                            text: AppStrings.currSymbolIn,
+                                            style: TextStyle(
+                                                fontSize: SizeConfig.mediumFontSize,
+                                                color: AppColors.white,
+                                                fontFamily: FontFamily.fontMedium) ),
+                                        TextSpan(text:
+                                       controller.formatAmount(double.tryParse(controller.salesReport.value.totalSales ?? "0") ?? 0),
                                           style: TextStyle(
+                                              letterSpacing: 0.5,
                                               fontSize: SizeConfig.mediumFontSize,
                                               color: AppColors.white,
-                                              fontFamily: FontFamily.fontMedium) ),
-                                      TextSpan(text:
-                                      controller.salesReport.value.totalSales == "" ? controller.formatAmount(double.parse("0"))
-                                      : controller.formatAmount(double.parse(controller.salesReport.value.totalSales ?? "0")),
-                                        style: TextStyle(
-                                            letterSpacing: 0.5,
-                                            fontSize: SizeConfig.mediumFontSize,
-                                            color: AppColors.white,
-                                            fontFamily: FontFamily.fontSemiBold),
-                                      ),
-                                    ],
-
+                                              fontFamily: FontFamily.fontSemiBold),
+                                        ),
+                                      ],
+                      
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: SizeConfig.blockSizeHorizontal*2),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "${AppStrings.salesReportOrders}:  ",
-                                    style: TextStyle(
-                                        fontSize: SizeConfig.regularFontSize,
-                                        color: AppColors.white,
-                                        fontFamily: FontFamily.fontMedium),
-                                    children: [
-                                      TextSpan(text: controller.formatOrders(double.parse(controller.salesReport.value.totalOrders ?? "0")),
-                                        style: TextStyle(
-                                            letterSpacing: 0.5,
-                                            fontSize: SizeConfig.mediumFontSize,
-                                            color: AppColors.white,
-                                            fontFamily: FontFamily.fontSemiBold),
-                                      ),
-                                    ],
+                                  SizedBox(height: SizeConfig.blockSizeHorizontal*1),
 
-                                  ),
-                                )
-                              ],
+                                  // orders
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "${AppStrings.salesReportOrders}:  ",
+                                      style: TextStyle(
+                                          fontSize: SizeConfig.regularFontSize,
+                                          color: AppColors.white,
+                                          fontFamily: FontFamily.fontMedium),
+                                      children: [
+                                        TextSpan(text: controller.formatOrders(double.tryParse(controller.salesReport.value.totalOrders ?? "0") ?? 0),
+                                          style: TextStyle(
+                                              letterSpacing: 0.5,
+                                              fontSize: SizeConfig.mediumFontSize,
+                                              color: AppColors.white,
+                                              fontFamily: FontFamily.fontSemiBold),
+                                        ),
+                                      ],
+                      
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     )
 
                   ],
@@ -469,6 +497,9 @@ class SalesReport extends GetView<SalesReportController>{
 
               ),
               SizedBox(height: SizeConfig.blockSizeHorizontal*4),
+
+
+              // select date
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -499,6 +530,9 @@ class SalesReport extends GetView<SalesReportController>{
                 ],
               ),
               SizedBox(height: SizeConfig.blockSizeHorizontal*3),
+
+
+              // selected date sales & orders
               Container(
                 padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal*4),
                   width: Get.width,
@@ -510,6 +544,8 @@ class SalesReport extends GetView<SalesReportController>{
                     SizedBox(height: SizeConfig.blockSizeHorizontal*2),
                     const Divider(),
                     SizedBox(height: SizeConfig.blockSizeHorizontal*2),
+
+                    // date sales
                     Row(
                       children: [
                         Expanded(
@@ -525,6 +561,8 @@ class SalesReport extends GetView<SalesReportController>{
                       ],
                     ),
                     SizedBox(height: SizeConfig.blockSizeHorizontal*4),
+
+                    // date orders
                     Row(
                       children: [
                         Expanded(
@@ -533,7 +571,7 @@ class SalesReport extends GetView<SalesReportController>{
                               color: AppColors.blackShades),
                         ),
                         Expanded(
-                          child: TextWidget(text: controller.formatAmountWithComma(double.parse(controller.salesReport.value.dateOrders ?? "0")),
+                          child: TextWidget(text: controller.formatOrders(double.tryParse(controller.salesReport.value.dateOrders ?? "0") ?? 0),
                             fontSize: SizeConfig.mediumFontSize,fontFamily: FontFamily.fontMedium,
                             textAlign: TextAlign.end,
                             color: AppColors.black,),

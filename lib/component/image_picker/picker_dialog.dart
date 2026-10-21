@@ -42,6 +42,15 @@ class ImgPickerDialogBox {
     );
   }
 
+ static Future<dynamic>? pickCroppedImageFile(
+     {bool onlyGallery = false, bool onlyCamera = false}
+     ) async {
+   return  await _showDialog(
+       onlyCamera: onlyCamera, onlyGallery: onlyGallery,
+       returnType: "croppedFile"
+   );
+ }
+
 
 
 

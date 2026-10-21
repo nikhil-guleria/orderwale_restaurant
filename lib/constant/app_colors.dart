@@ -13,6 +13,7 @@ class AppColors {
 
  static const blackText = Color(0xff1A1A1A);
  static const black = Colors.black;
+ static const black87 = Colors.black87;
  static const black45 = Colors.black45;
  static const black12 = Colors.black12;
  static const red = Colors.red;
@@ -20,9 +21,11 @@ class AppColors {
  static const white = Colors.white;
  static const white60 = Colors.white60;
  static const grey = Colors.grey;
+ static const purple = Colors.purple;
  static const deepPurple = Colors.deepPurple;
  static const green = Colors.green;
  static const lightGreenAccent = Colors.lightGreenAccent;
+ static const blue = Colors.blue;
  static const transparent = Colors.transparent;
 
 

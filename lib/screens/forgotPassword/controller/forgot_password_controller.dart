@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_merchant/constant/app_strings.dart';
 import 'package:get/get.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../../utils/CommonUtils.dart';
+import '../../../services/repo/api_controller.dart';
+import '../../../utils/common_utils.dart';
 
 
 class ForgotPasswordController extends GetxController {
@@ -15,7 +15,7 @@ class ForgotPasswordController extends GetxController {
     try {
       if (formKey.currentState?.validate() ?? false) {
         showLoader.value = true;
-        var param = {'email': emailController.text};
+        var param = {'email': emailController.text.trim()};
         var userModel = await ApiController().forgotPassword(param);
         showLoader.value = false;
         if (userModel.responseCode == AppStrings.apiSuccess) {

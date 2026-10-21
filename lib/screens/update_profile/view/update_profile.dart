@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/ColorLoader.dart';
+import 'package:food_merchant/component/color_loader.dart';
 import 'package:food_merchant/component/button_widget.dart';
 import 'package:food_merchant/component/custom_form_field.dart';
 import 'package:food_merchant/component/custom_text_widget.dart';
@@ -9,7 +9,7 @@ import 'package:food_merchant/constant/app_images.dart';
 import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/constant/font_family.dart';
 import 'package:food_merchant/screens/update_profile/controller/update_profile_controller.dart';
-import 'package:food_merchant/utils/Validations.dart';
+import 'package:food_merchant/utils/validations.dart';
 import 'package:food_merchant/utils/size_config.dart';
 import 'package:get/get.dart';
 
@@ -26,10 +26,16 @@ class UpdateProfile extends GetView<UpdateProfileController>{
         appBar: buildAppBar(title: AppStrings.profileTitle),
         body:  SafeArea(
           child: Obx(()=> controller.initialLoad.value ?
-          Center(child: TextWidget(text: AppStrings.headingPleaseWait,
-              color: AppColors.colorPrimary,
-              fontSize: SizeConfig.mediumFontSize,fontFamily: FontFamily.fontMedium)) :
-          Container(height: SizeConfig.screenHeight, width: SizeConfig.screenWidth,
+          Center(
+              child: TextWidget(
+                  text: AppStrings.headingPleaseWait,
+                  color: AppColors.colorPrimary,
+                  fontSize: SizeConfig.mediumFontSize,
+                  fontFamily: FontFamily.fontMedium))
+
+              : Container(
+              height: SizeConfig.screenHeight,
+              width: SizeConfig.screenWidth,
               padding: EdgeInsets.only(
                   bottom:  SizeConfig.blockSizeHorizontal*2,
                   left: SizeConfig.blockSizeHorizontal*3,
@@ -64,12 +70,12 @@ class UpdateProfile extends GetView<UpdateProfileController>{
                                               height: SizeConfig.blockSizeHorizontal*30,
                                               width: SizeConfig.blockSizeHorizontal*30)),
                                     )
-                                        :
 
-                                    Container(
+                                        : Container(
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*30)
                                       ),
+
                                       child: ClipRRect(
                                           borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*30),
                                           child: CachedNetworkImage(
@@ -83,24 +89,27 @@ class UpdateProfile extends GetView<UpdateProfileController>{
                                       ),
                                     ),
 
-                                    Positioned(
-                                      bottom: SizeConfig.blockSizeHorizontal*0.75,
-                                      right: SizeConfig.blockSizeHorizontal*0.75,
-                                      child: GestureDetector(
-                                        onTap: controller.pickImage,
-                                        child: Container(
-                                          height: SizeConfig.blockSizeHorizontal * 7.5,
-                                          width: SizeConfig.blockSizeHorizontal * 7.5,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal * 7.5),
-                                              color: AppColors.colorPrimary,
-                                              border: Border.all(
-                                                  width: 2, color: AppColors.grey.shade300)),
-                                          child:  Icon(
-                                            (controller.profileDetails.value.restaurantImage ?? '').trim().isNotEmpty ?
-                                            Icons.edit : Icons.add,
-                                            size: SizeConfig.blockSizeHorizontal * 3,
-                                            color: AppColors.white,
+                                    Visibility(
+                                      visible: false,
+                                      child: Positioned(
+                                        bottom: SizeConfig.blockSizeHorizontal*0.75,
+                                        right: SizeConfig.blockSizeHorizontal*0.75,
+                                        child: GestureDetector(
+                                          onTap: controller.pickImage,
+                                          child: Container(
+                                            height: SizeConfig.blockSizeHorizontal * 7.5,
+                                            width: SizeConfig.blockSizeHorizontal * 7.5,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal * 7.5),
+                                                color: AppColors.colorPrimary,
+                                                border: Border.all(
+                                                    width: 2, color: AppColors.grey.shade300)),
+                                            child:  Icon(
+                                              (controller.profileDetails.value.restaurantImage ?? '').trim().isNotEmpty ?
+                                              Icons.edit : Icons.add,
+                                              size: SizeConfig.blockSizeHorizontal * 3,
+                                              color: AppColors.white,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -116,7 +125,7 @@ class UpdateProfile extends GetView<UpdateProfileController>{
 
                           // full name
                           buildHeadingAndField(
-                              heading: (controller.profileDetails.value.role ?? '').trim() != 'admin' ?
+                              heading: (controller.profileDetails.value.role ?? '').trim() !=  AppStrings.userRoleAdmin ?
                               AppStrings.profileFullName : AppStrings.profileRestaurantName,
                           field:  CustomFormField(
                             controller: controller.nameInputController,
@@ -133,27 +142,30 @@ class UpdateProfile extends GetView<UpdateProfileController>{
                                 controller: controller.emailInputController,
                                 inputAction: TextInputAction.done,
                                 readOnly: true,
+                                textColor: AppColors.grey,
                               )),
 
 
                           // restaurant name
-                          if((controller.profileDetails.value.role ?? '').trim() != 'admin')
+                          if((controller.profileDetails.value.role ?? '').trim() != AppStrings.userRoleAdmin)
                           buildHeadingAndField(
                               heading: AppStrings.profileRestaurantName,
                               field: CustomFormField(
                                 controller: controller.restaurantNameController,
                                 inputAction: TextInputAction.done,
                                 readOnly: true,
+                                textColor: AppColors.grey,
                               ),),
 
                           // restaurant phone
-                          buildHeadingAndField(
+                          /*buildHeadingAndField(
                               heading: AppStrings.profileRestaurantPhone,
                               field: CustomFormField(
                                   controller: controller.phoneInputController,
                                   onlyNumbers: true,
-                                  readOnly: (controller.profileDetails.value.role ?? '').trim() != 'admin',
-                                  inputAction: TextInputAction.done),),
+                                  textColor: AppColors.grey,
+                                  readOnly: (controller.profileDetails.value.role ?? '').trim() != AppStrings.userRoleAdmin,
+                                  inputAction: TextInputAction.done),),*/
 
 
 

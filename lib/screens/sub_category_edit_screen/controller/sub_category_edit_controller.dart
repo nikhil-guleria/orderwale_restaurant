@@ -1,82 +1,84 @@
 import 'package:food_merchant/routes/app_routes.dart';
+import 'package:food_merchant/screens/customised_product/models/item_subcategories_model.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
 import '../../../component/custom_dialog_box.dart';
 import '../../../constant/app_strings.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../../utils/CommonUtils.dart';
-import '../../../utils/GetStorageConstants.dart';
-import '../../add_product/model/sub_category_model.dart';
+import '../../../services/repo/api_controller.dart';
+import '../../../utils/common_utils.dart';
+
 
 class SubCategoryEditController extends GetxController {
-  var subCategoryList = <SubCategoryResult>[].obs;
+  var subCategoryList = <ItemSubCategory>[].obs;
   var initialLoad = true.obs;
   var showLoader = false.obs;
-  var storage = GetStorage();
-  var arguments = Get.arguments;
 
 
   @override
-  void onInit() {
-    getInitialList();
-    super.onInit();
+  void onReady() {
+    getSubCategories();
+    super.onReady();
   }
 
-  getInitialList() async {
-    var restId = storage.read(GetStorageConstants.RESTAURANT_ID);
-    var param = {"restaurant_id": restId, "category_id": arguments ?? "0"};
-    var subCategories = await ApiController().getAllSubCategories(param);
-    showLoader.value = false;
-    initialLoad.value = false;
-    if (subCategories.responseCode == 1) {
-      SubCategoryModel subCategoryModel = SubCategoryModel.fromJson(
-          subCategories.response!.data);
+
+
+  Future<void> getSubCategories() async {
+    try {
+      var subCategories = await ApiController().restaurantAllSubcategories();
       subCategoryList.clear();
-      subCategoryList.value = subCategoryModel.result!;
-    }
-    else {
-      CommonUtils.utils.handleApiError(
-          subCategories.responseCode, subCategories.msg);
+      showLoader.value = false;
+      initialLoad.value = false;
+      if (subCategories.responseCode == AppStrings.apiSuccess) {
+        ItemSubCategoryModel subCategoryModel = ItemSubCategoryModel.fromJson(
+            subCategories.response?.data);
+        subCategoryList.value = subCategoryModel.result ?? [];
+      }
+      else {
+        CommonUtils.utils.handleAlertMsg(
+            code: subCategories.responseCode,
+            message: subCategories.msg);
+      }
+    } catch (e){
+      subCategoryList.clear();
+      showLoader.value = false;
+      initialLoad.value = false;
     }
   }
 
 
-  editButtonClick(index){
-  Get.toNamed(AppRoutes.SUBCATEGORY_TITLE_SCREEN,
+  void editButtonClick(int index){
+  Get.toNamed(AppRoutes.subcategoryTitleScreen,
       arguments: [subCategoryList[index].categoryId,
                   subCategoryList[index].title,
                   subCategoryList[index].subcategoryId]);
   }
 
- void deleteButtonClick(index){
-      Get.dialog(showDialogBox(title: subCategoryDelete,
-        message: subCategoryDeleteDesc,
+ void deleteButtonClick(int index){
+      Get.dialog(showDialogBox(title: AppStrings.subcategoryDelete,
+        message: AppStrings.subcategoryDeleteDesc,
         twoButtons: true,
-        onCancel: () {
-          Get.back();
-        },
-        onConfirm: (){Get.back(result: "delete");},
-       )).then((value) {
-        if(value == "delete"){
-          processDelete(index);
-        }
-      });
+        onConfirm: (){processDelete(index);},
+       ));
   }
 
-  processDelete(index) async {
-    showLoader.value  = true;
-    var apiResponse = await ApiController().deleteSubCategory("${subCategoryList[index].subcategoryId}");
-    showLoader.value = false;
-    if(apiResponse.responseCode == 1){
-      subCategoryList.removeAt(index);
-      subCategoryList.refresh();
-      if(subCategoryList.isEmpty){
-        Get.back();
+  Future<void> processDelete(int index) async {
+    try {
+      showLoader.value = true;
+      var apiResponse = await ApiController().restaurantDeleteSubcategory(
+          "${subCategoryList[index].subcategoryId}");
+      showLoader.value = false;
+      if (apiResponse.responseCode == AppStrings.apiSuccess) {
+        subCategoryList.removeAt(index);
+        subCategoryList.refresh();
+        if (subCategoryList.isEmpty) {
+          Get.back();
+        }
+      } else {
+        CommonUtils.utils.handleAlertMsg(
+            code: apiResponse.responseCode,
+            message: apiResponse.msg);
       }
-    } else {
-      CommonUtils.utils.handleApiError(
-          apiResponse.responseCode, apiResponse.msg);
+    } catch (e){
+      showLoader.value = false;
     }
   }
 

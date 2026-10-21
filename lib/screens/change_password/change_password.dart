@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/utils/Validations.dart';
+import 'package:food_merchant/utils/validations.dart';
 import 'package:get/get.dart';
 import '../../component/button_widget.dart';
-import '../../component/ColorLoader.dart';
+import '../../component/color_loader.dart';
 import '../../component/custom_password_form_field.dart';
 import '../../component/custom_text_widget.dart';
 import '../../constant/app_colors.dart';

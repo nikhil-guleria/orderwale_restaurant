@@ -5,6 +5,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:food_merchant/constant/app_colors.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as dio;
 
 
 
@@ -146,14 +147,18 @@ class CustomImgPicker {
               hideBottomControls: true,
               aspectRatioPresets: [CropAspectRatioPreset.original]),
           IOSUiSettings(
-            minimumAspectRatio: 1.0,
-          ),
+              title: 'Crop Image',
+              rotateButtonsHidden: false,
+              hidesNavigationBar: true,
+              aspectRatioPickerButtonHidden: true,
+              rotateClockwiseButtonHidden: true,
+              aspectRatioPresets: const [CropAspectRatioPreset.original]),
            /*WebUiSettings(
               context: context,
               presentStyle: WebPresentStyle.dialog,
               barrierColor: AppColors.transparent,
               movable: true,
-              viewwMode: WebViewMode.mode_1,
+              viewMode: WebViewMode.mode_1,
               zoomable: false,
              zoomOnWheel: false,
              zoomOnTouch: false,
@@ -217,6 +222,85 @@ class CustomImgPicker {
       }
     }
     return compressedFiles;
+  }
+
+
+  static Future<Uint8List?> compressImageFromBytesTo1MB(Uint8List inputBytes,
+      {CompressFormat? format}) async {
+    const int maxSizeBytes = 1 * 1024 * 1024;
+    int quality = 95;
+    int minWidth = 1920;
+    int minHeight = 1080;
+
+    try {
+      Uint8List? compressedBytes;
+      do {
+        compressedBytes = await FlutterImageCompress.compressWithList(
+          inputBytes,
+          quality: quality,
+          minWidth: minWidth,
+          minHeight: minHeight,
+          format: format ?? CompressFormat.jpeg,
+          rotate: 0,
+          keepExif: false,
+        );
+
+        if (compressedBytes.lengthInBytes > maxSizeBytes) {
+          if (quality > 20) {
+            quality -= 10;
+          } else if (minWidth > 400) {
+            minWidth = (minWidth / 1.5).round();
+            minHeight = (minHeight / 1.5).round();
+          } else {
+            break;
+          }
+        } else {
+          break;
+        }
+      } while (true);
+
+      return compressedBytes;
+    } catch (_) {
+      return null;
+    }
+  }
+
+
+  static Future<dio.MultipartFile?> multipartImageFromBytes(String path , Uint8List bytes) async {
+    try {
+      String myPath = path;
+      if(myPath.trim().isEmpty){
+        myPath = 'abc/xyz';
+      }
+      String fileName = myPath.split('/').last;
+      String extension = fileName.contains(".") ? fileName.split('.').last.toLowerCase() : 'png';
+      if (!fileName.contains(".")) {
+        fileName = "$fileName.png";
+      }
+
+      CompressFormat format;
+      if (extension == 'png') {
+        format = CompressFormat.png;
+      } else if (extension == 'jpeg' || extension == 'jpg') {
+        format = CompressFormat.jpeg;
+      } else if (extension == 'heic') {
+        format = CompressFormat.heic;
+      } else {
+        // Default to PNG if the extension is unknown
+        format = CompressFormat.png;
+        fileName = fileName.replaceAll(RegExp(r'\.[^.]+$'), '.png');
+      }
+
+      // Create MultipartFile from bytes
+      return dio.MultipartFile.fromBytes(
+        bytes,
+        filename: fileName,
+        contentType: dio.DioMediaType('image', format.name),
+      );
+    } catch (e) {
+      debugPrint("Compression/Multipart conversion failed: $e");
+      return null;
+    }
   }
 
 

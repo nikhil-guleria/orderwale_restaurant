@@ -1,5 +1,5 @@
 extension DateTimeExtension on Duration {
-  timeAgo(bool numericDates) {
+  String timeAgo(bool numericDates) {
     var difference = this;
 
     if (difference.inDays / 365 > 1) {

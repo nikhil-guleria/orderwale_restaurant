@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_merchant/constant/app_colors.dart';
 import 'package:food_merchant/constant/app_images.dart';
+import 'package:food_merchant/utils/storage_utils.dart';
 import 'package:get/get.dart';
-import '../../../component/ColorLoader.dart';
+import '../../../component/color_loader.dart';
 import '../../../component/custom_text_widget.dart';
 import '../../../constant/font_family.dart';
 import '../../../constant/app_strings.dart';
@@ -50,6 +51,7 @@ class Settings extends GetView<SettingsController> {
               height: SizeConfig.blockSizeHorizontal * 6),
 
             // profile settings
+            if(StorageUtils.utils.restaurantUserRole.trim() != AppStrings.userRoleAdmin)
             Material(
               color: AppColors.transparent,
               child: ListTile(
@@ -69,50 +71,61 @@ class Settings extends GetView<SettingsController> {
                 ),
             ),
 
-            // sales report
-            Container(
-              decoration: const BoxDecoration(
-                  border: Border(top:BorderSide(width: 0.1))),
-              child: Material(
-                color: AppColors.transparent,
-                child: ListTile(
-                    onTap: controller.salesReportClick,
-                    contentPadding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal* 1.25),
-                    minLeadingWidth: 0.0,
-                    minVerticalPadding: 0,
-                    leading: const Icon(Icons.receipt),
-                    trailing: SvgPicture.asset(AppImages.settingsBack),
-                    title:TextWidget(text: AppStrings.settingsSalesReportHeading,
-                        fontFamily: FontFamily.fontMedium,
-                        fontSize: SizeConfig.appbarTitleSize),
-                    subtitle:TextWidget(text: AppStrings.settingsSalesReportDesc,
-                        color: AppColors.blackShades,
-                        fontSize: SizeConfig.blockSizeHorizontal*3.5,
-                        fontFamily: FontFamily.fontRegular)),
-              ),
-            ),
 
-            // manage restaurant
-            Container(
-              decoration: const BoxDecoration(border: Border(top:BorderSide(width: 0.1) )),
-              child: Material(
-                color: AppColors.transparent,
-                child: ListTile(
-                    onTap: controller.manageRestaurantClick,
-                    contentPadding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal* 1.25),
-                    minLeadingWidth: 0.0,
-                    minVerticalPadding: 0,
-                    leading: const Icon(Icons.restaurant,),
-                    trailing: SvgPicture.asset(AppImages.settingsBack),
-                    title:TextWidget(text: AppStrings.settingsManageRestHeading,
-                        fontFamily: FontFamily.fontMedium,
-                        fontSize: SizeConfig.appbarTitleSize),
-                    subtitle:TextWidget(text: AppStrings.settingsManageRestDesc,
-                        color: AppColors.blackShades,
-                        fontSize: SizeConfig.blockSizeHorizontal*3.5,
-                        fontFamily: FontFamily.fontRegular)),
-              ),
-            ),
+
+            if(StorageUtils.utils.restaurantUserRole.trim() == AppStrings.userRoleAdmin
+            || StorageUtils.utils.restaurantUserRole.trim() == AppStrings.userRoleManager)
+              ...[
+                // manage restaurant
+                Container(
+                  decoration:  BoxDecoration(
+                      border: Border(top:BorderSide(
+                          width: StorageUtils.utils.restaurantUserRole.trim() == AppStrings.userRoleManager
+                          ? 0.1 : 0.0))
+                  ),
+                  child: Material(
+                    color: AppColors.transparent,
+                    child: ListTile(
+                        onTap: controller.manageRestaurantClick,
+                        contentPadding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal* 1.25),
+                        minLeadingWidth: 0.0,
+                        minVerticalPadding: 0,
+                        leading: const Icon(Icons.restaurant,),
+                        trailing: SvgPicture.asset(AppImages.settingsBack),
+                        title:TextWidget(text: AppStrings.settingsManageRestHeading,
+                            fontFamily: FontFamily.fontMedium,
+                            fontSize: SizeConfig.appbarTitleSize),
+                        subtitle:TextWidget(text: AppStrings.settingsManageRestDesc,
+                            color: AppColors.blackShades,
+                            fontSize: SizeConfig.blockSizeHorizontal*3.5,
+                            fontFamily: FontFamily.fontRegular)),
+                  ),
+                ),
+
+                // sales report
+                Container(
+                  decoration:  BoxDecoration(
+                      border: Border(top:BorderSide(width: 0.1))
+                  ),
+                  child: Material(
+                    color: AppColors.transparent,
+                    child: ListTile(
+                        onTap: controller.salesReportClick,
+                        contentPadding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal* 1.25),
+                        minLeadingWidth: 0.0,
+                        minVerticalPadding: 0,
+                        leading: const Icon(Icons.receipt),
+                        trailing: SvgPicture.asset(AppImages.settingsBack),
+                        title:TextWidget(text: AppStrings.settingsSalesReportHeading,
+                            fontFamily: FontFamily.fontMedium,
+                            fontSize: SizeConfig.appbarTitleSize),
+                        subtitle:TextWidget(text: AppStrings.settingsSalesReportDesc,
+                            color: AppColors.blackShades,
+                            fontSize: SizeConfig.blockSizeHorizontal*3.5,
+                            fontFamily: FontFamily.fontRegular)),
+                  ),
+                ),
+              ],
 
             // delivery area
             Container(
@@ -121,7 +134,7 @@ class Settings extends GetView<SettingsController> {
                 color: AppColors.transparent,
                 child: ListTile(
                     onTap: controller.deliveryAreaClick,
-                    contentPadding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal* 1.25),
+                    contentPadding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal* 1.25),
                     minLeadingWidth: 0.0,
                     leading: const Icon(CupertinoIcons.map_pin_ellipse),
                     trailing: SvgPicture.asset(AppImages.settingsBack),
@@ -222,6 +235,29 @@ class Settings extends GetView<SettingsController> {
                         fontSize: SizeConfig.appbarTitleSize),
                     subtitle:
                     TextWidget(text: AppStrings.settingsPrinterSettingsDesc,
+                        color: AppColors.blackShades,
+                        fontSize: SizeConfig.blockSizeHorizontal*3.5,
+                        fontFamily: FontFamily.fontRegular)),
+              ),
+            ),
+
+            // help & support
+            Container(
+              decoration: const BoxDecoration(
+                  border: Border(top:BorderSide(width: 0.1) )),
+              child: Material(
+                color: AppColors.transparent,
+                child: ListTile(
+                    onTap: controller.helpAndSupportClick,
+                    contentPadding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal* 1.25),
+                    minLeadingWidth: 0.0,
+                    minVerticalPadding: 0,
+                    leading:  const Icon(Icons.support_agent),
+                    trailing: SvgPicture.asset(AppImages.settingsBack),
+                    title: TextWidget(text: AppStrings.settingsHelpAndSupportHeading,
+                        fontFamily: FontFamily.fontMedium,
+                        fontSize: SizeConfig.appbarTitleSize),
+                    subtitle: TextWidget(text: AppStrings.settingsHelpAndSupportDesc,
                         color: AppColors.blackShades,
                         fontSize: SizeConfig.blockSizeHorizontal*3.5,
                         fontFamily: FontFamily.fontRegular)),

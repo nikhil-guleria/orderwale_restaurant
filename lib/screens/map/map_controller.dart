@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:food_merchant/component/address_dialog.dart';
 import 'package:food_merchant/constant/app_strings.dart';
-import 'package:food_merchant/services/repo/CommonRepo.dart';
+import 'package:food_merchant/services/repo/api_controller.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

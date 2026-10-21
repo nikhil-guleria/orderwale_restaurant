@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_merchant/screens/login/model_login/login_model.dart';
-import 'package:food_merchant/utils/CommonUtils.dart';
+import 'package:food_merchant/utils/common_utils.dart';
 import 'package:food_merchant/utils/storage_utils.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../constant/global_variables.dart';
 import '../../../constant/app_strings.dart';
 import '../../../routes/app_routes.dart';
-import '../../../services/repo/CommonRepo.dart';
+import '../../../services/repo/api_controller.dart';
 import '../../../utils/PushNotifications.dart';
 
 class LoginController extends GetxController {
@@ -80,8 +80,7 @@ class LoginController extends GetxController {
         await StorageUtils.utils.saveSession(
           restaurantUserToken: loginResult.token,
           restaurantUserName: loginResult.user?.name,
-          restaurantName: loginResult.user?.restaurantName,
-          restaurantImage: loginResult.user?.restaurantThumbnail
+          userRole: loginResult.user?.role
         );
         Get.offAllNamed(AppRoutes.tabBar);
       } else {

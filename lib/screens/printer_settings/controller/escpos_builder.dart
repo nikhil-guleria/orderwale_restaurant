@@ -7,7 +7,7 @@ import 'dart:typed_data';
 
 import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/screens/order_details/models/order_details_model.dart';
-import 'package:food_merchant/utils/CommonUtils.dart';
+import 'package:food_merchant/utils/common_utils.dart';
 
 
 

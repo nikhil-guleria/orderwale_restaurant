@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constant/app_strings.dart';
-import '../../services/repo/CommonRepo.dart';
-import '../../utils/CommonUtils.dart';
+import '../../services/repo/api_controller.dart';
+import '../../utils/common_utils.dart';
 
 
 class ChangePasswordController extends GetxController{

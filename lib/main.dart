@@ -10,8 +10,11 @@ import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:food_merchant/my_app.dart';
 import 'package:food_merchant/utils/GetStorageConstants.dart';
 import 'package:food_merchant/utils/PushNotifications.dart';
+import 'package:food_merchant/utils/storage_utils.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:uuid/uuid.dart';
+
+import 'constant/app_strings.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -117,12 +120,12 @@ _handleCall(dynamic fcmOrderId) async {
           print("Event --- ${event.event}");
 
           var storage = GetStorage();
-          storage.write(GetStorageConstants.fcmOrderId , "$fcmOrderId");
+          storage.write(StorageUtils.sFCMOrderId , "$fcmOrderId");
           print("saving order id --> $fcmOrderId");
 
 
 
-          final SendPort? send = IsolateNameServer.lookupPortByName('fcm_Message');
+          final SendPort? send = IsolateNameServer.lookupPortByName(AppStrings.fcmIsolatePort);
           send?.send("$fcmOrderId");
 
           break;
@@ -145,9 +148,9 @@ _handleCall(dynamic fcmOrderId) async {
           print("Event --- ${event.event}");
 
           var storage = GetStorage();
-          storage.write(GetStorageConstants.fcmOrderId , fcmOrderId);
+          storage.write(StorageUtils.sFCMOrderId , fcmOrderId);
 
-          final SendPort? send = IsolateNameServer.lookupPortByName('fcm_Message');
+          final SendPort? send = IsolateNameServer.lookupPortByName(AppStrings.fcmIsolatePort);
           send?.send(fcmOrderId);
 
           break;

@@ -8,6 +8,7 @@ class AppRoutes {
 
   // register restaurant
   static const registerNewUser = '/registerNewUser';
+  static const userAddress = '/userAddress';
 
 
 //-------------------> home routes <--------------------------
@@ -47,6 +48,19 @@ class AppRoutes {
   // change password
   static const changePassword = '/changePassword';
 
+  // printer settings
+  static const printerSettings = '/printerSettings';
+
+  // help & support
+  static const helpAndSupport = '/helpAndSupport';
+
+
+//--------------------> restaurant menu <--------------------
+  static const addCustomisedProduct = '/addCustomizedProduct';
+  static const customisationType = '/customisationType';
+  static const subcategoryTitleScreen = '/subcategoryTitleScreen';
+  static const subcategoryEditScreen = '/subcategoryEditScreen';
+
 
 
 
@@ -56,22 +70,8 @@ class AppRoutes {
 
 
   static const DASHBOARD = '/';
-  static const SPLASH = '/splash';
-  static const SELECT_RESTAURANT = '/selectRestaurant';
-  static const printerSettings = '/printerSettings';
-  static const HOME = '/home';
-  static const SETTINGS = '/settings';
-  static const SETTINGS_NOTIFICATIONS = '/settingsNotifications';
-  static const RESTAURANT_DETAILS = '/restaurantDetails';
-  static const ADD_PRODUCT = '/addProduct';
-  //static const GET_LOCATION = '/getLocation';
-  static const PROFILE = '/profile';
-  static const MAIN = '/main';
-  static const USER_ADDRESS = '/userAddress';
-  static const SUBCATEGORY_TITLE_SCREEN = '/subCategoryScreen';
-  static const SUBCATEGORY_EDIT_SCREEN = '/subCategoryEditScreen';
-  static const addCustomisedProduct = '/addCustomizedProduct';
-  static const customisationType = '/customisationType';
+
+
 }
 
 

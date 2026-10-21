@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_merchant/constant/app_strings.dart';
 import 'package:get/get.dart';
 import '../../../routes/app_routes.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../../utils/CommonUtils.dart';
+import '../../../services/repo/api_controller.dart';
+import '../../../utils/common_utils.dart';
 import '../models/orders_page_model.dart';
 
 

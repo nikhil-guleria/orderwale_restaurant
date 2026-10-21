@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class SubCategoryBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put<SubCategoryController>(SubCategoryController());
+    Get.lazyPut<SubCategoryController>(() => SubCategoryController());
   }
 
 }

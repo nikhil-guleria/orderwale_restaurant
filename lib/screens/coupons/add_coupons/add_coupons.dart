@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_merchant/component/button_widget.dart';
-import 'package:food_merchant/component/ColorLoader.dart';
+import 'package:food_merchant/component/color_loader.dart';
 import 'package:food_merchant/component/custom_form_field.dart';
 import 'package:food_merchant/component/custom_text_widget.dart';
 import 'package:food_merchant/constant/app_colors.dart';
@@ -9,7 +9,7 @@ import 'package:food_merchant/constant/font_family.dart';
 import 'package:food_merchant/constant/app_images.dart';
 import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/utils/size_config.dart';
-import 'package:food_merchant/utils/Validations.dart';
+import 'package:food_merchant/utils/validations.dart';
 import 'package:get/get.dart';
 import 'add_coupons_controller.dart';
 
@@ -150,7 +150,7 @@ class AddCoupons extends GetView<AddCouponsController> {
 
                   // description
                   TextWidget(
-                    text: AppStrings.couponDescription,
+                    text: AppStrings.headingDescription,
                     fontFamily: FontFamily.fontMedium,
                     fontSize: SizeConfig.mediumFontSize,
                     color: AppColors.normalTextColor,

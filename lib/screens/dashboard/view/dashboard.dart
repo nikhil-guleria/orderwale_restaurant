@@ -3,11 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_merchant/component/custom_dialog_box.dart';
 import 'package:food_merchant/constant/app_images.dart';
-import 'package:food_merchant/utils/CommonUtils.dart';
+import 'package:food_merchant/utils/common_utils.dart';
 import 'package:get/get.dart';
 import '../../../constant/app_colors.dart';
 import '../../../constant/app_strings.dart';
-import '../../../routes/app_routes.dart';
 import '../controller/dashboard_controller.dart';
 
 class Dashboard extends GetView<DashboardController> {
@@ -27,9 +26,6 @@ class Dashboard extends GetView<DashboardController> {
               Get.dialog(showDialogBox(title: AppStrings.alertTitle,
                   message: "Do you want to exit the App?",
                   twoButtons: true,
-                  onCancel: (){
-                    Get.back();
-                  },
                   onConfirm: () {
                     SystemNavigator.pop();
                   }));}
@@ -43,7 +39,7 @@ class Dashboard extends GetView<DashboardController> {
               backgroundColor: AppColors.white,
               body: Navigator(
                 key: Get.nestedKey(controller.globalId.value),
-                initialRoute: AppRoutes.MAIN,
+                initialRoute: "/home",
                 onGenerateRoute: controller.onGenerateRoute,
               ),
 

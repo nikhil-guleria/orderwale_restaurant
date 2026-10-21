@@ -6,8 +6,8 @@ import 'package:food_merchant/services/commonModels/countries_model.dart';
 import 'package:food_merchant/services/commonModels/states_model.dart';
 import 'package:get/get.dart';
 import '../../../routes/app_routes.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../../utils/CommonUtils.dart';
+import '../../../services/repo/api_controller.dart';
+import '../../../utils/common_utils.dart';
 
 
 class NewUserController extends GetxController{
@@ -97,7 +97,7 @@ class NewUserController extends GetxController{
 
   void goToSearchAddress(){
     FocusManager.instance.primaryFocus?.unfocus();
-    Get.toNamed(AppRoutes.USER_ADDRESS) ?.then((value) {
+    Get.toNamed(AppRoutes.userAddress) ?.then((value) {
       if(value != null) {
         addressController.text = value;
       }

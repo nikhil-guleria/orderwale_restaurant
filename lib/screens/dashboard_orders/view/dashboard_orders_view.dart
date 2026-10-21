@@ -4,8 +4,8 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:food_merchant/component/ColorLoader.dart';
-import 'package:food_merchant/component/DottedLine.dart';
+import 'package:food_merchant/component/color_loader.dart';
+import 'package:food_merchant/component/dotted_line_separator.dart';
 import 'package:food_merchant/component/custom_switch.dart';
 import 'package:food_merchant/constant/app_images.dart';
 import 'package:food_merchant/screens/dashboard_orders/model/dashboard_orders_model.dart';
@@ -15,7 +15,7 @@ import '../../../component/custom_text_widget.dart';
 import '../../../constant/app_colors.dart';
 import '../../../constant/font_family.dart';
 import '../../../constant/app_strings.dart';
-import '../../../utils/DateTimeUtils.dart';
+import '../../../utils/date_time_utils.dart';
 import '../../../utils/size_config.dart';
 import 'custom_clipper.dart';
 import '../controller/dashboard_orders_controller.dart';
@@ -51,8 +51,8 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                   Expanded(
                       child: Padding(
                         padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*15),
-                        child: TextWidget(text: main_screen_title,
-                          color: Colors.black,
+                        child: TextWidget(text: AppStrings.dashboardTitle,
+                          color: AppColors.black,
                           fontSize: SizeConfig.appbarTitleSize,
                           textAlign: TextAlign.center,
                           fontFamily: FontFamily.fontSemiBold,
@@ -70,7 +70,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
     }
 
     List<Widget> widgetList = [];
-    var child =  Scaffold(  backgroundColor: AppColors.white,
+    var child =  Scaffold(backgroundColor: AppColors.white,
       body:  SafeArea(
         child: RefreshIndicator(
           color: AppColors.colorPrimary,
@@ -113,7 +113,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                           outer: true,
                                           pagination: SwiperPagination(
                                             builder: FractionPaginationBuilder(
-                                              color: Colors.black,
+                                              color: AppColors.black,
                                               activeColor: AppColors.colorPrimary,
                                               fontSize: SizeConfig.mediumFontSize,
                                               activeFontSize: SizeConfig.mediumFontSize,
@@ -131,7 +131,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                           right: SizeConfig.blockSizeHorizontal*2.75,
                                                           top: SizeConfig.blockSizeHorizontal*13),
                                                       decoration:BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: AppColors.white,
                                                           borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*4.5),
                                                           border: Border.all(color: AppColors.colorPrimary, width: 2)
                                                       ),
@@ -189,12 +189,12 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                           overflow: TextOverflow.ellipsis,
                                                                           text: (controller.receivedOrder[index].deliveryType ?? '').trim() == "1"?
                                                                           controller.receivedOrder[index].address ?? '' : AppStrings.selfPickUp,
-                                                                          color: Colors.black87,
+                                                                          color: AppColors.black87,
                                                                           fontSize: SizeConfig.regularFontSize,
                                                                           fontFamily: FontFamily.fontRegular),
                                                                     ),
                                                                   ]),
-                                                              Divider(color: Colors.grey.shade300,),
+                                                              Divider(color: AppColors.grey.shade300,),
 
 
                                                               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,7 +217,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                                     text: ' X  ${controller.receivedOrder[index].details?[0].itemName ?? ''}',
 
                                                                                     style: TextStyle(
-                                                                                        color: Colors.black,
+                                                                                        color: AppColors.black,
                                                                                         fontSize: SizeConfig.regularFontSize,
                                                                                         fontFamily: FontFamily.fontMedium)
                                                                                 ),
@@ -238,14 +238,14 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                                 TextSpan(
                                                                                     text: controller.receivedOrder[index].details?[0].itemName ?? '',
                                                                                     style: TextStyle(
-                                                                                        color: Colors.black,
+                                                                                        color: AppColors.black,
                                                                                         fontSize: SizeConfig.regularFontSize,
                                                                                         fontFamily: FontFamily.fontMedium)
                                                                                 ),
                                                                                 TextSpan(
                                                                                     text: ' and ${(controller.receivedOrder[index].details ?? []).length -1} more',
                                                                                     style: TextStyle(
-                                                                                        color: Colors.black,
+                                                                                        color: AppColors.black,
                                                                                         fontSize: SizeConfig.regularFontSize,
                                                                                         fontFamily: FontFamily.fontMedium)
                                                                                 ),
@@ -264,8 +264,8 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                           children: [
                                                                             Flexible(
                                                                               child: TextWidget(
-                                                                                text: show_all_lbl,
-                                                                                color: Colors.green,
+                                                                                text: AppStrings.dashboardViewMore,
+                                                                                color: AppColors.green,
                                                                                 fontSize: SizeConfig.regularFontSize,
                                                                                 fontFamily: FontFamily.fontMedium,
                                                                                 maxLines: 1,
@@ -287,37 +287,41 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                       child: Row(
                                                                         children: [
                                                                           Flexible(child: TextWidget(
-                                                                              text:"Total Price:  ",
+                                                                              text: AppStrings.dashboardTotalPriceCard,
                                                                               maxLines: 1,
-                                                                              color: Colors.black87,
+                                                                              color: AppColors.black87,
                                                                               fontSize: SizeConfig.regularFontSize,
                                                                               fontFamily: FontFamily.fontRegular)),
+
+                                                                          // unpaid
                                                                           (controller.receivedOrder[index].paymentType ?? '').trim() == "1" ?
                                                                           Container(
                                                                             padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*0.5),
                                                                             decoration: BoxDecoration(
                                                                                 borderRadius: BorderRadius.circular(3),
-                                                                                border: Border.all(width: 1, color: Colors.red.shade300)
+                                                                                border: Border.all(width: 1, color: AppColors.red.shade300)
                                                                             ),
                                                                             child: Center(
                                                                               child: TextWidget(
-                                                                                  text: "UNPAID",
-                                                                                  color: Colors.red.shade300,
+                                                                                  text: AppStrings.headingUnpaid,
+                                                                                  color: AppColors.red.shade300,
                                                                                   fontSize: SizeConfig.blockSizeHorizontal*3,
                                                                                   fontFamily: FontFamily.fontMedium
                                                                               ),
                                                                             ),
                                                                           )
+
+                                                                          // paid
                                                                               : Container(
                                                                             padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*0.5),
                                                                             decoration: BoxDecoration(
                                                                                 borderRadius: BorderRadius.circular(3),
-                                                                                border: Border.all(width: 1, color: Colors.green)
+                                                                                border: Border.all(width: 1, color: AppColors.green)
                                                                             ),
                                                                             child: Center(
                                                                               child: TextWidget(
-                                                                                  text:"PAID",
-                                                                                  color: Colors.green,
+                                                                                  text:AppStrings.headingPaid,
+                                                                                  color: AppColors.green,
                                                                                   fontSize: SizeConfig.blockSizeHorizontal*3,
                                                                                   fontFamily: FontFamily.fontMedium
                                                                               ),
@@ -351,14 +355,14 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                     padding:   EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*1,
                                                                         top: SizeConfig.blockSizeHorizontal*1,
                                                                         bottom: SizeConfig.blockSizeHorizontal*1),
-                                                                    child: ButtonWidget(text: decline_btn,
+                                                                    child: ButtonWidget(text: AppStrings.btnDeclined,
                                                                         onPressed: (){
                                                                       controller.cancelOrder(index);
                                                                         },
                                                                         roundedCorner: 6.0,
                                                                         height: SizeConfig.blockSizeHorizontal*9,
                                                                         fontSize: SizeConfig.regularFontSize,
-                                                                        backGroundColor: Colors.redAccent),
+                                                                        backGroundColor: AppColors.redAccent),
                                                                   ),
 
                                                                   // accept order
@@ -370,14 +374,13 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                         children: [
                                                                           ButtonWidget(
                                                                               height: SizeConfig.blockSizeHorizontal*9,
-                                                                              text:  accept_order_btn,
+                                                                              text:  AppStrings.btnAcceptOrder,
                                                                               roundedCorner: 6.0,
                                                                               onPressed: (){
-                                                                                //controller.timerController.start();
                                                                                 controller.acceptDeclineOrders("2", controller.receivedOrder[index].orderId);
                                                                               },
                                                                               fontSize: SizeConfig.blockSizeHorizontal*4,
-                                                                              backGroundColor: Colors.green
+                                                                              backGroundColor: AppColors.green
                                                                           ),
 
 
@@ -405,6 +408,8 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                         )
                                                     ),
                                                   ),
+
+                                                  // new order label
                                                   Positioned(
                                                     top: SizeConfig.blockSizeHorizontal*3.5,
                                                     left:SizeConfig.blockSizeHorizontal*2.3,
@@ -412,11 +417,11 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                       clipper: SkewCutUpward(),
                                                       child: Container(
                                                         height: SizeConfig.blockSizeHorizontal*7,
-                                                        decoration: const BoxDecoration(
+                                                        decoration:  BoxDecoration(
                                                             gradient:  LinearGradient(
                                                               colors: [
-                                                                Colors.purple,
-                                                                Colors.blue,
+                                                                AppColors.purple,
+                                                                AppColors.blue,
                                                               ],
                                                               begin: Alignment.centerLeft,
                                                               end: Alignment.centerRight,
@@ -432,9 +437,9 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                         child: Container(
                                                           alignment:  Alignment.center,
                                                           margin:  EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*3.75),
-                                                          child: TextWidget(text: "New Order", fontFamily: FontFamily.fontMedium,
+                                                          child: TextWidget(text: AppStrings.dashboardNewOrder, fontFamily: FontFamily.fontMedium,
                                                             textAlign: TextAlign.center,
-                                                            fontSize: SizeConfig.mediumFontSize, color: Colors.white,),
+                                                            fontSize: SizeConfig.mediumFontSize, color: AppColors.white,),
                                                         ),
                                                       ),
                                                     ),
@@ -453,9 +458,10 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                               bottomLeft: Radius.circular(SizeConfig.blockSizeHorizontal*3))
                                                       ),
                                                       child:  TextWidget(text: (controller.receivedOrder[index].deliveryType ?? '').trim() == "1"?
-                                                      "Delivery" : "TakeAway", fontFamily: FontFamily.fontMedium,
+                                                      AppStrings.dashboardDelivery : AppStrings.dashboardTakeaway,
+                                                        fontFamily: FontFamily.fontMedium,
                                                         textAlign: TextAlign.center,
-                                                        fontSize: SizeConfig.mediumFontSize, color: Colors.white,)
+                                                        fontSize: SizeConfig.mediumFontSize, color: AppColors.white,)
                                                   )
                                                 ],
                                               );
@@ -479,7 +485,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                           outer: true,
                                           pagination: SwiperPagination(
                                             builder: FractionPaginationBuilder(
-                                              color: Colors.black,
+                                              color: AppColors.black,
                                               activeColor: AppColors.colorPrimary,
                                               fontSize: SizeConfig.mediumFontSize,
                                               activeFontSize: SizeConfig.mediumFontSize,
@@ -497,9 +503,9 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                           right: SizeConfig.blockSizeHorizontal*2.75,
                                                           top: SizeConfig.blockSizeHorizontal*13),
                                                       decoration:BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: AppColors.white,
                                                           borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*4.5),
-                                                          border: Border.all(color: Colors.grey, width: 1.5)
+                                                          border: Border.all(color: AppColors.grey, width: 1.5)
                                                       ),
                                                       child: InkWell(onTap: () {
                                                         controller.goToOrderDetails(controller.acceptedOrder[index].orderId);
@@ -556,12 +562,12 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                           overflow: TextOverflow.ellipsis,
                                                                           text: (controller.acceptedOrder[index].deliveryType ?? '').trim() == "1"?
                                                                           controller.acceptedOrder[index].address ?? '' : AppStrings.selfPickUp,
-                                                                          color: Colors.black87,
+                                                                          color: AppColors.black87,
                                                                           fontSize: SizeConfig.regularFontSize,
                                                                           fontFamily: FontFamily.fontRegular),
                                                                     ),
                                                                   ]),
-                                                              Divider(color: Colors.grey.shade300),
+                                                              Divider(color: AppColors.grey.shade300),
                                                               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: [
 
@@ -583,7 +589,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                                     text: ' X  ${controller.acceptedOrder[index].details?[0].itemName ?? ''}',
 
                                                                                     style: TextStyle(
-                                                                                        color: Colors.black,
+                                                                                        color: AppColors.black,
                                                                                         fontSize: SizeConfig.regularFontSize,
                                                                                         fontFamily: FontFamily.fontMedium)
                                                                                 ),
@@ -604,14 +610,14 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                                 TextSpan(
                                                                                     text: controller.acceptedOrder[index].details?[0].itemName ?? '',
                                                                                     style: TextStyle(
-                                                                                        color: Colors.black,
+                                                                                        color: AppColors.black,
                                                                                         fontSize: SizeConfig.regularFontSize,
                                                                                         fontFamily: FontFamily.fontMedium)
                                                                                 ),
                                                                                 TextSpan(
                                                                                     text: ' and ${(controller.acceptedOrder[index].details ?? []).length -1} more',
                                                                                     style: TextStyle(
-                                                                                        color: Colors.black,
+                                                                                        color: AppColors.black,
                                                                                         fontSize: SizeConfig.regularFontSize,
                                                                                         fontFamily: FontFamily.fontMedium)
                                                                                 ),
@@ -630,8 +636,8 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                           children: [
                                                                             Flexible(
                                                                               child: TextWidget(
-                                                                                text: show_all_lbl,
-                                                                                color: Colors.green,
+                                                                                text: AppStrings.dashboardViewMore,
+                                                                                color: AppColors.green,
                                                                                 fontSize: SizeConfig.regularFontSize,
                                                                                 fontFamily: FontFamily.fontMedium,
                                                                                 maxLines: 1,
@@ -652,38 +658,43 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                   SizedBox(width : SizeConfig.blockSizeHorizontal*45,
                                                                       child:  Row(
                                                                         children: [
+                                                                          // total price
                                                                           Flexible(child: TextWidget(
-                                                                              text:"Total Price:  ",
+                                                                              text:AppStrings.dashboardTotalPriceCard,
                                                                               maxLines: 1,
-                                                                              color: Colors.black87,
+                                                                              color: AppColors.black87,
                                                                               fontSize: SizeConfig.regularFontSize,
                                                                               fontFamily: FontFamily.fontRegular)),
+
+                                                                          // unpaid
                                                                           (controller.acceptedOrder[index].paymentType ?? '').trim() == "1" ?
                                                                           Container(
                                                                             padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*0.5),
                                                                             decoration: BoxDecoration(
                                                                                 borderRadius: BorderRadius.circular(3),
-                                                                                border: Border.all(width: 1, color: Colors.red.shade300)
+                                                                                border: Border.all(width: 1, color: AppColors.red.shade300)
                                                                             ),
                                                                             child: Center(
                                                                               child: TextWidget(
-                                                                                  text: "UNPAID",
-                                                                                  color: Colors.red.shade300,
+                                                                                  text: AppStrings.headingUnpaid,
+                                                                                  color: AppColors.red.shade300,
                                                                                   fontSize: SizeConfig.blockSizeHorizontal*3,
                                                                                   fontFamily: FontFamily.fontMedium
                                                                               ),
                                                                             ),
                                                                           )
+
+                                                                          // paid
                                                                               : Container(
                                                                             padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*0.5),
                                                                             decoration: BoxDecoration(
                                                                                 borderRadius: BorderRadius.circular(3),
-                                                                                border: Border.all(width: 1, color: Colors.green)
+                                                                                border: Border.all(width: 1, color: AppColors.green)
                                                                             ),
                                                                             child: Center(
                                                                               child: TextWidget(
-                                                                                  text:"PAID",
-                                                                                  color: Colors.green,
+                                                                                  text: AppStrings.headingPaid,
+                                                                                  color: AppColors.green,
                                                                                   fontSize: SizeConfig.blockSizeHorizontal*3,
                                                                                   fontFamily: FontFamily.fontMedium
                                                                               ),
@@ -714,6 +725,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                               Row(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                 children: [
+                                                                  // mark as ready
                                                                   (controller.acceptedOrder[index].orderStatus ?? '').trim() == "2" ?
                                                                   Expanded(
                                                                     child: Padding(padding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*1,
@@ -721,7 +733,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                         bottom:  SizeConfig.blockSizeHorizontal*1),
                                                                       child: ButtonWidget(
                                                                           height: SizeConfig.blockSizeHorizontal*9,
-                                                                          text:  mark_as_ready,
+                                                                          text:  AppStrings.dashboardMarkAsReady,
                                                                           roundedCorner: 6.0,
                                                                           onPressed: (){
                                                                             controller.acceptDeclineOrders("7", controller.acceptedOrder[index].orderId);
@@ -731,6 +743,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                     ),
                                                                   )
 
+                                                                  // mark as delivered
                                                                       :  ( controller.acceptedOrder[index].orderStatus ?? '').trim() == "4" ?
                                                                   Expanded(
                                                                     child: Padding(padding:  EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*1,
@@ -738,7 +751,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                         bottom: SizeConfig.blockSizeHorizontal*1),
                                                                       child: ButtonWidget(
                                                                           height: SizeConfig.blockSizeHorizontal*9,
-                                                                          text:  mark_as_delivered,
+                                                                          text: AppStrings.dashboardMarkAsDelivered,
                                                                           roundedCorner: 6.0,
                                                                           onPressed: (){
                                                                             controller.deliverOrderClick(controller.acceptedOrder[index].orderId);
@@ -756,7 +769,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                       child: ButtonWidget(
                                                                           height: SizeConfig.blockSizeHorizontal*9,
                                                                           text: (controller.acceptedOrder[index].deliveryType ?? '').trim() == "1" ?
-                                                                          mark_as_out_for_delivery : mark_as_delivered,
+                                                                          AppStrings.dashboardMarkOutForDelivery : AppStrings.dashboardMarkAsDelivered,
                                                                           roundedCorner: 6.0,
                                                                           onPressed: (){
                                                                             (controller.acceptedOrder[index].deliveryType ?? '').trim() == "1" ?
@@ -788,11 +801,11 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                           width: SizeConfig.blockSizeHorizontal*11,
                                                                           height: SizeConfig.blockSizeHorizontal*11,
                                                                           duration:  controller.duration(controller.acceptedOrder[index].created),
-                                                                          fillColor:  Colors.grey.shade100,
-                                                                          ringColor:  Colors.green,
+                                                                          fillColor:  AppColors.grey.shade100,
+                                                                          ringColor:  AppColors.green,
                                                                           isReverse:  true,
                                                                           strokeWidth: 4,
-                                                                          textStyle: TextStyle(color: Colors.black, fontSize: SizeConfig.blockSizeHorizontal*3,
+                                                                          textStyle: TextStyle(color: AppColors.black, fontSize: SizeConfig.blockSizeHorizontal*3,
                                                                               fontFamily: FontFamily.fontMedium),
                                                                           onComplete: (){
                                                                             controller.fetchOrdersList();
@@ -838,10 +851,10 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                         child: Container(margin:  EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*3.75),
                                                           child: TextWidget(text:
                                                           (controller.acceptedOrder[index].orderStatus ?? '').trim() == "2" ?
-                                                          "Preparing" : "Ready",
+                                                          AppStrings.dashboardPreparingOrder : AppStrings.dashboardReadyOrder,
                                                             fontFamily: FontFamily.fontMedium,
                                                             textAlign: TextAlign.center,
-                                                            fontSize: SizeConfig.mediumFontSize, color: Colors.white,),
+                                                            fontSize: SizeConfig.mediumFontSize, color: AppColors.white,),
                                                         ),
                                                       ),
                                                     ),
@@ -854,11 +867,11 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                     child: Positioned(
                                                       top: SizeConfig.blockSizeHorizontal*3.5,
                                                       right: SizeConfig.blockSizeHorizontal*7.5,
-                                                      child: TextWidget(text: "Delayed",
+                                                      child: TextWidget(text: AppStrings.dashboardDelayed,
                                                         fontSize: SizeConfig.semiBoldFontSize,
                                                         fontWeight: FontWeight.w800,
                                                         fontFamily: FontFamily.fontBold,
-                                                        color: Colors.red,),
+                                                        color: AppColors.red,),
                                                     ),
                                                   ),
 
@@ -877,9 +890,10 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                                                 bottomLeft: Radius.circular(SizeConfig.blockSizeHorizontal*3))
                                                         ),
                                                         child:  TextWidget(text: (controller.acceptedOrder[index].deliveryType ?? '').trim() == "1"?
-                                                        "Delivery" : "TakeAway", fontFamily: FontFamily.fontMedium,
+                                                        AppStrings.dashboardDelivery : AppStrings.dashboardTakeaway,
+                                                          fontFamily: FontFamily.fontMedium,
                                                           textAlign: TextAlign.center,
-                                                          fontSize: SizeConfig.mediumFontSize, color: Colors.white,)
+                                                          fontSize: SizeConfig.mediumFontSize, color: AppColors.white,)
                                                     ),
                                                   )
                                                 ],
@@ -900,7 +914,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
             ],
           )
         ),
-      ) );
+      ));
 
 
     widgetList.add(child);
@@ -910,7 +924,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
         children: [
           const Opacity(
             opacity: 0.6,
-            child: ModalBarrier(dismissible: false, color: Colors.white),
+            child: ModalBarrier(dismissible: false, color: AppColors.white),
           ),
           ColorLoader()
 
@@ -949,7 +963,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                       height: 3,
                       width: SizeConfig.blockSizeHorizontal*15,
                       decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: AppColors.grey,
                           borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal * 1)
                       ),
                     ),
@@ -960,7 +974,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                         child:TextWidget(text: "Items",
                           fontFamily: FontFamily.fontMedium,
                           fontSize: SizeConfig.mediumFontSize,
-                          color: Colors.black, fontWeight: FontWeight.bold,),),
+                          color: AppColors.black, fontWeight: FontWeight.bold,),),
                     SizedBox(height: SizeConfig.blockSizeHorizontal * 2),
                 
                     Expanded(
@@ -981,7 +995,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(color: AppColors.white,
                                             borderRadius: BorderRadius.circular(6.0),
-                                            border: Border.all(color: Colors.black12,width: 0.75)
+                                            border: Border.all(color: AppColors.black12,width: 0.75)
                                         ),
                                         child: TextWidget(text: list[index].itemCount ?? '0',
                                             color:  AppColors.blackShades, fontSize: SizeConfig.mediumFontSize,fontFamily: FontFamily.fontMedium),
@@ -1043,7 +1057,7 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
                                     child: Container(
                                       padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*3.75,
                                           vertical: SizeConfig.blockSizeHorizontal *2.5),
-                                      child:  const MySeparator(color: AppColors.colorGrey1,dashWidth: 3,
+                                      child:  const DottedLineSeparator(color: AppColors.colorGrey1,dashWidth: 3,
                                           height: 0.7),
                                     ),
                                   )
@@ -1061,28 +1075,3 @@ class DashboardOrdersView extends GetView<DashboardOrdersController> {
   }
 
 }
-
-
-/* Visibility(
-                        visible: false, /// extra
-                        child: Container(
-                            color: Colors.green,
-                            padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeHorizontal*1),
-                            alignment: Alignment.center,
-                            child:
-                            controller.receivedOrder.isNotEmpty ?
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                TextWidget(text: "You have ( ${controller.receivedOrder.length} ) new orders",
-                                  fontFamily: FontFamily.fontSemiBold,
-                                  fontSize: SizeConfig.semiBoldFontSize,
-                                  color: Colors.white,),
-                                Icon(CupertinoIcons.arrow_up_right_circle_fill, color: Colors.white,size: SizeConfig.blockSizeHorizontal*11,)
-                              ],
-                            )
-                                : TextWidget(text: waiting,color: Colors.white, fontSize: SizeConfig.semiBoldFontSize
-                                ,fontFamily: FontFamily.fontSemiBold)
-
-                        ),
-                      )
-*/

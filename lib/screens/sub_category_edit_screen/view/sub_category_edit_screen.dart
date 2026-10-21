@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_merchant/constant/app_colors.dart';
 import 'package:food_merchant/screens/sub_category_edit_screen/controller/sub_category_edit_controller.dart';
 import 'package:get/get.dart';
-import '../../../component/ColorLoader.dart';
+import '../../../component/color_loader.dart';
 import '../../../component/custom_text_widget.dart';
-import '../../../constant/font_family.dart';
 import '../../../constant/app_strings.dart';
 import '../../../utils/size_config.dart';
 
@@ -18,14 +17,7 @@ class SubCategoryEditScreen extends GetView<SubCategoryEditController> {
     List<Widget> widgetList = [];
     var child = Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-          title: TextWidget(text:  subCategoryEditAppTitle,
-            color: Colors.black,
-            fontSize: SizeConfig.appbarTitleSize,
-            fontFamily: FontFamily.fontSemiBold,
-            fontWeight: FontWeight.w600,),
-          elevation: 0.0,
-          centerTitle: true),
+      appBar: buildAppBar(title: AppStrings.subcategoryEditAppTitle),
       body:
       Obx(()=>
       Container(
@@ -62,7 +54,7 @@ class SubCategoryEditScreen extends GetView<SubCategoryEditController> {
                       ),
                       SizedBox(width: SizeConfig.blockSizeHorizontal*2),
                       Expanded(
-                        child: TextWidget(text: "${controller.subCategoryList[index].title}",
+                        child: TextWidget(text: controller.subCategoryList[index].title ?? "N/A",
                         ),
                       ),
                       SizedBox(width: SizeConfig.blockSizeHorizontal*2),

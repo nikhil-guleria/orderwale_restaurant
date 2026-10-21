@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:food_merchant/component/custom_text_widget.dart';
 import 'package:food_merchant/constant/app_colors.dart';
 import 'package:get/get.dart';
-import '../../../component/ColorLoader.dart';
+import '../../../component/color_loader.dart';
 import '../../../constant/font_family.dart';
 import '../../../constant/app_strings.dart';
-import '../../../utils/DateTimeUtils.dart';
-import '../../../utils/SetUpOrdersData.dart';
+import '../../../utils/date_time_utils.dart';
+import '../../../utils/setup_orders_data.dart';
 import '../../../utils/size_config.dart';
 import '../controller/orders_page_controller.dart';
 
@@ -109,7 +109,8 @@ class OrdersPageView extends GetView<OrdersPageController>{
                       children: [
                         Expanded(
                           child: ListView.builder(
-                              padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*2.5),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: SizeConfig.blockSizeHorizontal*2.5),
                               itemCount: controller.orderList.length,
                               scrollDirection: Axis.vertical,
                               controller: controller.scrollController,

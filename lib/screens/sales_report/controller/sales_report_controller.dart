@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cashfree_pg_sdk/api/cferrorresponse/cferrorresponse.dart';
 import 'package:flutter_cashfree_pg_sdk/api/cfpayment/cfdropcheckoutpayment.dart';
@@ -12,19 +13,17 @@ import 'package:flutter_cashfree_pg_sdk/utils/cfenums.dart';
 import 'package:flutter_cashfree_pg_sdk/utils/cfexceptions.dart';
 import 'package:food_merchant/component/custom_dialog_box.dart';
 import 'package:food_merchant/screens/sales_report/model/sales_report_model.dart';
+import 'package:food_merchant/utils/storage_utils.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../constant/app_strings.dart';
-import '../../../services/api/ApiConstant.dart';
 import '../../../services/api/api_hitter.dart';
 import '../../../services/commonModels/cashfree_payment_model.dart';
 import '../../../services/commonModels/razorpay_payment_model.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../../utils/CommonUtils.dart';
-import '../../../utils/DateTimeUtils.dart';
-import '../../../utils/GetStorageConstants.dart';
+import '../../../services/repo/api_controller.dart';
+import '../../../utils/common_utils.dart';
+import '../../../utils/date_time_utils.dart';
 
 class SalesReportController extends GetxController{
   var showLoader = false.obs;
@@ -170,22 +169,59 @@ class SalesReportController extends GetxController{
   }
 
 
-  String previousBalance(String balance){
-    double bal = double.parse(balance);
+/*  String previousBalance(String balance){
+    double bal = double.tryParse(balance) ?? 0;
     if(bal < -50){
       return bal.toString().substring(1);
     } else {
       return "0";
     }
   }
+  String clearBalance(String? bal){
+    String balance = (bal ?? '').trim().isEmpty ? "0" : bal ?? '0';
+
+    // Remove spaces around minus sign: "- 0.1" → "-0.1"
+    balance = balance.replaceAll(RegExp(r'-\s+'), '-');
+
+    double value = double.tryParse(balance) ?? 0;
+
+    if (value == 0) return "0";
+
+    if (value < 0) {
+      return "${value.abs()}";
+    } else {
+      return "0";
+    }
+  }
 
   String requestedBalance(String balance){
-    double bal = double.parse(balance);
+    double bal = double.tryParse(balance) ?? 0;
     if(bal > 50){
       return "$bal";
     } else {
       return "0";
     }
+  }*/
+
+
+
+  double _parseBalance(String? bal) {
+    String balance = (bal ?? '').trim();
+    if (balance.isEmpty) return 0;
+    // "- 0.1" -> "-0.1"
+    balance = balance.replaceAll(RegExp(r'-\s+'), '-');
+
+    return double.tryParse(balance) ?? 0;
+  }
+
+  String previousBalance(String? balance) {
+    final value = _parseBalance(balance);
+    return value < -50 ? value.abs().toString() : "0";
+  }
+
+  String requestedBalance(String? balance) {
+    final value = _parseBalance(balance);
+    return value > 50 ? value.toString() : "0";
   }
 
 
@@ -246,49 +282,53 @@ String changeDateParam(DateTime dateTime){
 
 
 
-  Future<void> updateRemainingBalance() async {
-    var storage = GetStorage();
-    var ownerId = storage.read(GetStorageConstants.LOGIN_DATA);
-    var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
-    var param = {
-      "platform": "mobile",
-      "gateway":  "${salesReport.value.paymentGateWay}",
-      "user_id":  "${ownerId["id"]}",
-      "amount":   previousBalance(salesReport.value.balance ?? "0"),
-      "restaurant_id": "$restaurantId"
-    };
-    var apiResponse = await ApiController().clearRemainingBalance(param);
-      paymentLoader.value = false;
-    if(apiResponse.responseCode == 1) {
-      getRestaurantSalesReport();
-    } else {
-      CommonUtils.utils.handleAlertMsg(
-         code:  apiResponse.responseCode,
-         message:  apiResponse.msg);
-    }
+  Future<void> updateRemainingBalance({PaymentSuccessResponse? razorpayResponse}) async {
+   try {
+     var param = {
+       "platform": "mobile",
+       "gateway": razorpayResponse != null ?
+       "R-${razorpayResponse.paymentId}" : "C-${sessionPaymentId.value}",
+       "amount": previousBalance(salesReport.value.balance),
+       "payment_order": razorpayResponse != null ?
+       razorpayResponse.orderId : orderId.value
+     };
+     var apiResponse = await ApiController().restaurantClearBalance(param);
+     paymentLoader.value = false;
+     if (apiResponse.responseCode == AppStrings.apiSuccess) {
+       getRestaurantSalesReport();
+     } else {
+       CommonUtils.utils.handleAlertMsg(
+           code: apiResponse.responseCode,
+           message: AppStrings.errorPaymentDeducted);
+     }
+   } catch (e) {
+     paymentLoader.value = false;
+     CommonUtils.utils.handleAlertMsg(
+         message: AppStrings.errorPaymentDeducted);
+   }
   }
 
   Future<void> requestApiClick() async{
-    showLoader.value = true;
-    var storage = GetStorage();
-    var ownerId = storage.read(GetStorageConstants.LOGIN_DATA);
-    var restaurantId = storage.read(GetStorageConstants.RESTAURANT_ID);
-    var param = {
-      "user_id":  "${ownerId["id"]}",
-      "amount":   requestedBalance(salesReport.value.balance!),
-      "restaurant_id": "$restaurantId"
-    };
-    var apiResponse = await ApiController().requestForBalance(param);
-    if(apiResponse.responseCode == 1) {
-      getRestaurantSalesReport();
-      CommonUtils.utils.handleAlertMsg(
-        title: AppStrings.alertSuccess,
-         message:  AppStrings.salesReportRequestSuccess,);
-    } else {
+    try {
+      showLoader.value = true;
+      var param = {
+        "amount": requestedBalance(salesReport.value.balance ?? '0'),
+      };
+      var apiResponse = await ApiController().restaurantWithdrawalRequest(
+          param);
+      if (apiResponse.responseCode == AppStrings.apiSuccess) {
+        getRestaurantSalesReport();
+        CommonUtils.utils.handleAlertMsg(
+          title: AppStrings.alertSuccess,
+          message: AppStrings.salesReportRequestSuccess,);
+      } else {
+        showLoader.value = false;
+        CommonUtils.utils.handleAlertMsg(
+            code: apiResponse.responseCode,
+            message: apiResponse.msg);
+      }
+    } catch (e){
       showLoader.value = false;
-      CommonUtils.utils.handleAlertMsg(
-         code:  apiResponse.responseCode,
-         message:  apiResponse.msg);
     }
   }
 
@@ -297,7 +337,7 @@ String changeDateParam(DateTime dateTime){
 
 
 
-  void checkForCashFree(){
+  void payNowBtnClick(){
     if(salesReport.value.paymentGateWay != 0) {
       if(salesReport.value.paymentGateWay == 1){
         initializePaymentHandlers();
@@ -311,7 +351,8 @@ String changeDateParam(DateTime dateTime){
 
   void initializePaymentHandlers(){
     _razorpay = Razorpay();
-    _cfEnvironment = ApiConstant.cfEnvironment;
+    _cfEnvironment = kReleaseMode ?
+    CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
     _cfPaymentGatewayService = CFPaymentGatewayService();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -322,30 +363,31 @@ String changeDateParam(DateTime dateTime){
 
   // generate payment order id
   Future<void> generatePaymentOrderId() async {
-    paymentLoader.value = true;
-      dynamic result;
-      result = salesReport.value.paymentGateWay == 1 ?
-      await   CommonUtils.utils.generatePaymentOrderId(amount: (double.parse(previousBalance(salesReport.value.balance!)) * 100),
-          type: "razorpay")
-        : await CommonUtils.utils.generatePaymentOrderId(amount: double.parse(previousBalance(salesReport.value.balance!)),
-    type: "cashfree");
-
-    if(result is ApiResponse) {
-      paymentLoader.value = false;
-    CommonUtils.utils.handleAlertMsg(
-       code:  result.responseCode,
-       message:  result.msg);
-    } else if (result is RazorPayResponse) {
-    setUpRaZorPay(result.data!.id!);
-    } else if(result is CashFreeResponse) {
-    orderId.value = result.data!.orderId!;
-    sessionPaymentId.value = result.data!.paymentSessionId!;
-    setUpCashFree();
-    } else {
+    try {
+      paymentLoader.value = true;
+      dynamic result = await CommonUtils.utils.generatePaymentOrderId(
+          balance: previousBalance(salesReport.value.balance),
+          gateway: salesReport.value.paymentGateWay ?? 0);
+      if (result is ApiResponse) {
+        paymentLoader.value = false;
+        CommonUtils.utils.handleAlertMsg(
+            code: result.responseCode,
+            message: result.msg);
+      } else if (result is RazorPayResponse) {
+        setUpRaZorPay(result);
+      } else if (result is CashFreeResponse) {
+        orderId.value = result.data?.orderId ?? '';
+        sessionPaymentId.value = result.data?.paymentSessionId ?? '';
+        setUpCashFree();
+      } else {
+        paymentLoader.value = false;
+        CommonUtils.utils.handleAlertMsg(
+            message: AppStrings.errorServerNotResponding);
+      }
+    } catch (e){
       paymentLoader.value = false;
       CommonUtils.utils.handleAlertMsg(
-         code:  400,
-         message:  "Server not responding. Please try later");
+          message: AppStrings.errorSomethingWrong);
     }
 
   }
@@ -353,31 +395,42 @@ String changeDateParam(DateTime dateTime){
 
   // razor pay handler methods
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    updateRemainingBalance();
+    updateRemainingBalance(razorpayResponse: response);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     paymentLoader.value = false;
     CommonUtils.utils.handleAlertMsg(
-       code:  400,
-       message: "Payment Failed");
+       message: AppStrings.errorPaymentFailed);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    updateRemainingBalance();
+    updateRemainingBalance(razorpayResponse: PaymentSuccessResponse(
+      "wallet_payment", "wallet_order", "", {}
+    ));
   }
 
-  Future<void> setUpRaZorPay(String id) async {
-    var storage = GetStorage();
-    var ownerPhone =  storage.read(GetStorageConstants.LOGIN_DATA);
-    String? restName =  storage.read(GetStorageConstants.REST_NAME);
+  Future<void> setUpRaZorPay(RazorPayResponse response) async {
+    String keyId = response.data?.keyId ?? '';
+    String orderId = response.data?.id ?? '';
+    int amount = response.data?.amount ?? 0;
+    String currency = response.data?.currency ?? '';
+    String phone = CommonUtils.utils.formatIndianNumber(response.data?.phone);
+    if(keyId.trim().isEmpty || orderId.trim().isEmpty
+        || amount <=0 || currency.trim().isEmpty || phone.trim().isEmpty){
+      paymentLoader.value = false;
+      CommonUtils.utils.handleAlertMsg(
+          message:  AppStrings.errorSomethingWrong);
+      return;
+    }
+
     var options = {
-      'key': ApiConstant.razorPayId,
-      'order_id' : id,
-      'amount': (double.parse(previousBalance(salesReport.value.balance!)) * 100),
+      'key': keyId,
+      'order_id' : orderId,
+      'amount': amount,
       'name': AppStrings.appName,
-      'description': restName ?? "",
-      'prefill': {'contact':  "${ownerPhone["phone"]}"},
+      'description': StorageUtils.utils.restaurantUserName,
+      'prefill': {'contact':  phone},
       'config': {
         'display': {
           'blocks': {
@@ -425,45 +478,41 @@ String changeDateParam(DateTime dateTime){
 
 
   void verifyPayment(String orderId) {
-    debugPrint("Verify Payment");
     checkPaymentVerify();
   }
 
   void  checkPaymentVerify() async {
-    var param = {
-      "order_id": orderId.value
-    };
-    var apiResponse = await ApiController().verifyPaymentOrderId(param);
-    if(apiResponse.responseCode == 200) {
-
-      if(apiResponse.response?.data["data"]["order_status"] == "PAID"){
-        updateRemainingBalance();
+    try {
+      var param = {
+        "order_id": orderId.value
+      };
+      var apiResponse = await ApiController().restaurantVerifyCashFreeOrder(param);
+      if (apiResponse.responseCode == AppStrings.apiSuccess) {
+        if (apiResponse.response?.data["data"]["order_status"] == "PAID") {
+          updateRemainingBalance();
+        } else {
+          paymentLoader.value = false;
+          CommonUtils.utils.handleAlertMsg(
+              message: apiResponse.msg);
+        }
       } else {
         paymentLoader.value = false;
-        CommonUtils.utils.handleAlertMsg(
-           code:  400,
-           message: "Payment Not Done");
+        verifyCount.value > 0 ? null
+            : Get.dialog(showDialogBox(
+          title: AppStrings.alertError,
+          message: AppStrings.errorServerNotResponding,
+          twoButtons: false,
+          confirmTxt: AppStrings.btnRetry,
+          onConfirm: () {
+            verifyCount.value = verifyCount.value + 1;
+            checkPaymentVerify();
+          },
+        ), barrierDismissible: false);
       }
-
-    } else {
+    } catch (e){
       paymentLoader.value = false;
-      verifyCount.value > 0 ? null
-          : Get.dialog(showDialogBox(
-        title: AppStrings.alertError,
-        message:  verifyCount.value == 0 ?
-        "Server not responding. Please try again"
-        : "When your payment is successfully processed, the balance will be updated",
-        twoButtons: false,
-        confirmTxt: "RETRY",
-        onConfirm: (){
-          Get.back(result: "retry");
-        },
-      ), barrierDismissible: false).then((value) {
-        if(value == "retry") {
-          verifyCount.value = verifyCount.value + 1;
-          checkPaymentVerify();
-        }
-      });
+      CommonUtils.utils.handleAlertMsg(
+          message: "If ${AppStrings.errorPaymentDeducted}");
     }
 
 
@@ -474,7 +523,6 @@ String changeDateParam(DateTime dateTime){
   void onError(CFErrorResponse errorResponse, String orderId) {
     paymentLoader.value = false;
     CommonUtils.utils.handleAlertMsg(
-       code:  400,
        message:  errorResponse.getMessage().toString());
   }
 
@@ -483,14 +531,13 @@ String changeDateParam(DateTime dateTime){
     if(paymentOptionValue.value == 1) {
       upiPay();
     } else if (paymentOptionValue.value == 2) {
-      cardPayNew();
+      cardPay();
     } else if(paymentOptionValue.value ==3) {
       netBankingPay();
     } else {
       paymentLoader.value = false;
       CommonUtils.utils.handleAlertMsg(
-         code:  400,
-         message:  "Something went wrong. Please try later");
+         message: AppStrings.errorServerNotResponding);
     }
   }
 
@@ -532,19 +579,22 @@ String changeDateParam(DateTime dateTime){
   Future<void> upiPayNew() async {
     try {
       var sessionNew = createSession();
-      if(sessionNew != null) {
+      if(sessionNew == null){
+        paymentLoader.value = false;
+        Get.snackbar(AppStrings.alertTitle, AppStrings.errorSomethingWrong,
+        duration: Duration(seconds: 2));
+        return;
+      }
         var upi = CFUPIBuilder().setChannel(CFUPIChannel.INTENT_WITH_UI).build();
         var upiPayment = CFUPIPaymentBuilder().setSession(sessionNew).setUPI(upi).build();
         _cfPaymentGatewayService.doPayment(upiPayment);
-      }
     } on CFException catch (e) {
       debugPrint(e.message);
       paymentLoader.value = false;
     }
-
   }
 
-  void cardPayNew(){
+  void cardPay(){
     try {
       var sessionNew = createSession();
       List<CFPaymentModes> components = <CFPaymentModes>[];

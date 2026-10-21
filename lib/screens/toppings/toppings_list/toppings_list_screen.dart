@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/ColorLoader.dart';
+import 'package:food_merchant/component/color_loader.dart';
 import 'package:food_merchant/component/custom_text_widget.dart';
 import 'package:food_merchant/constant/app_colors.dart';
 import 'package:food_merchant/constant/font_family.dart';

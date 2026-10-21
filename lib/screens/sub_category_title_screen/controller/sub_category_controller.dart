@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:food_merchant/constant/app_strings.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../../utils/CommonUtils.dart';
-import '../../../utils/GetStorageConstants.dart';
+import '../../../services/repo/api_controller.dart';
+import '../../../utils/common_utils.dart';
 
 class SubCategoryController extends GetxController {
   TextEditingController titleController = TextEditingController();
   var showLoader = false.obs;
-  var storage = GetStorage();
+  //var storage = GetStorage();
   List arguments = Get.arguments;
   final formKey = GlobalKey<FormState>();
 
   @override
-  void onInit() {
+  void onReady() {
     checkArguments();
-    super.onInit();
+    super.onReady();
   }
 
 
-  checkArguments(){
+  void checkArguments(){
     if(arguments.isNotEmpty){
       if(arguments.length >1){
         titleController.text = arguments[1];
@@ -29,52 +28,54 @@ class SubCategoryController extends GetxController {
 
 
 
-submitBtnClick(){
+void submitBtnClick(){
   FocusManager.instance.primaryFocus?.unfocus();
-  if(formKey.currentState!.validate()) {
+  if(formKey.currentState?.validate() ?? false) {
     arguments.length == 1 ?
     createMenu() : editMenu();
   }
 }
 
 
-  createMenu() async {
+  Future<void> createMenu() async {
+    try {
       showLoader.value = true;
-      var restId = storage.read(GetStorageConstants.RESTAURANT_ID);
       var param = {
-        "restaurant_id": restId,
-        //"category_id": "${arguments[0]}",
-        "title": titleController.text
+        "title": titleController.text.trim()
       };
-
-      var apiResponse = await ApiController().addSubCategory(param);
+      var apiResponse = await ApiController().restaurantAddSubcategory(param);
       showLoader.value = false;
-      if(apiResponse.responseCode == 1){
-       Get.back(result: "added");
-      }else {
-        CommonUtils.utils.handleApiError(
-            apiResponse.responseCode, apiResponse.msg);
+      if (apiResponse.responseCode == AppStrings.apiSuccess) {
+        Get.back(result: "added");
+      } else {
+        CommonUtils.utils.handleAlertMsg(
+            code: apiResponse.responseCode,
+            message: apiResponse.msg);
+      }
+    } catch (e){
+      showLoader.value = false;
     }
   }
 
-  editMenu() async {
+  Future<void> editMenu() async {
+    try {
       showLoader.value = true;
-      var restId = storage.read(GetStorageConstants.RESTAURANT_ID);
       var param = {
-        "restaurant_id": restId,
-        //"category_id": "${arguments[0]}",
-        "title": titleController.text
+        "title": titleController.text.trim()
       };
-
-
-      var apiResponse = await ApiController().editSubCategory(param, "${arguments[2]}");
+      var apiResponse = await ApiController().restaurantUpdateSubcategory(
+          param, "${arguments[2]}");
       showLoader.value = false;
-      if(apiResponse.responseCode == 1){
-      Get.close(2);
-      }else {
-        CommonUtils.utils.handleApiError(
-            apiResponse.responseCode, apiResponse.msg);
+      if (apiResponse.responseCode == AppStrings.apiSuccess) {
+        Get.close(2);
+      } else {
+        CommonUtils.utils.handleAlertMsg(
+            code: apiResponse.responseCode,
+            message: apiResponse.msg);
       }
+    } catch (e){
+      showLoader.value = false;
+    }
   }
 
 

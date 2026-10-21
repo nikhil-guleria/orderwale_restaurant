@@ -1,16 +1,12 @@
 import 'dart:io';
-import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/custom_dialog_box.dart';
 import 'package:food_merchant/component/image_picker/image_picker.dart';
 import 'package:food_merchant/component/image_picker/picker_dialog.dart';
 import 'package:food_merchant/constant/app_strings.dart';
 import 'package:food_merchant/screens/update_profile/model/restaurant_user_info.dart';
-import 'package:food_merchant/services/repo/CommonRepo.dart';
-import 'package:food_merchant/utils/CommonUtils.dart';
-import 'package:food_merchant/utils/GetStorageConstants.dart';
+import 'package:food_merchant/services/repo/api_controller.dart';
+import 'package:food_merchant/utils/common_utils.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 
 class UpdateProfileController extends GetxController{
@@ -91,48 +87,28 @@ class UpdateProfileController extends GetxController{
 
 
 Future<void> updateProfile() async{
-      var newFileName = (imageFile.value?.path ?? '').split('/').last;
+    /*  var newFileName = (imageFile.value?.path ?? '').split('/').last;
       if (!newFileName.contains(".")) {
         newFileName = "$newFileName.png";
-      }
-  showLoader.value = true;
-  var storage = GetStorage();
-  var ownerId = storage.read(GetStorageConstants.LOGIN_DATA);
-    dio.FormData formData = dio.FormData.fromMap({
-      "first_name": nameInputController.text,
-      "id": "${ownerId["id"]}",
-      "phone": phoneInputController.text,
-      "email": emailInputController.text,
-    "image": imageFile.value != null ?
-    await dio.MultipartFile.fromFile(imageFile.value?.path ?? '', filename: newFileName)
-        : null
-    });
-
-    var updateProfile = await ApiController().updateOwnerProfile(formData);
-  showLoader.value = false;
-  if (updateProfile.responseCode == 1) {
-
-    Get.dialog(PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _){
-        if(didPop) {
-          return ;
-        } else {
-          Get.close(2);
-        }
-      },
-      child:   showDialogBox(title: 'Profile',
-        message: "Updated Successfully",
-        twoButtons: false,
-        onConfirm: (){Get.close(2);},
-      ),
-    ),
-        barrierDismissible: false);
-  }
-  else {
-    CommonUtils.utils.handleAlertMsg(
-        code: updateProfile.responseCode,
-        message: updateProfile.msg);
+      }*/
+  try {
+    showLoader.value = true;
+    var param = {
+      "name": nameInputController.text.trim(),
+    };
+    var updateProfile = await ApiController().restaurantUpdateUserName(param);
+    showLoader.value = false;
+    if (updateProfile.responseCode == AppStrings.apiSuccess) {
+      CommonUtils.utils.handleAlertMsg(
+          title: AppStrings.alertSuccess,
+          message: updateProfile.msg);
+    } else {
+      CommonUtils.utils.handleAlertMsg(
+          code: updateProfile.responseCode,
+          message: updateProfile.msg);
+    }
+  } catch (e){
+    showLoader.value = false;
   }
 }
 

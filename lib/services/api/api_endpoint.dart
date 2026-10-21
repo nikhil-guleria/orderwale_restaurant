@@ -9,8 +9,8 @@ class ApiEndpoint {
   static const webRegRestaurantCities = "$baseUrlRestaurant/getCity/";
 
 
-  // forgot password todo: create api in restaurant controller
-  static var forgotPassword = "/owner/forgot_password";
+  // forgot password
+  static var restaurantUserForgotPassword = "$baseUrlRestaurant/restaurantUserForgotPassword";
 
   // restaurant user app login
   static const restaurantUserAppLogin = "$baseUrlRestaurant/restaurantUserAppLogin";
@@ -20,6 +20,9 @@ class ApiEndpoint {
 
   // restaurant user info-profile
   static const restaurantUserInfo = "$baseUrlRestaurant/restaurantUserInfo";
+
+  // restaurant update user name
+  static const restaurantUserNameUpdate = "$baseUrlRestaurant/restaurantUserUpdateName";
 
   // restaurant dashboard orders
   static const restaurantDashboardOrders = "$baseUrlRestaurant/restaurant_dashboard_orders";
@@ -38,6 +41,12 @@ class ApiEndpoint {
 
   // restaurant sales report
   static const restaurantSalesReport = '$baseUrlRestaurant/salesReportApp';
+  static const restaurantSubscriptionOrder = "$baseUrlRestaurant/restaurantSubscriptionOrder";
+
+  // restaurant withdrawal request
+  static const restaurantWithdrawalRequest = "$baseUrlRestaurant/restaurantWithdrawalRequest";
+  static const restaurantClearBalance = "$baseUrlRestaurant/restaurantClearBalance";
+  static const restaurantCashFreeVerifyOrder = "$baseUrlRestaurant/verifyCashfreeOrder";
 
   // restaurant details/manage
   static const restaurantDetails = "$baseUrlRestaurant/restaurantDetails";
@@ -64,6 +73,36 @@ class ApiEndpoint {
   // restaurant change user password
   static const restaurantChangeUserPassword = "$baseUrlRestaurant/changeRestaurantUserPassword";
 
+  // restaurant help & support
+  static const restaurantHelpSupport = "$baseUrlRestaurant/helpAndSupport";
+
+  // restaurant delivery availability
+  static const restaurantChangeDelivery = "$baseUrlRestaurant/restaurantDeliveryAvailability";
+
+  // restaurant reviews
+  static const restaurantAllReviews = "$baseUrlRestaurant/restaurantAllReviews";
+
+  // restaurant menu
+  static const restaurantItems = "$baseUrlRestaurant/getRestaurantMenu";
+  static const restaurantItemAvailability = "$baseUrlRestaurant/change_product_availability";
+  static const restaurantCategories = "$baseUrlRestaurant/itemCategories";
+  static const restaurantAllSubcategories = "$baseUrlRestaurant/restaurantSubcategories";
+
+  // subcategories
+  static const restaurantAddUpdateSubcategory = "$baseUrlRestaurant/addUpdateSubcategory";
+  static const restaurantDeleteSubcategory = "$baseUrlRestaurant/delete_subcategory/";
+
+  // items
+  static const restaurantAddUpdateItem = "$baseUrlRestaurant/addUpdateProductNew";
+  static const restaurantDeleteItem = "$baseUrlRestaurant/delete_product/";
+  static const restaurantDeleteCustomisation = "$baseUrlRestaurant/deleteItemCustomisation";
+
+
+  // maps api's
+  static const mapsAutoComplete = "/maps/autoComplete";
+  static const mapsReverseGeocode = "/maps/reverseGeocode";
+
+
 
 
 
@@ -77,117 +116,11 @@ class ApiEndpoint {
   //login
   static String userLogin = "login";
 
-
-  //order_details
-  static String orderDetails = 'restaurantOrderDetails/';
-
-  //restaurant all orders
-  static String restaurantAllOrders = '/owner/restaurantAllOrders?page=';
-
   //Restaurants LIST
   static var resList = "restaurant_list";
-  //Restaurant Details
-  static var resDetails = 'details/';
-  //Owner Profile
-  static var ownerProfile = '/owner/profile';
-  // Sales Report
 
-  // Restaurant Menu
-  static var restaurantMenu = "get_restaurant_menu/";
-  // customised menu
-  static var restaurantMenuCustomised = "get_restaurant_menu_new/";
-  // Coupons List
-  static var couponsList = "coupons/0/";
-
-
-
-  //Change Password
-  static var changePassword = 'change_password';
-  //Get Country List
-  static var getAllCountry = 'getCountry';
-  //Get State List
-  static var getAllStateList = 'getState/';
-  //Get City List
-  static var getAllCityList = 'getCity/';
-  //Add Restaurant
-  static var addRestaurant = 'addUpdateRestaurant';
-  //Update Restaurant
-  static var updateRestaurant = 'addUpdateRestaurant/';
-  // Create Owner
-  static var createOwnerRequest = "register_request";
-  //Add Product
-  static var addNewProduct = 'addUpdateProduct';
-  //Update Product
-  static var updateProduct = 'addUpdateProduct/';
-  // Add Coupon
-  static var addCoupon = "add-coupon";
-  // Update Coupon
-  static var updateCoupon = "update-coupon";
-  // Delete Coupon
-  static var deleteCoupon = "delete-coupon/";
-  // Update Coupon
-
-  //Category List
-  static var getAllCategory = 'categories';
-  // SubCategory List
-  static var getAllSubCategory = "subCategories";
-  // Add SubCategory
-  static var addSubCategory = "addUpdateSubcategory";
-  static var editSubCategory = "addUpdateSubcategory/";
-  static var deleteSubCategory = "delete_subcategory/";
-
-  //All SubcategoryList
-  static var getSubcategories = 'mealDeal/';
-  //Close Restaurant
-  static var closeRestaurant = 'change_restaurant_availability';
-  // Close Delivery
-  static var closeDelivery = "delivery_availability";
-  //OutofStock Item
-  static var outofStockItem = 'change_product_availability';
-  //Delete Product
-  static var deleteProduct = 'delete_product/';
-  //Delete Retaurant
-  static var deleteRestaurant = 'delete_restaurant/';
-  //Restaurat Review
-  static var getAllReviews = 'get_all_review/';
-  //Order Operations
-  //Notification List
-  static var notificationList = 'notifications';
   // Update Profile
   static var updateProfile = "updateProfile";
-  // Manage Delivery Area
-  static var manageDeliveryArea = "manage_delivery_locations";
-  // Get Deliver Locations
-  static var getDeliveryLocations = "get_delivery_locations";
 
 
-
-  // add, update customised product, delete customisation
-  static var addCustomisedProduct = 'addUpdateProductNew';
-  static var updateCustomisedProduct = 'addUpdateProductNew/';
-  static var deleteCustomisations = 'delete_item_customisation';
-
-
-  // payment methods
-  static var createPaymentOrderId = "create_payment_orderid";
-  static var verifyPaymentOrderId = "verify_order";
-  static var clearBalance = "clear-balance";
-  static var requestBalance = "withdrawal_requests";
-
-
-  // toppings
-  static var toppingsList = "toppings/";
-  static var addTopping = "addUpdateTopping";
-  static var updateTopping = "addUpdateTopping/";
-  static var deleteTopping = "delete_topping/";
-
-
-  // logout
-  static var logout = "logout";
-
-
-
-  // maps api's
-  static const mapsAutoComplete = "/maps/autoComplete";
-  static const mapsReverseGeocode = "/maps/reverseGeocode";
 }

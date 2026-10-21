@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_merchant/component/custom_dialog_box.dart';
 import 'package:food_merchant/constant/app_strings.dart';
-import 'package:food_merchant/services/repo/CommonRepo.dart';
-import 'package:food_merchant/utils/CommonUtils.dart';
+import 'package:food_merchant/services/repo/api_controller.dart';
+import 'package:food_merchant/utils/common_utils.dart';
 import 'package:get/get.dart';
 
 class AddUpdateToppingController extends GetxController {

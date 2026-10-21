@@ -5,19 +5,18 @@ import 'package:food_merchant/screens/dashboard_orders/view/dashboard_orders_vie
 import 'package:food_merchant/screens/dashboard_orders/controller/dashboard_orders_binding.dart';
 import 'package:food_merchant/screens/dashboard_orders/controller/dashboard_orders_controller.dart';
 import 'package:food_merchant/screens/order_details/controller/order_details_controller.dart';
-import 'package:food_merchant/screens/restaurant_details/controller/RestaurantDetailsBinding.dart';
-import 'package:food_merchant/screens/restaurant_details/view/RestaurantDetails.dart';
+import 'package:food_merchant/screens/restaurant_details/controller/restaurant_details_binding.dart';
+import 'package:food_merchant/screens/restaurant_details/view/restaurant_details.dart';
 import 'package:food_merchant/screens/settings/controller/settings_binding.dart';
-import 'package:food_merchant/utils/GetStorageConstants.dart';
+import 'package:food_merchant/utils/storage_utils.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import '../../../routes/app_routes.dart';
 import '../../settings/view/settings.dart';
 
 class DashboardController extends GetxController{
   var currentIndex = 1.obs;
-  final pages = <String>[AppRoutes.RESTAURANT_DETAILS,AppRoutes.MAIN, AppRoutes.SETTINGS];
-  var storage = GetStorage();
+  final pages = <String>["/restaurantDetails","/home", "/settings"];
+
   var globalId = 1.obs;
 
   @override
@@ -38,13 +37,13 @@ class DashboardController extends GetxController{
 
 
   void checkGlobalId(){
-    var id = storage.read(GetStorageConstants.GLOBAL_ID);
+   /* var id = storage.read(GetStorageConstants.GLOBAL_ID);
     if(id != null){
-       globalId.value = id ;
+       globalId.value = id;
     }
     else {
       globalId.value = 1;
-    }
+    }*/
   }
 
 
@@ -61,7 +60,7 @@ class DashboardController extends GetxController{
     }
   }
   Route? onGenerateRoute(RouteSettings settings) {
-    if (settings.name == AppRoutes.RESTAURANT_DETAILS) {
+    if (settings.name == "/restaurantDetails") {
       return GetPageRoute(
           settings: settings,
           page: () => const RestaurantDetails(),
@@ -71,7 +70,7 @@ class DashboardController extends GetxController{
     }
 
 
-    if (settings.name == AppRoutes.MAIN) {
+    if (settings.name == "/home") {
       return GetPageRoute(
           settings: settings,
           page: () =>const DashboardOrdersView(),
@@ -81,7 +80,7 @@ class DashboardController extends GetxController{
     }
 
 
-    if (settings.name == AppRoutes.SETTINGS) {
+    if (settings.name == "/settings") {
       return GetPageRoute(
           settings: settings,
           page: () => const Settings(),
@@ -110,7 +109,8 @@ class DashboardController extends GetxController{
           OrderDetailsController controller = Get.find();
           controller.orderId = data;
           controller.getOrderDetails();
-          storage.remove(GetStorageConstants.fcmOrderId);
+          //storage.remove(GetStorageConstants.fcmOrderId);
+          StorageUtils.utils.removeFCMOrderId();
         } else {
           Get.toNamed(AppRoutes.orderDetails, arguments: data)?.then((value) {
             bool register = Get.isRegistered<DashboardOrdersController>();
@@ -127,13 +127,15 @@ class DashboardController extends GetxController{
 
 
   void checkTerminatedNotification()  {
-    var fcmOrderId = storage.read(GetStorageConstants.fcmOrderId);
+    var fcmOrderId = StorageUtils.utils.getFcmOrderId;
+    //storage.read(GetStorageConstants.fcmOrderId);
     if(fcmOrderId != null) {
       if (Get.isRegistered<OrderDetailsController>()) {
         OrderDetailsController controller = Get.find();
         controller.orderId = fcmOrderId;
         controller.getOrderDetails();
-        storage.remove(GetStorageConstants.fcmOrderId);
+        //storage.remove(GetStorageConstants.fcmOrderId);
+        StorageUtils.utils.removeFCMOrderId();
       } else {
         Get.toNamed(AppRoutes.orderDetails, arguments: fcmOrderId)?.then((value) {
           bool register = Get.isRegistered<DashboardOrdersController>();

@@ -2,8 +2,8 @@ import 'package:food_merchant/component/custom_dialog_box.dart';
 import 'package:get/get.dart';
 import '../../../constant/app_strings.dart';
 import '../../../routes/app_routes.dart';
-import '../../../services/repo/CommonRepo.dart';
-import '../../../utils/CommonUtils.dart';
+import '../../../services/repo/api_controller.dart';
+import '../../../utils/common_utils.dart';
 
 
 class SettingsController extends GetxController {
@@ -86,6 +86,10 @@ Future<void> logOutOwner() async {
 
   void printerSettingsClick(){
     Get.toNamed(AppRoutes.printerSettings);
+  }
+
+  void helpAndSupportClick(){
+    Get.toNamed(AppRoutes.helpAndSupport);
   }
 
 

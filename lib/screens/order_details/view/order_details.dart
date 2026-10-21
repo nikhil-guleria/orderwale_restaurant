@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_merchant/component/BottomSheet.dart';
+import 'package:food_merchant/component/custom_bottom_sheet.dart';
 import 'package:food_merchant/component/custom_text_widget.dart';
 import 'package:food_merchant/screens/order_details/controller/order_details_controller.dart';
 import 'package:food_merchant/screens/order_details/models/order_details_model.dart';
-import 'package:food_merchant/utils/SetUpOrdersData.dart';
+import 'package:food_merchant/utils/setup_orders_data.dart';
 import 'package:get/get.dart';
 import '../../../component/button_widget.dart';
-import '../../../component/ColorLoader.dart';
-import '../../../component/DottedLine.dart';
+import '../../../component/color_loader.dart';
+import '../../../component/dotted_line_separator.dart';
 import '../../../constant/app_colors.dart';
 import '../../../constant/font_family.dart';
 import '../../../constant/app_strings.dart';
@@ -240,7 +240,7 @@ class OrderDetails extends GetView<OrderDetailsController> {
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 4,
                         vertical:SizeConfig.blockSizeHorizontal * 3 ),
-                    child:  const MySeparator(dashWidth: 3, color: AppColors.blackShades,)),
+                    child:  const DottedLineSeparator(dashWidth: 3, color: AppColors.blackShades,)),
 
 
                 // grand total
@@ -597,7 +597,7 @@ class OrderDetails extends GetView<OrderDetailsController> {
                                   child: Container(
                                     padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*3.75,
                                         vertical: SizeConfig.blockSizeHorizontal *2.5),
-                                    child:  const MySeparator(color: AppColors.disabledBorderColor,dashWidth: 3,
+                                    child:  const DottedLineSeparator(color: AppColors.disabledBorderColor,dashWidth: 3,
                                         height: 0.7),
                                   ),
                                 )
@@ -676,9 +676,10 @@ class OrderDetails extends GetView<OrderDetailsController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    // declined button
                     Container(padding:  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal*1),
                       width: SizeConfig.blockSizeHorizontal*31,
-                      child: ButtonWidget(text: decline_btn,
+                      child: ButtonWidget(text: AppStrings.btnDeclined,
                           onPressed: (){
                             controller.cancelOrder();
                           },
@@ -687,12 +688,14 @@ class OrderDetails extends GetView<OrderDetailsController> {
                           fontSize: SizeConfig.regularFontSize,
                           backGroundColor: AppColors.redAccent),
                     ),
+
+                    // accept order button
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*1),
                         child: ButtonWidget(
                             height: SizeConfig.blockSizeHorizontal*11,
-                            text:  accept_order_btn,
+                            text:  AppStrings.btnAcceptOrder,
                             roundedCorner: 6.5,
                             onPressed: (){
                               controller.acceptDeclineOrders("2");
@@ -709,11 +712,12 @@ class OrderDetails extends GetView<OrderDetailsController> {
                     :  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    // mark as ready
                     controller.orderDetails.value.orderStatus == "2" ?
                     Expanded(
                       child: ButtonWidget(
                           height: SizeConfig.blockSizeHorizontal*11,
-                          text:  mark_as_ready,
+                          text:  AppStrings.dashboardMarkAsReady,
                           roundedCorner: 6.0,
                           onPressed: (){
                             controller.acceptDeclineOrders("7");
@@ -727,7 +731,7 @@ class OrderDetails extends GetView<OrderDetailsController> {
                       child: ButtonWidget(
                           height: SizeConfig.blockSizeHorizontal*11,
                           text: controller.orderDetails.value.deliveryType == "1" ?
-                          mark_as_out_for_delivery : mark_as_delivered,
+                          AppStrings.dashboardMarkOutForDelivery : AppStrings.dashboardMarkAsDelivered,
                           roundedCorner: 6.0,
                           onPressed: (){
                             controller.orderDetails.value.deliveryType == "1" ?
@@ -742,7 +746,7 @@ class OrderDetails extends GetView<OrderDetailsController> {
                   :  Expanded(
                       child: ButtonWidget(
                           height: SizeConfig.blockSizeHorizontal*11,
-                          text:  mark_as_delivered,
+                          text: AppStrings.dashboardMarkAsDelivered,
                           roundedCorner: 6.0,
                           onPressed: (){
                             controller.deliverOrderClick();
